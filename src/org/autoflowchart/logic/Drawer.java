@@ -1,4 +1,4 @@
-package logic;
+package org.autoflowchart.logic;
 
 import javafx.scene.canvas.Canvas;
 
