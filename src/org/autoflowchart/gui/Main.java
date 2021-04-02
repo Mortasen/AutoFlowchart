@@ -1,4 +1,4 @@
-package gui;
+package org.autoflowchart.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
