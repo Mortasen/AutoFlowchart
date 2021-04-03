@@ -17,6 +17,7 @@ public class Main extends Application
         primaryStage.show();
         System.out.println();
         System.out.println();
+        System.out.println("аолылоалыоаы");
     }
 
     public static void main(String[] args) {
