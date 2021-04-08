@@ -1,4 +1,4 @@
-package com.company;
+package org.autoflowchart.logic;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
