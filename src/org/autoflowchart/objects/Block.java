@@ -1,4 +1,4 @@
-package org.autoflowchart.logic;
+package org.autoflowchart.objects;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;

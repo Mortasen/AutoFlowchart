@@ -1,4 +1,4 @@
-package org.autoflowchart.logic;
+package org.autoflowchart.objects;
 
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.Expression;
@@ -6,7 +6,7 @@ import com.github.javaparser.ast.stmt.*;
 
 import java.util.Optional;
 
-class Node
+public class Node
 {
 	public String text;
 	public Node next;

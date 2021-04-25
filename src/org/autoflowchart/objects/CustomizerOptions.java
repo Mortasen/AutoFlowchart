@@ -1,17 +1,6 @@
-package org.autoflowchart.logic;
+package org.autoflowchart.objects;
 
 import javafx.scene.paint.Color;
-
-enum ShapeType
-{
-	RECT,
-	ROUNDRECT,
-	DIAMOND,
-	PARALLELOGRAM,
-	OVAL,
-	HEXAGON,
-	FUNCTION,
-}
 
 public class CustomizerOptions
 {

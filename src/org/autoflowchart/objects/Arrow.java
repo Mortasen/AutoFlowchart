@@ -1,4 +1,4 @@
-package org.autoflowchart.logic;
+package org.autoflowchart.objects;
 
 public class Arrow
 {
