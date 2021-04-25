@@ -2,15 +2,13 @@ package org.autoflowchart.logic;
 
 import javafx.scene.paint.Color;
 
-enum Shape
+enum ShapeType
 {
-	SQUARE,
-	RECTANGLE,
-	ROUNDED,
+	RECT,
+	ROUNDRECT,
 	DIAMOND,
 	PARALLELOGRAM,
-	CIRCLE,
-	ELLIPSE,
+	OVAL,
 	HEXAGON,
 	FUNCTION,
 }
