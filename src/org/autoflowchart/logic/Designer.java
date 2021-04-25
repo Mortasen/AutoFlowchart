@@ -1,11 +1,18 @@
 package org.autoflowchart.logic;
 
 import org.autoflowchart.objects.Block;
+import org.autoflowchart.objects.Shape;
+
+import java.util.List;
 
 public class Designer
 {
-	public Block generateLayout (Block firstBlock)
+	public List<Shape> generateLayout (Block firstBlock)
 	{
-		return null;
+		Block currentBlock = firstBlock;
+		while (currentBlock.next != null)
+		{
+			currentBlock =
+		}
 	}
 }

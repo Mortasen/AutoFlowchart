@@ -7,11 +7,16 @@ public class Block
 {
 	public int x;
 	public int y;
-	public Color color;
+	public int width;
+	public int height;
 	public String text;
-	public double sizeK;
-	public Color outlineColor;
-	public double outlineSizeK;
+	public int textOffsetX;
+	public int textOffsetY;
+
+	public Block next = null;
+	public Block nextFalse = null;
+
+	public Shape shape;
 
 	public void draw (Canvas canvas)
 	{
