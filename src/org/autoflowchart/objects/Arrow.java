@@ -4,4 +4,10 @@ public class Arrow
 {
 	int[] xPoints;
 	int[] yPoints;
+
+	public Arrow (int[] xPoints, int[] yPoints)
+	{
+		this.xPoints = xPoints;
+		this.yPoints = yPoints;
+	}
 }
