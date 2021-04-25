@@ -55,7 +55,7 @@ public class Parser
 		//NodeList<Statement> statements = blockStmt.get().getStatements();
 
 		Node firstNode = new Node("main()");
-		Node penultNode = firstNode.connectStmt(blockStmt.get(), null);
+		Node penultNode = firstNode.connectStmt(blockStmt.get(), null, 0);
 		Node lastNode = new Node("return;");
 		penultNode.setNext(lastNode);
         /*
