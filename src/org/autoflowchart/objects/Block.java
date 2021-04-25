@@ -16,6 +16,7 @@ public class Block
 
 	public Block next = null;
 	public Block nextFalse = null;
+	public int level;
 
 	public Shape shape;
 

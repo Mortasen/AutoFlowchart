@@ -34,4 +34,16 @@ public class Shape
 		this.textOffsetX = block.textOffsetX;
 		this.textOffsetY = block.textOffsetY;
 	}
+
+	public Point point (double xk, double yk)
+	{
+		int x = this.x + (int)(this.width * xk);
+		int y = this.y + (int)(this.height * yk);
+		return new Point(x, y);
+	}
+
+	public Point pointFromCenter (double xk, double yk)
+	{
+		return this.point(xk * 2 - 1, yk * 2 - 1);
+	}
 }
