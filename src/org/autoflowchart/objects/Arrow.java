@@ -29,4 +29,16 @@ public class Arrow
 	{
 		this.addPoint(point.x, point.y);
 	}
+
+	public void addPointFromPrevious (int offsetX, int offsetY)
+	{
+		int x = this.xPoints.get(this.xPoints.size() - 1) + offsetX;
+		int y = this.yPoints.get(this.yPoints.size() - 1) + offsetY;
+		this.addPoint(x, y);
+	}
+
+	public void addPointFromPrevious (Point point)
+	{
+		this.addPointFromPrevious(point.x, point.y);
+	}
 }

@@ -2,14 +2,14 @@ package org.autoflowchart.objects;
 
 public class Shape
 {
-	int x;
-	int y;
-	int width;
-	int height;
-	ShapeType type;
-	String text;
-	int textOffsetX;
-	int textOffsetY;
+	public int x;
+	public int y;
+	public int width;
+	public int height;
+	public ShapeType type;
+	public String text;
+	public int textOffsetX;
+	public int textOffsetY;
 
 	public Shape (int x, int y, int width, int height, ShapeType type, String text, int textOffsetX, int textOffsetY)
 	{
@@ -35,15 +35,37 @@ public class Shape
 		this.textOffsetY = block.textOffsetY;
 	}
 
-	public Point point (double xk, double yk)
+	public int getXFromCorner (double xk)
 	{
-		int x = this.x + (int)(this.width * xk);
-		int y = this.y + (int)(this.height * yk);
+		return this.x + (int)(this.width * xk);
+	}
+
+	public int getXFromCenter (double xk)
+	{
+		return this.getXFromCorner(xk * 2 - 1);
+	}
+
+	public int getYFromCorner (double yk)
+	{
+		return this.x + (int)(this.height * yk);
+	}
+
+	public int getYFromCenter (double yk)
+	{
+		return this.getYFromCorner(yk * 2 - 1);
+	}
+
+	public Point getPointFromCorner (double xk, double yk)
+	{
+		int x = this.getXFromCorner(xk);
+		int y = this.getYFromCorner(yk);
 		return new Point(x, y);
 	}
 
-	public Point pointFromCenter (double xk, double yk)
+	public Point getPointFromCenter (double xk, double yk)
 	{
-		return this.point(xk * 2 - 1, yk * 2 - 1);
+		int x = this.getXFromCenter(xk);
+		int y = this.getYFromCenter(yk);
+		return new Point(x, y);
 	}
 }

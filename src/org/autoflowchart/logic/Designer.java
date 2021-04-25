@@ -20,28 +20,36 @@ public class Designer
 
 		int x = 0;
 		int y = 0;
-		int currentLevel = 0;
+		int level = 0;
 
-		Block currentBlock = firstBlock;
-		Shape currentShape = new Shape(x, y, currentBlock);
-		layout.addShape(currentShape);
-		currentBlock.shape = currentShape;
+		Block block = firstBlock;
+		Shape shape = new Shape(x, y, block);
+		layout.addShape(shape);
+		block.shape = shape;
 
-		while (currentBlock.next != null)
+		while (block.next != null)
 		{
-			Arrow arrow = new Arrow()
-			y += currentBlock.height;
-			y += defaultGapY;
-			if (currentBlock.level != currentLevel) {
-				currentLevel += 1;
-				x += currentBlock.width;
-				x += defaultGapX;
-				y += defaultGapY;
+			Arrow arrow = new Arrow(shape.getPointFromCenter(0, 1));
+			y += block.height + defaultGapY;
+			arrow.addPointFromPrevious(0, defaultGapY);
+
+			if (block.level != level) {
+				int deltaX = (defaultWidth + defaultGapX) * (block.level - level);
+				int deltaY = defaultGapY;
+				arrow.addPointFromPrevious(deltaX, 0);
+				arrow.addPointFromPrevious(0, deltaY);
+				x += deltaX;
+				y += deltaY;
+				level = block.level;
 			}
-			currentBlock = currentBlock.next;
-			currentShape = new Shape(x, y, currentBlock);
-			layout.addShape(currentShape);
-			currentBlock.shape = currentShape;
+			layout.addArrow(arrow);
+
+			block = block.next;
+			shape = new Shape(x, y, block);
+			layout.addShape(shape);
+			block.shape = shape;
 		}
+
+		return layout;
 	}
 }
