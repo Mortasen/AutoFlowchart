@@ -9,6 +9,7 @@ public class Block
 	public int y;
 	public int width;
 	public int height;
+	public ShapeType type;
 	public String text;
 	public int textOffsetX;
 	public int textOffsetY;
