@@ -50,7 +50,7 @@ public class Node
 	/*
 	Connects statement to this node.
 	 */
-	Node connectStmt (Statement stmt, Nodes waitList, int level)
+	public Node connectStmt (Statement stmt, Nodes waitList, int level)
 	{
 		Node lastNode = this;
 		if (stmt.isAssertStmt()) {

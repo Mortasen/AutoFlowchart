@@ -29,19 +29,19 @@ public class Designer
 
 		while (block.next != null)
 		{
-			block = this.placeNextBlock(block, shape);
 			shape = block.shape;
+			block = this.placeNextBlock(block);
 		}
 
 		return this.layout;
 	}
 
-	public Block placeNextBlock (Block block, Shape shape)
+	public Block placeNextBlock (Block block)
 	{
 		if (block.nextFalse != null)
-			y += this.traverseIfBranch(block, shape);
+			this.traverseIfBranch(block);
 
-		Arrow arrow = new Arrow(shape.getPointFromCenter(0, 1));
+		Arrow arrow = new Arrow(block.shape.getPointFromCenter(0, 1));
 		this.y += block.height + defaultGapY;
 		arrow.addPointFromPrevious(0, defaultGapY);
 
@@ -61,27 +61,35 @@ public class Designer
 		else
 			block = block.nextFalse;
 
-		shape = new Shape(this.x, this.y, block);
+		Shape shape = new Shape(this.x, this.y, block);
 		this.layout.addShape(shape);
 		block.shape = shape;
 		return block;
 	}
 
-	public int traverseIfBranch (Block block, Shape shape)
+	public void traverseIfBranch (Block block)
 	{
-		Arrow arrow = new Arrow(shape.getPointFromCenter(1, 0));
+		Arrow arrow = new Arrow(block.shape.getPointFromCenter(1, 0));
 		arrow.addPointFromPrevious(defaultGapX + defaultWidth / 2, 0);
 		arrow.addPointFromPrevious(0, defaultGapY + defaultHeight / 2);
 		this.layout.addArrow(arrow);
 		this.x += defaultWidth + defaultGapX;
 		this.y += defaultHeight + defaultGapY;
 		block = block.next;
-		shape = new Shape(this.x, this.y, block);
+		Shape shape = new Shape(this.x, this.y, block);
+		block.shape = shape;
 
-		while (block.level >= this.level)
+		while (block.level >= this.level && block.next.shape == null)
 		{
-			block = this.placeNextBlock(block, shape);
 			shape = block.shape;
+			block = this.placeNextBlock(block);
+		}
+
+		if (block.next.shape != null) {
+			arrow = new Arrow(shape.getPointFromCorner(0, 1));
+			arrow.addPointFromPrevious(0, defaultGapY);
+			arrow.addPointFromPreviousChangingX(block.shape.getXFromCenter(0.5));
+			arrow.addPoint(block.shape.getPointFromCenter(0.5, 1));
 		}
 	}
 }

@@ -13,20 +13,8 @@ public class Layout
 		this.shapes.add(shape);
 	}
 
-	public void addShape (int x, int y, int width, int height, ShapeType type, String text, int textOffsetX, int textOffsetY)
-	{
-		Shape shape = new Shape(x, y, width, height, type, text, textOffsetX, textOffsetY);
-		this.addShape(shape);
-	}
-
 	public void addArrow (Arrow arrow)
 	{
 		this.arrows.add(arrow);
-	}
-
-	public void addArrow (int xPoints[], int yPoints[])
-	{
-		Arrow arrow = new Arrow(xPoints, yPoints);
-		this.addArrow(arrow);
 	}
 }

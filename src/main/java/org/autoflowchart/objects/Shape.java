@@ -1,5 +1,7 @@
 package org.autoflowchart.objects;
 
+import org.autoflowchart.logic.Designer;
+
 public class Shape
 {
 	public int x;
@@ -27,7 +29,7 @@ public class Shape
 	{
 		this.x = x;
 		this.y = y;
-		this.width = block.width;
+		this.width = Designer.defaultWidth;
 		this.height = block.height;
 		this.type = block.type;
 		this.text = block.text;

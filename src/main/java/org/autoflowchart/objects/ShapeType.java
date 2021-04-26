@@ -1,6 +1,6 @@
 package org.autoflowchart.objects;
 
-enum ShapeType
+public enum ShapeType
 {
 	RECT,
 	ROUNDRECT,
