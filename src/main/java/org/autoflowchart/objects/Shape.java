@@ -44,17 +44,17 @@ public class Shape
 
 	public int getXFromCenter (double xk)
 	{
-		return this.getXFromCorner(xk * 2 - 1);
+		return this.getXFromCorner(xk / 2 + 0.5);
 	}
 
 	public int getYFromCorner (double yk)
 	{
-		return this.x + (int)(this.height * yk);
+		return this.y + (int)(this.height * yk);
 	}
 
 	public int getYFromCenter (double yk)
 	{
-		return this.getYFromCorner(yk * 2 - 1);
+		return this.getYFromCorner(yk / 2 + 0.5);
 	}
 
 	public Point getPointFromCorner (double xk, double yk)

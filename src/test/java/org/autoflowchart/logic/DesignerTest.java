@@ -43,7 +43,7 @@ class DesignerTest
 		block4.next = block5;
 
 		Designer designer = new Designer();
-		designer.generateLayout(blocks[0]);
+		Layout testLayout = designer.generateLayout(blocks[0]);
 
 		int x = 0;
 		int y = 0;

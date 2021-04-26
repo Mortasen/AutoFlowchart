@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Arrow
 {
-	List<Integer> xPoints = new ArrayList<Integer>(2);
-	List<Integer> yPoints = new ArrayList<Integer>(2);
+	public List<Integer> xPoints = new ArrayList<Integer>(2);
+	public List<Integer> yPoints = new ArrayList<Integer>(2);
 
 	public Arrow (int x, int y)
 	{

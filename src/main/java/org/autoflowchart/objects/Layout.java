@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Layout
 {
-	List<Shape> shapes = new ArrayList<Shape>();
-	List<Arrow> arrows = new ArrayList<Arrow>();
+	public List<Shape> shapes = new ArrayList<Shape>();
+	public List<Arrow> arrows = new ArrayList<Arrow>();
 
 	public void addShape (Shape shape)
 	{

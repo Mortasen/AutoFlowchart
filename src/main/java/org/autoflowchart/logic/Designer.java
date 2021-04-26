@@ -75,8 +75,10 @@ public class Designer
 		this.layout.addArrow(arrow);
 		this.x += defaultWidth + defaultGapX;
 		this.y += defaultHeight + defaultGapY;
+		this.level = block.level + 1;
 		block = block.next;
 		Shape shape = new Shape(this.x, this.y, block);
+		this.layout.addShape(shape);
 		block.shape = shape;
 
 		while (block.level >= this.level && block.next.shape == null)
