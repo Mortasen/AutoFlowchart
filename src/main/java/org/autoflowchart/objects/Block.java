@@ -3,6 +3,9 @@ package org.autoflowchart.objects;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Block
 {
 	public int height;
@@ -14,6 +17,8 @@ public class Block
 	public Block next = null;
 	public Block nextFalse = null;
 	public int level;
+
+	public List<Shape> connectionQueue;
 
 	public Shape shape;
 
@@ -42,6 +47,13 @@ public class Block
 		this(node);
 		this.height = height;
 		this.type = type;
+	}
+
+	public void addToConnectionQueue (Shape shape)
+	{
+		if (this.connectionQueue == null)
+			this.connectionQueue = new ArrayList<Shape>();
+		this.connectionQueue.add(shape);
 	}
 
 	public void draw (Canvas canvas)

@@ -4,6 +4,8 @@ import org.autoflowchart.objects.*;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DesignerTest
@@ -44,6 +46,12 @@ class DesignerTest
 
 		Designer designer = new Designer();
 		Layout testLayout = designer.generateLayout(blocks[0]);
+		Saver saver = new Saver();
+		try {
+			saver.save(testLayout, "src/test/resources/img.png");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		int x = 0;
 		int y = 0;
