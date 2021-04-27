@@ -47,27 +47,49 @@ public class Designer
 		if (block.nextFalse != null) {
 			// Если является, обходим правдивую ветку методом
 			this.traverseIfBranch(block);
+			this.x = (defaultWidth + defaultGapX) * block.level;
+			this.level = block.level;
 			nextBlock = block.nextFalse;
 		} else {
 			nextBlock = block.next;
 		}
 
-		Arrow arrow = new Arrow(block.shape.getPointFromCenter(0, 1));
-		this.y += block.height + defaultGapY;
-		arrow.addPointFromPrevious(0, defaultGapY);
 		if (nextBlock.level != this.level) {
-			int newX = (defaultWidth + defaultGapX) * nextBlock.level;
-			arrow.addPointFromPreviousChangingX(newX + defaultWidth / 2);
-			arrow.addPointFromPrevious(0, defaultGapY);
-			this.x = newX;
-			this.y += defaultGapY;
+			this.x = (defaultWidth + defaultGapX) * nextBlock.level;
 			this.level = block.next.level;
+		}
+
+		Arrow arrow;
+
+		this.y += block.height;
+
+		if (nextBlock.connectionQueue != null) {
+			this.y += defaultGapY;
+			for (Shape shape : nextBlock.connectionQueue) {
+				arrow = new Arrow(shape.getPointFromCenter(0, 1));
+				arrow.addPointFromPreviousChangingY(this.y);
+				arrow.addPointFromPreviousChangingX(this.x + (int) (defaultWidth * 0.75));
+				arrow.addPointFromPrevious(0, defaultGapY);
+				this.layout.addArrow(arrow);
+			}
+		}
+
+		arrow = new Arrow(block.shape.getPointFromCenter(0, 1));
+		this.y += defaultGapY;
+		arrow.addPointFromPreviousChangingY(this.y);
+		if (this.x != block.shape.x) {
+			arrow.addPointFromPreviousChangingX(this.x + defaultWidth / 2);
+			this.y += defaultGapY;
+			arrow.addPointFromPreviousChangingY(this.y);
 		}
 		this.layout.addArrow(arrow);
 
-		Shape shape = new Shape(this.x, this.y, nextBlock);
-		this.layout.addShape(shape);
-		nextBlock.shape = shape;
+		Shape nextShape = new Shape(this.x, this.y, nextBlock);
+		this.layout.addShape(nextShape);
+		nextBlock.shape = nextShape;
+
+
+
 		return nextBlock;
 	}
 
@@ -82,10 +104,9 @@ public class Designer
 		this.layout.addArrow(arrow);
 		// Меняем уровень, на котором будут отрисовываться последующие блоки
 		block = block.next;
-		int newX = (defaultWidth + defaultGapX) * block.level;
-		arrow.addPointFromPreviousChangingX(newX);
-		arrow.addPointFromPrevious(0, defaultGapY);
-		this.x = newX;
+		this.x = (defaultWidth + defaultGapX) * block.level;
+		//arrow.addPointFromPreviousChangingX(newX);
+		//arrow.addPointFromPrevious(0, defaultGapY);
 		this.y += defaultHeight + defaultGapY;
 		this.level = block.level;
 
@@ -109,10 +130,12 @@ public class Designer
 			// То это значит, что условие совершает прыжок назад
 			// И нужно прорисовать стрелочку
 			// От текущего блока к одному из предыдущих
-			arrow = new Arrow(block.shape.getPointFromCorner(0, 1));
+			arrow = new Arrow(block.shape.getPointFromCenter(0, 1));
+			this.y += defaultGapY;
 			arrow.addPointFromPrevious(0, defaultGapY);
 			arrow.addPointFromPreviousChangingX(block.next.shape.getXFromCenter(0.5));
 			arrow.addPoint(block.next.shape.getPointFromCenter(0.5, 1));
+			this.layout.addArrow(arrow);
 		} else {
 			// Если первое условие не сработало, значит цикл while был завершен из-за второго условия
 			// И следующий блок имеет другой уровень, то есть его надо будет отрисовать позже
