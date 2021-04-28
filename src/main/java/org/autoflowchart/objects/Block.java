@@ -22,6 +22,20 @@ public class Block
 
 	public Shape shape;
 
+	public Block getNext ()
+	{
+		return this.next;
+	}
+
+	public void setNext (Block next)
+	{
+		if (this.next == null)
+			this.next = next;
+		else
+			this.nextFalse = next;
+	}
+
+
 	public Block () {}
 
 	public Block (String text, int level)

@@ -17,6 +17,6 @@ class SaverTest
 		Layout layout = new Layout();
 		Block block = new Block();
 		Saver saver = new Saver();
-		saver.save(layout, "src/test/img.png");
+		saver.save(layout, "src/test/resources/img.png");
 	}
 }

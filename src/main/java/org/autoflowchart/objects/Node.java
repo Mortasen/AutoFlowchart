@@ -4,6 +4,8 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Node
@@ -13,6 +15,8 @@ public class Node
 	public Node nextFalse;
 	public int waitsFor;
 	public int level;
+
+	public Block block;
 
 	public Node () {}
 
@@ -261,5 +265,14 @@ public class Node
 		if (lastNode2 != null) nodes.add(lastNode2);
 		return nodes;
 
+	}
+
+	public List<Block> connectionQueue;
+
+	public void addToConnectionQueue (Block block)
+	{
+		if (this.connectionQueue == null)
+			this.connectionQueue = new ArrayList<Block>();
+		this.connectionQueue.add(block);
 	}
 }
