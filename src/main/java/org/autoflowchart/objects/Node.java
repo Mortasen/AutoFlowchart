@@ -6,6 +6,7 @@ import com.github.javaparser.ast.stmt.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Node
@@ -279,5 +280,20 @@ public class Node
 		if (this.connectionQueue == null)
 			this.connectionQueue = new ArrayList<Block>();
 		this.connectionQueue.add(block);
+	}
+
+	@Override
+	public boolean equals (Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Node node = (Node) o;
+		return waitsFor == node.waitsFor && level == node.level && Objects.equals(text, node.text) && Objects.equals(next, node.next) && Objects.equals(nextFalse, node.nextFalse) && Objects.equals(block, node.block) && Objects.equals(connectionQueue, node.connectionQueue);
+	}
+
+	@Override
+	public int hashCode ()
+	{
+		return Objects.hash(text, next, nextFalse, waitsFor, level, block, connectionQueue);
 	}
 }

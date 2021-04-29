@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Block
 {
@@ -86,5 +87,29 @@ public class Block
 	public void draw (Canvas canvas)
 	{
 
+	}
+
+	@Override
+	public boolean equals (Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Block block = (Block) o;
+		return height == block.height && level == block.level && type == block.type && Objects.equals(text, block.text) && Objects.equals(shape, block.shape);
+	}
+
+	public boolean completelyEquals (Object o)
+	{
+		if (this.equals(o)) {
+			Block block = (Block)o;
+			return textOffsetX == block.textOffsetX && textOffsetY == block.textOffsetY;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode ()
+	{
+		return Objects.hash(height, type, text, shape, level);
 	}
 }

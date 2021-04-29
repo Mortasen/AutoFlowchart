@@ -37,7 +37,8 @@ public class Labeler
 				break;
 			}
 			Block newBlock = this.labelNode(node);
-			block.next = newBlock;
+			block.setNext(newBlock);
+			node.block = newBlock;
 			block = newBlock;
 			if (node.nextFalse != null)
 			{
@@ -104,6 +105,6 @@ public class Labeler
 		block.textOffsetX = textOffsetX;
 		block.textOffsetY = textOffsetY;
 
-		return null;
+		return block;
 	}
 }

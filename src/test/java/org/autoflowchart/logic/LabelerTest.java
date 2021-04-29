@@ -38,14 +38,15 @@ class LabelerTest
 		Block expected3 = new Block(Designer.defaultHeight, ShapeType.RECT, "int c = a + b;", 0);
 		expected2.next = expected3;
 
-		Block actual1 = labeler.traverseBranch(node1, initial);
+		Block lastBlock = labeler.traverseBranch(node1, initial);
+		Block actual1 = initial.next;
 		Block actual2 = actual1.next;
 		Block actual3 = actual2.next;
 
-		assertEquals(initial.next, actual1);
 		assertEquals(expected1, actual1);
 		assertEquals(expected2, actual2);
 		assertEquals(expected3, actual3);
+		assertEquals(actual3, lastBlock);
 
 		// Test 2 : 4 nodes, 1st is condition
 		System.out.println("Test 2 : 4 nodes, 1st is condition");
@@ -71,17 +72,18 @@ class LabelerTest
 		expected2.next = expected4;
 		expected3.next = expected4;
 
-		actual1 = labeler.traverseBranch(node1, initial);
+		lastBlock = labeler.traverseBranch(node1, initial);
+		actual1 = initial.next;
 		actual2 = actual1.next;
 		actual3 = actual1.nextFalse;
 		Block actual4 = actual2.next;
 
-		assertEquals(initial.next, actual1);
 		assertEquals(expected1, actual1);
 		assertEquals(expected2, actual2);
 		assertEquals(expected3, actual3);
 		assertEquals(expected4, actual4);
 		assertEquals(expected2.next, expected3.next);
+		assertEquals(actual4, lastBlock);
 
 		// Test 3 : 5 nodes, with cycle
 		System.out.println("Test 3 : 5 nodes, with cycle");
@@ -111,19 +113,20 @@ class LabelerTest
 		Block expected5 = new Block(Designer.defaultHeight, ShapeType.DIAMOND, "print(i);", 0);
 		expected2.nextFalse = expected5;
 
-		actual1 = labeler.traverseBranch(node1, initial);
+		lastBlock = labeler.traverseBranch(node1, initial);
+		actual1 = initial.next;
 		actual2 = actual1.next;
 		actual3 = actual2.next;
 		actual4 = actual3.next;
 		Block actual5 = actual2.nextFalse;
 
-		assertEquals(initial.next, actual1);
 		assertEquals(expected1, actual1);
 		assertEquals(expected2, actual2);
 		assertEquals(expected3, actual3);
 		assertEquals(expected4, actual4);
 		assertEquals(expected5, actual5);
 		assertEquals(expected4.next, expected2);
+		assertEquals(actual5, lastBlock);
 
 		// Test 4 : 7 nodes, cycle with continue and break
 		/* for(int i = 0;true;i++)
@@ -173,7 +176,8 @@ class LabelerTest
 		expected2.nextFalse = expected7;
 		expected5.next = expected7;
 
-		actual1 = labeler.traverseBranch(node1, initial);
+		lastBlock = labeler.traverseBranch(node1, initial);
+		actual1 = initial.next;
 		actual2 = actual1.next;
 		actual3 = actual2.next;
 		actual4 = actual3.next;
@@ -181,7 +185,6 @@ class LabelerTest
 		Block actual6 = actual5.nextFalse;
 		Block actual7 = actual2.nextFalse;
 
-		assertEquals(initial.next, actual1);
 		assertEquals(expected1, actual1);
 		assertEquals(expected2, actual2);
 		assertEquals(expected3, actual3);
@@ -191,6 +194,7 @@ class LabelerTest
 		assertEquals(expected7, actual7);
 		//finish
 		assertEquals(expected4.next, expected2);
+		assertEquals(actual7, lastBlock);
 	}
 
 	@Test
@@ -203,9 +207,11 @@ class LabelerTest
 		node.next = new Node("");
 
 		Block expected = new Block(Designer.defaultHeight, ShapeType.RECT, "test node text", 0);
+		expected.textOffsetX = 90;
+		expected.textOffsetY = 41;
 		Block actual = labeler.labelNode(node);
 
-		assertEquals(expected, actual);
+		assertTrue(actual.completelyEquals(expected));
 
 		// Test 2 : Condition
 		node = new Node("test node text 2", 1);
@@ -213,8 +219,10 @@ class LabelerTest
 		node.nextFalse = new Node("");
 
 		expected = new Block(Designer.defaultHeight, ShapeType.DIAMOND, "test node text 2", 1);
+		expected.textOffsetX = 82;
+		expected.textOffsetY = 41;
 		actual = labeler.labelNode(node);
 
-		assertEquals(expected, actual);
+		assertTrue(actual.completelyEquals(expected));
 	}
 }

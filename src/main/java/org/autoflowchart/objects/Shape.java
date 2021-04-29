@@ -2,6 +2,8 @@ package org.autoflowchart.objects;
 
 import org.autoflowchart.logic.Designer;
 
+import java.util.Objects;
+
 public class Shape
 {
 	public int x;
@@ -69,5 +71,29 @@ public class Shape
 		int x = this.getXFromCenter(xk);
 		int y = this.getYFromCenter(yk);
 		return new Point(x, y);
+	}
+
+	@Override
+	public boolean equals (Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Shape shape = (Shape) o;
+		return x == shape.x && y == shape.y && width == shape.width && height == shape.height && type == shape.type && Objects.equals(text, shape.text);
+	}
+
+	public boolean completelyEquals (Object o)
+	{
+		if (this.equals(o)) {
+			Shape shape = (Shape)o;
+			return textOffsetX == shape.textOffsetX && textOffsetY == shape.textOffsetY;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode ()
+	{
+		return Objects.hash(x, y, width, height, type, text);
 	}
 }
