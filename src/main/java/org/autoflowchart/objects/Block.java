@@ -14,27 +14,13 @@ public class Block
 	public int textOffsetX;
 	public int textOffsetY;
 
-	public Block next = null;
-	public Block nextFalse = null;
-	public int level;
-
 	public List<Shape> connectionQueue;
 
 	public Shape shape;
 
-	public Block getNext ()
-	{
-		return this.next;
-	}
-
-	public void setNext (Block next)
-	{
-		if (this.next == null)
-			this.next = next;
-		else
-			this.nextFalse = next;
-	}
-
+	public Block next = null;
+	public Block nextFalse = null;
+	public int level;
 
 	public Block () {}
 
@@ -61,6 +47,33 @@ public class Block
 		this(node);
 		this.height = height;
 		this.type = type;
+	}
+
+	public Block (int height, ShapeType type, String text, int level, Block next, Block nextFalse)
+	{
+		this(height, type, text, level);
+		this.next = next;
+		this.nextFalse = nextFalse;
+	}
+
+	public Block (int height, ShapeType type, Node node, Block next, Block nextFalse)
+	{
+		this(height, type, node);
+		this.next = next;
+		this.nextFalse = nextFalse;
+	}
+
+	public Block getNext ()
+	{
+		return this.next;
+	}
+
+	public void setNext (Block next)
+	{
+		if (this.next == null)
+			this.next = next;
+		else
+			this.nextFalse = next;
 	}
 
 	public void addToConnectionQueue (Shape shape)

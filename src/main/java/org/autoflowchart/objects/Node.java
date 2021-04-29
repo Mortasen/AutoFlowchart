@@ -25,12 +25,17 @@ public class Node
 		this.text = text;
 	}
 
-	public Node (String text, Node next, Node nextFalse, int level)
+	public Node (String text, int level)
 	{
-		this.text = text;
+		this(text);
+		this.level = level;
+	}
+
+	public Node (String text, int level, Node next, Node nextFalse)
+	{
+		this(text, level);
 		this.next = next;
 		this.nextFalse = nextFalse;
-		this.level = level;
 	}
 
 	public Node getNext ()

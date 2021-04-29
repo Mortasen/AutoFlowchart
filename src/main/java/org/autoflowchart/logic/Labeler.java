@@ -77,7 +77,7 @@ public class Labeler
 		double width = textRect.getWidth();
 		double height = textRect.getHeight();
 		if (width >= Designer.defaultWidth) {
-			double widthPerSymbol = (width / text.length();
+			double widthPerSymbol = (width / text.length());
 			double breakPositionK = Designer.defaultWidth / width;
 			int breakPosition = (int)(text.length() * breakPositionK - 1);
 			String left = text.substring(breakPosition);
