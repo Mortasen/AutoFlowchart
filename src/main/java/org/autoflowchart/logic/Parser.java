@@ -16,19 +16,25 @@ import java.util.Optional;
 
 public class Parser
 {
-	public static void parse (String[] args) throws FileNotFoundException
+	public static Node parse (String filepath) throws FileNotFoundException
 	{
-		for (int i = 0; i < 10; i++) {
+		/*for (int i = 0; i < 10; i++) {
 			int x = i + 2;
 			if (i == 3)
 				continue;
 			x += 4;
-		}
-		CompilationUnit cu = null;
-		cu = JavaParser.parse(new FileInputStream("/files/Work/Scripting/Java/Programms/FlowchartGenerator/testcode2.java"));
-		//printNode(cu, 0);
+		}*/
+		CompilationUnit compilationUnit = JavaParser.parse(new FileInputStream(filepath));
+
+		BlockStmt blockStmt = findMain(compilationUnit);
+
+		return assembleFunction(findMain(compilationUnit));
+	}
+
+	public static BlockStmt findMain (CompilationUnit compilationUnit)
+	{
 		List<ClassOrInterfaceDeclaration> classes;
-		classes = cu.findAll(ClassOrInterfaceDeclaration.class);
+		classes = compilationUnit.findAll(ClassOrInterfaceDeclaration.class);
 		ClassOrInterfaceDeclaration mainClass = null;
 		for (int i = 0; i < classes.size(); i++) {
 			ClassOrInterfaceDeclaration class_ = classes.get(i);
@@ -40,7 +46,7 @@ public class Parser
 		if (mainClass == null)
 			System.out.println("MAIN CLASS NOT FOUND!");
 		List<MethodDeclaration> methods;
-		methods = cu.findAll(MethodDeclaration.class);
+		methods = compilationUnit.findAll(MethodDeclaration.class);
 		MethodDeclaration mainMethod = null;
 		for (int i = 0; i < methods.size(); i++) {
 			MethodDeclaration method = methods.get(i);
@@ -53,43 +59,17 @@ public class Parser
 			System.out.println("MAIN METHOD NOT FOUND!");
 		List<ExpressionStmt> lines;
 		Optional<BlockStmt> blockStmt = mainMethod.findFirst(BlockStmt.class);
-		//NodeList<Statement> statements = blockStmt.get().getStatements();
-
-		Node firstNode = new Node("main()");
-		Node penultNode = firstNode.connectStmt(blockStmt.get(), null, 0);
-		Node lastNode = new Node("return;");
-		penultNode.setNext(lastNode);
-        /*
-        System.out.println("LINES:");
-        for (int i = 1; i < statements.size(); i++) {
-            Statement stmt = statements.get(i);
-            if (stmt.isAssertStmt()) {
-            } else if (stmt.isBlockStmt()) {
-                System.out.println("BLOCK STMT");
-                System.out.println(stmt);
-                BlockStmt temp;
-                temp.
-            } else if (stmt.isBreakStmt()) {
-                System.out.println("BREAK STMT");
-            }
-        }*/
+		return blockStmt.orElse(null);
 	}
 
+	public static Node assembleFunction (BlockStmt blockStmt)
+	{
+		Node firstNode = new Node("main()");
+		Node penultNode = firstNode.connectStmt(blockStmt, null, 0);
+		Node lastNode = new Node("return;");
+		penultNode.setNext(lastNode);
 
+		return firstNode;
 
-
-
-
-
-
-
-
-    /*public static void printNode (Node node, int level)
-    {
-        List<Node> list = node.getChildNodes();
-        System.out.println(new String(new char[level]).replace("\0", "  ") + node.toString());
-        for (int i = 0; i < list.size(); i++) {
-            printNode(list.get(i), level + 1);
-        }
-    }*/
+	}
 }
