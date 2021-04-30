@@ -30,11 +30,12 @@ public class Labeler
 		// Повторяет пока не наткнётся на узел у которого нет следующего
 		// Или на узел, который уже превращён в блок
 		Node nextNode;
+		Block toReturn = null;
 		while (node != null)
 		{
 			if (node.block != null) {
 				block.setNext(node.block);
-				block = node.block;
+				block = null;
 				break;
 			}
 			Block newBlock = this.labelNode(node);
@@ -43,12 +44,16 @@ public class Labeler
 			block = newBlock;
 			if (node.nextFalse != null)
 			{
-				traverseBranch(node.next, block);
+				Block lastBlock = traverseBranch(node.next, block);
+				if (toReturn == null)
+					toReturn = lastBlock;
 				node = node.nextFalse;
 			} else {
 				node = node.next;
 			}
 		}
+		if (toReturn != null)
+			return toReturn;
 		return block;
 	}
 
@@ -70,28 +75,32 @@ public class Labeler
 
 	public Block labelNode (Node node)
 	{
-		String text = node.text;
+		String line1 = node.text;
 		int level = node.level;
 		FontMetrics fontMetrics;
 		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 14);
 		FontRenderContext fontRenderContext = new FontRenderContext(font.getTransform(), true, true);
-		Rectangle2D textRect = font.getStringBounds(text, fontRenderContext);
+		Rectangle2D textRect = font.getStringBounds(line1, fontRenderContext);
 		double width = textRect.getWidth();
 		double height = textRect.getHeight();
+		String text;
+
 		if (width >= Designer.defaultWidth) {
-			double widthPerSymbol = (width / text.length());
+			double widthPerSymbol = (width / line1.length());
 			double breakPositionK = Designer.defaultWidth / width;
-			int breakPosition = (int)(text.length() * breakPositionK - 1);
-			String left = text.substring(breakPosition);
-			if (left.length() > breakPosition)
+			int maxSymbols = (int)(line1.length() * breakPositionK - 1);
+			String line2 = line1.substring(maxSymbols);
+			if (line2.length() > maxSymbols)
 			{
-				left = left.substring(0, breakPosition - 3) + "...";
+				line2 = line2.substring(0, maxSymbols - 3) + "...";
 			}
-			text = text.substring(0, breakPosition) + '\n' + left;
-			textRect = font.getStringBounds(text, fontRenderContext);
+			line1 = line1.substring(0, maxSymbols);
+			textRect = font.getStringBounds(line1, fontRenderContext);
 			width = textRect.getWidth();
-			height = textRect.getHeight();
-		}
+			height = textRect.getHeight() * 2;
+			text = line1 + "\n" + line2;
+		} else
+			text = line1;
 
 		int textOffsetX = (int)(Designer.defaultWidth / 2 - width / 2);
 		int textOffsetY = (int)(Designer.defaultHeight / 2 - height / 2);

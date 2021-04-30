@@ -378,7 +378,9 @@ class LabelerTest
 	{
 		Labeler labeler = new Labeler();
 
-		// Test 1 : Regular block
+		// Test 1 : Regular node
+		System.out.println("Test 1 : Regular node");
+
 		Node node = new Node("test node text", 0);
 		node.next = new Node("");
 
@@ -390,6 +392,8 @@ class LabelerTest
 		assertTrue(actual.completelyEquals(expected));
 
 		// Test 2 : Condition
+		System.out.println("Test 2 : Condition");
+
 		node = new Node("test node text 2", 1);
 		node.next = new Node("");
 		node.nextFalse = new Node("");
@@ -400,5 +404,31 @@ class LabelerTest
 		actual = labeler.labelNode(node);
 
 		assertTrue(actual.completelyEquals(expected));
+
+		/*// Test 3 : Node with two-lined text
+		System.out.println("Test 3 : Node with two-lined text");
+
+		node = new Node("---------1---------2---------3---------4", 0);
+		node.next = new Node("");
+
+		expected = new Block(Designer.defaultHeight, ShapeType.RECT, "test node text", 0);
+		expected.textOffsetX = 90;
+		expected.textOffsetY = 41;
+		actual = labeler.labelNode(node);
+
+		//assertTrue(actual.completelyEquals(expected));
+
+		// Test 4 : Node with too much text even for two lines
+		System.out.println("Test 3 : Node with two-lined text");
+
+		node = new Node("---------1---------2---------3---------4---------5---------6---------7---------8", 0);
+		node.next = new Node("");
+
+		expected = new Block(Designer.defaultHeight, ShapeType.RECT, "test node text", 0);
+		expected.textOffsetX = 90;
+		expected.textOffsetY = 41;
+		actual = labeler.labelNode(node);
+
+		//assertTrue(actual.completelyEquals(expected));*/
 	}
 }
