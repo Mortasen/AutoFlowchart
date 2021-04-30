@@ -34,6 +34,7 @@ public class Labeler
 		{
 			if (node.block != null) {
 				block.setNext(node.block);
+				block = node.block;
 				break;
 			}
 			Block newBlock = this.labelNode(node);
