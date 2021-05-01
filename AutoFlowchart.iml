@@ -3,10 +3,30 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
     </content>
     <orderEntry type="jdk" jdkName="15" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="lib" level="project" />
+    <orderEntry type="library" exported="" name="com.github.javaparser:javaparser-core:3.5.2" level="project" />
+    <orderEntry type="module-library" exported="" scope="TEST">
+      <library name="JUnit5.7.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/junit/junit-jupiter-5.7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/junit/junit-jupiter-api-5.7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/junit/junit-jupiter-engine-5.7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/junit/junit-jupiter-params-5.7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/junit/junit-platform-commons-1.7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/junit/junit-platform-engine-1.7.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/junit/apiguardian-api-1.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/junit/opentest4j-1.2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="javafx" level="project" />
   </component>
 </module>
