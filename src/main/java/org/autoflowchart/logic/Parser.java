@@ -16,15 +16,18 @@ import java.util.Optional;
 
 public class Parser
 {
-	public static Node parse (String filepath) throws FileNotFoundException
+	public static Node parse (FileInputStream fileInputStream) throws FileNotFoundException
 	{
-		/*for (int i = 0; i < 10; i++) {
-			int x = i + 2;
-			if (i == 3)
-				continue;
-			x += 4;
-		}*/
-		CompilationUnit compilationUnit = JavaParser.parse(new FileInputStream(filepath));
+		CompilationUnit compilationUnit = JavaParser.parse(fileInputStream);
+
+		BlockStmt blockStmt = findMain(compilationUnit);
+
+		return assembleFunction(findMain(compilationUnit));
+	}
+
+	public static Node parse (String code) throws FileNotFoundException
+	{
+		CompilationUnit compilationUnit = JavaParser.parse(code);
 
 		BlockStmt blockStmt = findMain(compilationUnit);
 
