@@ -106,6 +106,7 @@ public class Node
 		} else {
 
 		}
+		lastNode.level = level;
 		return lastNode;
 	}
 
@@ -145,7 +146,8 @@ public class Node
 	{
 		Node currentNode = this.connectStmt(doStmt.getBody(), waitList, level + 1);
 		Node firstNode = this.getNext();
-		Node conditionNode = new Node();
+		String condition  = doStmt.getCondition().toString();
+		Node conditionNode = new Node(condition, level);
 		conditionNode.setNext(firstNode);
 		currentNode.setNext(conditionNode);
 		return conditionNode;
@@ -165,7 +167,7 @@ public class Node
 
 	Node connectExpressionStmt (ExpressionStmt expressionStmt, Nodes waitList, int level)
 	{
-		Node newNode = new Node(expressionStmt.toString());
+		Node newNode = new Node(expressionStmt.toString(), level);
 		this.setNext(newNode);
 		return newNode;
 	}
@@ -176,10 +178,10 @@ public class Node
 		String variable = foreachStmt.getVariable().toString();
 		String iterable = foreachStmt.getIterable().toString();
 
-		Node checkNode = new Node( iterable + ".hasNext()");
+		Node checkNode = new Node( iterable + ".hasNext()", level);
 		this.setNext(checkNode);
 
-		Node updateNode = new Node( variable + " = " + iterable + ".next()");
+		Node updateNode = new Node( variable + " = " + iterable + ".next()", level);
 		checkNode.setNext(updateNode);
 
 		Node lastNode = updateNode.connectStmt(foreachStmt.getBody(), waitList, level + 1);
@@ -210,7 +212,7 @@ public class Node
 		if (initExprs.size() > 0) {
 			String init = initExprs.toString();
 			init = init.substring(1, init.length() - 1);
-			prevNode = new Node(init);
+			prevNode = new Node(init, level);
 			this.setNext(prevNode);
 		}
 
@@ -218,7 +220,7 @@ public class Node
 
 		Optional<Expression> compareExpr = forStmt.getCompare();
 		if (compareExpr.isPresent()) {
-			Node compareNode = new Node(compareExpr.get().toString());
+			Node compareNode = new Node(compareExpr.get().toString(), level);
 			prevNode.setNext(compareNode);
 			currentNode = compareNode;
 		} else
@@ -230,7 +232,7 @@ public class Node
 
 		NodeList<Expression> updateExprs = forStmt.getUpdate();
 		if (updateExprs.size() > 0) {
-			Node updateNode = new Node(forStmt.getUpdate().toString());
+			Node updateNode = new Node(forStmt.getUpdate().toString(), level + 1);
 			currentNode.setNext(updateNode);
 			currentNode = updateNode;
 			newCycleNode = updateNode;
@@ -270,7 +272,39 @@ public class Node
 		if (lastNode1 != null) nodes.add(lastNode1);
 		if (lastNode2 != null) nodes.add(lastNode2);
 		return nodes;
+	}
 
+	Node connectWhileStmt (WhileStmt whileStmt, Nodes waitList, int level)
+	{
+		waitList = new Nodes();
+		Node prevNode = this;
+
+		Node currentNode;
+
+		Expression compareExpr = whileStmt.getCondition();
+		Node compareNode = new Node(compareExpr.toString(), level);
+		prevNode.setNext(compareNode);
+		currentNode = compareNode;
+		currentNode  = currentNode.connectStmt(whileStmt.getBody(), waitList, level + 1);
+		Node firstNode = prevNode.getNext();
+
+		Node newCycleNode = firstNode;
+
+		currentNode.setNext(firstNode);
+
+		Nodes nodes = new Nodes();
+		nodes.add(firstNode);
+
+		for (Node node : waitList.nodes)
+		{
+			if (node.waitsFor == 1) {
+				nodes.add(node);
+			} else if (node.waitsFor == 2) {
+				node.setNext(newCycleNode);
+			}
+		}
+
+		return nodes;
 	}
 
 	public List<Block> connectionQueue;
@@ -288,12 +322,12 @@ public class Node
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Node node = (Node) o;
-		return waitsFor == node.waitsFor && level == node.level && Objects.equals(text, node.text) && Objects.equals(next, node.next) && Objects.equals(nextFalse, node.nextFalse) && Objects.equals(block, node.block) && Objects.equals(connectionQueue, node.connectionQueue);
+		return level == node.level && Objects.equals(text, node.text);
 	}
 
 	@Override
 	public int hashCode ()
 	{
-		return Objects.hash(text, next, nextFalse, waitsFor, level, block, connectionQueue);
+		return Objects.hash(text, level);
 	}
 }

@@ -25,7 +25,7 @@ public class Parser
 		return assembleFunction(findMain(compilationUnit));
 	}
 
-	public static Node parse (String code) throws FileNotFoundException
+	public static Node parse (String code)
 	{
 		CompilationUnit compilationUnit = JavaParser.parse(code);
 
