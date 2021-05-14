@@ -102,11 +102,12 @@ public class Node
 		} else if (stmt.isUnparsableStmt()) {
 
 		} else if (stmt.isWhileStmt()) {
-
+			lastNode = this.connectWhileStmt(stmt.asWhileStmt(), waitList, level);
 		} else {
 
 		}
-		lastNode.level = level;
+		if (lastNode != null)
+			lastNode.level = level;
 		return lastNode;
 	}
 
@@ -211,7 +212,7 @@ public class Node
 		NodeList<Expression> initExprs = forStmt.getInitialization();
 		if (initExprs.size() > 0) {
 			String init = initExprs.toString();
-			init = init.substring(1, init.length() - 1);
+			init = init.substring(1, init.length() - 1) + ";";
 			prevNode = new Node(init, level);
 			this.setNext(prevNode);
 		}
@@ -232,7 +233,9 @@ public class Node
 
 		NodeList<Expression> updateExprs = forStmt.getUpdate();
 		if (updateExprs.size() > 0) {
-			Node updateNode = new Node(forStmt.getUpdate().toString(), level + 1);
+			String update = updateExprs.toString();
+			update = update.substring(1, update.length() - 1) + ";";
+			Node updateNode = new Node(update, level + 1);
 			currentNode.setNext(updateNode);
 			currentNode = updateNode;
 			newCycleNode = updateNode;
@@ -257,7 +260,7 @@ public class Node
 
 	Node connectIfStmt (IfStmt ifStmt, Nodes waitList, int level)
 	{
-		Node conditionNode = new Node(ifStmt.getCondition().toString());
+		Node conditionNode = new Node(ifStmt.getCondition().toString(), level);
 		this.setNext(conditionNode);
 		Node lastNode1 = conditionNode.connectStmt(ifStmt.getThenStmt(), waitList, level + 1);
 
