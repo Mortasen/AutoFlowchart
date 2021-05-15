@@ -12,9 +12,7 @@ import java.util.Optional;
 public class Node extends Element
 {
 	public String text;
-	public Node next;
 	public Element falseNode;
-	public int waitsFor;
 	public int level;
 
 	public Block block;

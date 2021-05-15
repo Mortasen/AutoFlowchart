@@ -8,36 +8,76 @@ import java.util.Optional;
 
 public class Element
 {
-	public Node next;
+	private Node node;
+	protected Node next;
+	protected int waitsFor;
+
+	public Element () {}
+
+	public Element (Node node)
+	{
+		this.node = node;
+	}
+
+	public Node getNode ()
+	{
+		return this.node;
+	}
+
+	public void setNode (Node node)
+	{
+		this.node = node;
+	}
+
+	public Node getNext ()
+	{
+		return next;
+	}
+
+	public void setNext (Node next)
+	{
+		this.next = next;
+	}
+
+	public int getWaitsFor ()
+	{
+		return waitsFor;
+	}
+
+	public void setWaitsFor (int waitsFor)
+	{
+		this.waitsFor = waitsFor;
+	}
 
 	/*
-	Creates new node from statement and connects to this element.
+	Creates new node from statement, connects to this element and returns the last node.
 	 */
-	public Node connectStmt (Statement stmt, Nodes waitList, int level)
+	public Element connectStmt (Statement stmt, Elements waitList, int level)
 	{
-		Node lastNode;
+		Element lastElement;
+		// Determine what kind of statement is stmt, and call corresponding method
 		if (stmt.isAssertStmt()) {
 			throw new NotImplementedException();
 		} else if (stmt.isBlockStmt()) {
-			lastNode = this.connectBlockStmt(stmt.asBlockStmt(), waitList, level);
+			lastElement = this.connectBlockStmt(stmt.asBlockStmt(), waitList, level);
 		} else if (stmt.isBreakStmt()) {
-			lastNode = this.connectBreakStmt(stmt.asBreakStmt(), waitList, level);
+			lastElement = this.connectBreakStmt(stmt.asBreakStmt(), waitList, level);
 		} else if (stmt.isContinueStmt()) {
-			lastNode = this.connectContinueStmt(stmt.asContinueStmt(), waitList, level);
+			lastElement = this.connectContinueStmt(stmt.asContinueStmt(), waitList, level);
 		} else if (stmt.isDoStmt()) {
-			lastNode = this.connectDoStmt(stmt.asDoStmt(), waitList, level);
+			lastElement = this.connectDoStmt(stmt.asDoStmt(), waitList, level);
 		} else if (stmt.isEmptyStmt()) {
-			lastNode = this.connectEmptyStmt(stmt.asEmptyStmt(), waitList, level);
+			lastElement = this.connectEmptyStmt(stmt.asEmptyStmt(), waitList, level);
 		} else if (stmt.isExplicitConstructorInvocationStmt()) {
 			throw new NotImplementedException();
 		} else if (stmt.isExpressionStmt()) {
-			lastNode = this.connectExpressionStmt(stmt.asExpressionStmt(), waitList, level);
+			lastElement = this.connectExpressionStmt(stmt.asExpressionStmt(), waitList, level);
 		} else if (stmt.isForeachStmt()) {
-			lastNode = this.connectForeachStmt(stmt.asForeachStmt(), waitList, level);
+			lastElement = this.connectForeachStmt(stmt.asForeachStmt(), waitList, level);
 		} else if (stmt.isForStmt()) {
-			lastNode = this.connectForStmt(stmt.asForStmt(), waitList, level);
+			lastElement = this.connectForStmt(stmt.asForStmt(), waitList, level);
 		} else if (stmt.isIfStmt()) {
-			lastNode = this.connectIfStmt(stmt.asIfStmt(), waitList, level);
+			lastElement = this.connectIfStmt(stmt.asIfStmt(), waitList, level);
 		} else if (stmt.isLabeledStmt()) {
 			throw new NotImplementedException();
 		} else if (stmt.isLocalClassDeclarationStmt()) {
@@ -55,73 +95,75 @@ public class Element
 		} else if (stmt.isUnparsableStmt()) {
 			throw new NotImplementedException();
 		} else if (stmt.isWhileStmt()) {
-			lastNode = this.connectWhileStmt(stmt.asWhileStmt(), waitList, level);
+			lastElement = this.connectWhileStmt(stmt.asWhileStmt(), waitList, level);
 		} else {
 			throw new RuntimeException("Unknown statement type.");
 		}
-		if (lastNode != null)
-			lastNode.level = level;
-		return lastNode;
+
+		return lastElement;
 	}
 
-	Element connectStmts (NodeList<Statement> stmts, Nodes waitList, int level)
+	/*
+	Sequentially connects several nodes to this and returns the last node.
+	 */
+	Element connectStmts (NodeList<Statement> stmts, Elements waitList, int level)
 	{
 		Element currentNode = this;
 		for (Statement stmt : stmts)
 		{
-			Node newNode = currentNode.connectStmt(stmt, waitList, level);
-			if (newNode == null)
+			Element newElement = currentNode.connectStmt(stmt, waitList, level);
+			if (newElement == null)
 				break;
-			currentNode = newNode;
+			currentNode = newElement;
 		}
 		return currentNode;
 	}
 
-	Node connectBlockStmt (BlockStmt blockStmt, Nodes waitList, int level)
+	Element connectBlockStmt (BlockStmt blockStmt, Elements waitList, int level)
 	{
 		return this.connectStmts(blockStmt.getStatements(), waitList, level);
 	}
 
-	Node connectBreakStmt (BreakStmt breakStmt, Nodes waitList, int level)
+	Element connectBreakStmt (BreakStmt breakStmt, Elements waitList, int level)
 	{
 		this.waitsFor = 1;
 		waitList.add(this);
 		return null;
 	}
 
-	Node connectContinueStmt (ContinueStmt continueStmt, Nodes waitList, int level)
+	Element connectContinueStmt (ContinueStmt continueStmt, Elements waitList, int level)
 	{
 		this.waitsFor = 2;
 		waitList.add(this);
 		return null;
 	}
 
-	Node connectDoStmt (DoStmt doStmt, Nodes waitList, int level)
+	Element connectDoStmt (DoStmt doStmt, Elements waitList, int level)
 	{
-		Node currentNode = this.connectStmt(doStmt.getBody(), waitList, level + 1);
+		Element currentElement = this.connectStmt(doStmt.getBody(), waitList, level + 1);
 		Node firstNode = this.getNext();
 		String condition  = doStmt.getCondition().toString();
 		Node conditionNode = new Node(condition, level);
 		conditionNode.setNext(firstNode);
-		currentNode.setNext(conditionNode);
+		currentElement.setNext(conditionNode);
 		return conditionNode;
 	}
 
-	Node connectEmptyStmt (EmptyStmt emptyStmt, Nodes waitList, int level)
+	Element connectEmptyStmt (EmptyStmt emptyStmt, Elements waitList, int level)
 	{
-		return (Node) this;
+		return this;
 	}
 
-	Node connectExpressionStmt (ExpressionStmt expressionStmt, Nodes waitList, int level)
+	Element connectExpressionStmt (ExpressionStmt expressionStmt, Elements waitList, int level)
 	{
 		Node newNode = new Node(expressionStmt.toString(), level);
 		this.setNext(newNode);
 		return newNode;
 	}
 
-	Node connectForeachStmt (ForeachStmt foreachStmt, Nodes waitList, int level)
+	Elements connectForeachStmt (ForeachStmt foreachStmt, Elements waitList, int level)
 	{
-		waitList = new Nodes();
+		waitList = new Elements();
 		String variable = foreachStmt.getVariable().toString();
 		String iterable = foreachStmt.getIterable().toString();
 
@@ -131,29 +173,29 @@ public class Element
 		Node updateNode = new Node( variable + " = " + iterable + ".next()", level);
 		checkNode.setNext(updateNode);
 
-		Node lastNode = updateNode.connectStmt(foreachStmt.getBody(), waitList, level + 1);
-		lastNode.setNext(checkNode);
+		Element lastElement = updateNode.connectStmt(foreachStmt.getBody(), waitList, level + 1);
+		lastElement.setNext(checkNode);
 
-		Nodes nodesToConnect = new Nodes();
-		nodesToConnect.add(checkNode);
+		Elements elementsToConnect = new Elements();
+		elementsToConnect.add(checkNode);
 
-		for (Node node : waitList.nodes)
+		for (Element element : waitList.elements)
 		{
 			// break with hanging, continue connect to update
-			if (node.waitsFor == 1) {
-				nodesToConnect.add(node);
-			} else if (node.waitsFor == 2) {
-				node.setNext(checkNode);
+			if (element.waitsFor == 1) {
+				elementsToConnect.add(element);
+			} else if (element.waitsFor == 2) {
+				element.setNext(checkNode);
 			}
 		}
 
-		return nodesToConnect;
+		return elementsToConnect;
 	}
 
-	Node connectForStmt (ForStmt forStmt, Nodes waitList, int level)
+	Element connectForStmt (ForStmt forStmt, Elements waitList, int level)
 	{
-		waitList = new Nodes();
-		Node prevNode = this;
+		waitList = new Elements();
+		Node prevNode = this.node;
 
 		NodeList<Expression> initExprs = forStmt.getInitialization();
 		if (initExprs.size() > 0) {
@@ -163,16 +205,16 @@ public class Element
 			this.setNext(prevNode);
 		}
 
-		Node currentNode;
+		Element currentElement;
 
 		Optional<Expression> compareExpr = forStmt.getCompare();
 		if (compareExpr.isPresent()) {
 			Node compareNode = new Node(compareExpr.get().toString(), level);
 			prevNode.setNext(compareNode);
-			currentNode = compareNode;
+			currentElement = compareNode;
 		} else
-			currentNode = prevNode;
-		currentNode  = currentNode.connectStmt(forStmt.getBody(), waitList, level + 1);
+			currentElement = prevNode;
+		currentElement  = currentElement.connectStmt(forStmt.getBody(), waitList, level + 1);
 		Node firstNode = prevNode.getNext();
 
 		Node newCycleNode = firstNode;
@@ -182,77 +224,75 @@ public class Element
 			String update = updateExprs.toString();
 			update = update.substring(1, update.length() - 1) + ";";
 			Node updateNode = new Node(update, level + 1);
-			currentNode.setNext(updateNode);
-			currentNode = updateNode;
+			currentElement.setNext(updateNode);
+			currentElement = updateNode;
 			newCycleNode = updateNode;
 		}
-		currentNode.setNext(firstNode);
+		currentElement.setNext(firstNode);
 
-		Nodes nodes = new Nodes();
+		Elements elements = new Elements();
 		if (compareExpr.isPresent())
-			nodes.add(firstNode);
+			elements.add(firstNode);
 
-		for (Node node : waitList.nodes)
+		for (Element element : waitList.elements)
 		{
-			if (node.waitsFor == 1) {
-				nodes.add(node);
-			} else if (node.waitsFor == 2) {
-				node.setNext(newCycleNode);
+			if (element.waitsFor == 1) {
+				elements.add(element);
+			} else if (element.waitsFor == 2) {
+				element.setNext(newCycleNode);
 			}
 		}
 
-		return nodes;
+		return elements;
 	}
 
-	Node connectIfStmt (IfStmt ifStmt, Nodes waitList, int level)
+	Element connectIfStmt (IfStmt ifStmt, Elements waitList, int level)
 	{
 		Node conditionNode = new Node(ifStmt.getCondition().toString(), level);
 		this.setNext(conditionNode);
-		Node lastNode1 = conditionNode.connectStmt(ifStmt.getThenStmt(), waitList, level + 1);
+		Element lastElement1 = conditionNode.connectStmt(ifStmt.getThenStmt(), waitList, level + 1);
 
 		Optional<Statement> elseStmt = ifStmt.getElseStmt();
-		Node lastNode2;
+		Element lastElement2;
 		if (elseStmt.isPresent()) {
-			lastNode2 = conditionNode.connectStmt(elseStmt.get(), waitList, level);
+			lastElement2 = conditionNode.connectStmt(elseStmt.get(), waitList, level);
 		} else {
-			lastNode2 = conditionNode;
+			lastElement2 = conditionNode;
 		}
-		Nodes nodes = new Nodes();
-		if (lastNode1 != null) nodes.add(lastNode1);
-		if (lastNode2 != null) nodes.add(lastNode2);
-		return nodes;
+		Elements elements = new Elements();
+		if (lastElement1 != null) elements.add(lastElement1);
+		if (lastElement2 != null) elements.add(lastElement2);
+		return elements;
 	}
 
-	Node connectWhileStmt (WhileStmt whileStmt, Nodes waitList, int level)
+	Element connectWhileStmt (WhileStmt whileStmt, Elements waitList, int level)
 	{
-		waitList = new Nodes();
-		Node prevNode = this;
-
-		Node currentNode;
+		waitList = new Elements();
+		Node prevNode = this.node;
 
 		Expression compareExpr = whileStmt.getCondition();
 		Node compareNode = new Node(compareExpr.toString(), level);
 		prevNode.setNext(compareNode);
-		currentNode = compareNode;
-		currentNode  = currentNode.connectStmt(whileStmt.getBody(), waitList, level + 1);
+		Element currentElement = compareNode;
+		currentElement  = currentElement.connectStmt(whileStmt.getBody(), waitList, level + 1);
 		Node firstNode = prevNode.getNext();
 
 		Node newCycleNode = firstNode;
 
-		currentNode.setNext(firstNode);
+		currentElement.setNext(firstNode);
 
-		Nodes nodes = new Nodes();
-		nodes.add(firstNode);
+		Elements elements = new Elements();
+		elements.add(firstNode);
 
-		for (Node node : waitList.nodes)
+		for (Element element : waitList.elements)
 		{
-			if (node.waitsFor == 1) {
-				nodes.add(node);
-			} else if (node.waitsFor == 2) {
-				node.setNext(newCycleNode);
+			if (element.waitsFor == 1) {
+				elements.add(element);
+			} else if (element.waitsFor == 2) {
+				element.setNext(newCycleNode);
 			}
 		}
 
-		return nodes;
+		return elements;
 	}
 }
