@@ -73,6 +73,5 @@ public class Parser
 		penultNode.setNext(lastNode);
 
 		return firstNode;
-
 	}
 }
