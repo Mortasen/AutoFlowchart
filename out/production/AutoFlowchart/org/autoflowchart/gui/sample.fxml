@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollBar?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@../../../../DarkTheme.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@../../../../DarkTheme.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <MenuBar VBox.vgrow="ALWAYS" style="-fx-background-color: #404040;" >
-        <menus >
-          <Menu mnemonicParsing="false" text="File" style=" -fx-text-fill: white;">
+      <MenuBar style="-fx-background-color: 	#545454;" VBox.vgrow="ALWAYS">
+        <menus>
+          <Menu mnemonicParsing="false" style="-fx-text-fill: white;" text="File">
             <items>
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" style=" -fx-text-fill: white;" text="Edit ">
             <items>
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" style="-fx-text-fill: white;" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
@@ -48,7 +40,7 @@
                 <AnchorPane>
                      <children>
                         <ScrollBar layoutX="411.0" layoutY="116.0" orientation="VERTICAL" style="-fx-background-color: #404040;" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <ScrollBar layoutX="140.0" layoutY="632.0" AnchorPane.bottomAnchor="0.0" style="-fx-background-color: #404040;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <ScrollBar layoutX="140.0" layoutY="632.0" style="-fx-background-color: #404040;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                         <Canvas height="660.0" layoutX="123.0" layoutY="176.0" width="440.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
@@ -56,13 +48,48 @@
             </SplitPane>
             <StackPane alignment="TOP_CENTER" layoutX="362.0" layoutY="-4.0" prefHeight="34.0" prefWidth="165.0">
                <children>
-                  <ButtonBar buttonMinWidth="20.0"  style="-fx-background-color: #404040;">
+                  <ButtonBar buttonMinWidth="20.0" prefHeight="43.0" prefWidth="188.0" style="-fx-background-color: #404040;">
                     <buttons>
-                        <Button mnemonicParsing="false" text="1" style="-fx-background-color: #404040; -fx-border-color: white, white" />
-                        <Button mnemonicParsing="false" text="2" style="-fx-background-color: #404040; -fx-border-color: white, white" />
-                        <Button mnemonicParsing="false" text="3" style="-fx-background-color: #404040; -fx-border-color: white, white"/>
-                        <Button mnemonicParsing="false" text="4" style="-fx-background-color: #404040; -fx-border-color: white, white"/>
-                        <Button mnemonicParsing="false" text="5" style="-fx-background-color: #404040; -fx-border-color: white, white"/>
+                        <Button minWidth="10.0" mnemonicParsing="false" prefHeight="38.0" style="-fx-background-color: #404040; -fx-border-color: white, white; " >
+                           <graphic>
+                              <ImageView fitHeight="23.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@buttons/free-icon-documentation-4236527.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white; " >
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@buttons/4579379.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white; " >
+                           <graphic>
+                              <ImageView fitHeight="23.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@buttons/free-icon-flow-chart-4236505.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button mnemonicParsing="false" prefHeight="39.0" style="-fx-background-color: #404040; -fx-border-color: white, white" >
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@buttons/free-icon-content-management-4236975.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white" >
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@buttons/4579136.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                     </buttons>
                      <padding>
                         <Insets left="-15.0" right="6.0" />
