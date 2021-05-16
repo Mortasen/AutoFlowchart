@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Block
+public class Block extends Node
 {
 	public int height;
 	public ShapeType type;
@@ -33,7 +33,7 @@ public class Block
 
 	public Block (Node node)
 	{
-		this(node.text, node.level);
+		this(node.getText(), node.getLevel());
 	}
 
 	public Block (int height, ShapeType type, String text, int level)

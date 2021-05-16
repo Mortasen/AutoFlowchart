@@ -110,14 +110,14 @@ public abstract class Element
 
 	Element connectBreakStmt (BreakStmt breakStmt, Elements waitList, int level)
 	{
-		this.waitsFor = 1;
+		this.setWaitsFor(1);
 		waitList.add(this);
 		return null;
 	}
 
 	Element connectContinueStmt (ContinueStmt continueStmt, Elements waitList, int level)
 	{
-		this.waitsFor = 2;
+		this.setWaitsFor(2);
 		waitList.add(this);
 		return null;
 	}
@@ -166,9 +166,9 @@ public abstract class Element
 		for (Element element : waitList.elements)
 		{
 			// break with hanging, continue connect to update
-			if (element.waitsFor == 1) {
+			if (element.getWaitsFor() == 1) {
 				elementsToConnect.add(element);
-			} else if (element.waitsFor == 2) {
+			} else if (element.getWaitsFor() == 2) {
 				element.setNext(checkNode);
 			}
 		}
@@ -220,9 +220,9 @@ public abstract class Element
 
 		for (Element element : waitList.elements)
 		{
-			if (element.waitsFor == 1) {
+			if (element.getWaitsFor() == 1) {
 				elements.add(element);
-			} else if (element.waitsFor == 2) {
+			} else if (element.getWaitsFor() == 2) {
 				element.setNext(newCycleNode);
 			}
 		}
@@ -270,9 +270,9 @@ public abstract class Element
 
 		for (Element element : waitList.elements)
 		{
-			if (element.waitsFor == 1) {
+			if (element.getWaitsFor() == 1) {
 				elements.add(element);
-			} else if (element.waitsFor == 2) {
+			} else if (element.getWaitsFor() == 2) {
 				element.setNext(newCycleNode);
 			}
 		}

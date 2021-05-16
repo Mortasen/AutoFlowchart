@@ -1,13 +1,6 @@
 package org.autoflowchart.objects;
 
-import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.stmt.*;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Node extends Element
 {
@@ -21,24 +14,37 @@ public class Node extends Element
 
 	public Node (String text)
 	{
-		this.text = text;
+		this.setText(text);
 	}
 
 	public Node (String text, int level)
 	{
 		this(text);
-		this.level = level;
+		this.setLevel(level);
 	}
 
 	public Node (String text, int level, Node next, Node nextFalse)
 	{
 		this(text, level);
-		this.next = next;
-		this.falseNode = new FalseNode(nextFalse);
+		this.setNext(next);
+		this.setFalseNode(new FalseNode(nextFalse));
 	}
 
 	public Node getNode () {
 		return this;
+	}
+
+	public void setNext (Node next)
+	{
+		if (this.next == null && this.getNextFalse() == null) {
+			if (this.waitsFor == 0)
+				this.next = next;
+			else
+				this.setNextFalse(next);
+		} else if (this.next == null)
+			this.next = next;
+		else
+			this.setNextFalse(next);
 	}
 
 	public String getText ()
@@ -83,7 +89,7 @@ public class Node extends Element
 
 	public Node getNextFalse () {
 		if (this.falseNode != null)
-			return this.falseNode.getNode();
+			return this.falseNode.getNext();
 		else
 			return null;
 	}
@@ -92,7 +98,7 @@ public class Node extends Element
 		if (this.falseNode != null)
 			this.falseNode.setNext(next);
 		else
-			this.falseNode = new FalseNode(next);
+			this.falseNode = new FalseNode(this, next);
 
 	}
 
@@ -102,13 +108,13 @@ public class Node extends Element
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Node node = (Node) o;
-		return level == node.level && Objects.equals(text, node.text);
+		return getLevel() == node.getLevel() && Objects.equals(getText(), node.getText());
 	}
 
 	@Override
 	public int hashCode ()
 	{
-		return Objects.hash(text, level);
+		return Objects.hash(getText(), getLevel());
 	}
 
 }

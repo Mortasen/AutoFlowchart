@@ -6,11 +6,14 @@ class Elements extends Element
 {
 	public ArrayList<Element> elements = new ArrayList<Element>();
 
+	public Node getNode () {
+		throw new NotImplementedException();
+	}
+
 	public void add (Element element)
 	{
-		if (element == null)
-			element = null;
-		this.elements.add(element);
+		if (element != null)
+			this.elements.add(element);
 	}
 
 	public Node getNext ()

@@ -17,7 +17,7 @@ public class Labeler
 		// Меняем тип этого узла на скруглённый
 		firstBlock.type = ShapeType.ROUNDRECT;
 		// Обходим всю ветку начиная с последующего узла
-		Block lastBlock = this.traverseBranch(firstNode.next, firstBlock);
+		Block lastBlock = this.traverseBranch(firstNode.getNext(), firstBlock);
 		// Меняем тип последнего узла на скруглённый
 		lastBlock.type = ShapeType.ROUNDRECT;
 		// Возвращаем первый узел
@@ -33,23 +33,23 @@ public class Labeler
 		Block toReturn = null;
 		while (node != null)
 		{
-			if (node.block != null) {
-				block.setNext(node.block);
+			if (node.getBlock() != null) {
+				block.setNext(node.getBlock());
 				block = null;
 				break;
 			}
 			Block newBlock = this.labelNode(node);
 			block.setNext(newBlock);
-			node.block = newBlock;
+			node.setBlock(newBlock);
 			block = newBlock;
-			if (node.nextFalse != null)
+			if (node.getNextFalse() != null)
 			{
-				Block lastBlock = traverseBranch(node.next, block);
+				Block lastBlock = traverseBranch(node.getNext(), block);
 				if (toReturn == null)
 					toReturn = lastBlock;
-				node = node.nextFalse;
+				node = node.getNextFalse();
 			} else {
-				node = node.next;
+				node = node.getNext();
 			}
 		}
 		if (toReturn != null)
@@ -75,8 +75,8 @@ public class Labeler
 
 	public Block labelNode (Node node)
 	{
-		String line1 = node.text;
-		int level = node.level;
+		String line1 = node.getText();
+		int level = node.getLevel();
 		FontMetrics fontMetrics;
 		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 14);
 		FontRenderContext fontRenderContext = new FontRenderContext(font.getTransform(), true, true);
@@ -106,7 +106,7 @@ public class Labeler
 		int textOffsetY = (int)(Designer.defaultHeight / 2 - height / 2);
 
 		ShapeType type;
-		if (node.nextFalse != null)
+		if (node.getNextFalse() != null)
 			type = ShapeType.DIAMOND;
 		else
 			type = ShapeType.RECT;

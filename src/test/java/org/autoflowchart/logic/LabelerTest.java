@@ -45,43 +45,43 @@ class LabelerTest
 
 		Node node1 = new Node("main();", 0);
 		Node node2 = new Node("int x = 0;", 0);
-		node1.next = node2;
+		node1.setNext(node2);
 		Node node3 = new Node("int i = 0;", 0);
-		node2.next = node3;
+		node2.setNext(node3);
 		Node node4 = new Node("i < 1000", 0);
-		node3.next = node4;
+		node3.setNext(node4);
 		Node node5 = new Node("i % 2 == 0", 1);
-		node4.next = node5;
+		node4.setNext(node5);
 		Node node6 = new Node("i < 10", 1);
-		node5.nextFalse = node6;
+		node5.setNextFalse(node6);
 		Node node7 = new Node("int m = 3;", 2);
-		node6.next = node7;
+		node6.setNext(node7);
 		Node node8 = new Node("i < 100", 1);
-		node6.nextFalse = node8;
+		node6.setNextFalse(node8);
 		Node node9 = new Node("int m = 2;", 2);
-		node8.next = node9;
+		node8.setNext(node9);
 		Node node10 = new Node("int m = 1;", 1);
-		node8.nextFalse = node10;
+		node8.setNextFalse(node10);
 		Node node11 = new Node("x += i * m;", 1);
-		node7.next = node11;
-		node9.next = node11;
-		node10.next = node11;
+		node7.setNext(node11);
+		node9.setNext(node11);
+		node10.setNext(node11);
 		Node node12 = new Node("x > 100", 1);
-		node11.next = node12;
+		node11.setNext(node12);
 		Node node13 = new Node("i < 100", 2);
-		node12.next = node13;
+		node12.setNext(node13);
 		Node node14 = new Node("x -= 10", 1);
-		node12.nextFalse = node14;
+		node12.setNextFalse(node14);
 		Node node15 = new Node("i++;", 1);
-		node5.next = node15;
-		node13.next = node15;
-		node14.next = node15;
-		node15.next = node4;
+		node5.setNext(node15);
+		node13.setNext(node15);
+		node14.setNext(node15);
+		node15.setNext(node4);
 		Node node16 = new Node("print(x);", 0);
-		node4.nextFalse = node16;
-		node13.nextFalse = node16;
+		node4.setNextFalse(node16);
+		node13.setNextFalse(node16);
 		Node node17 = new Node("return;", 0);
-		node16.next = node17;
+		node16.setNext(node17);
 
 		Block expected1 = new Block(Designer.defaultHeight, ShapeType.ROUNDRECT, "main();", 0);
 		Block expected2 = new Block(Designer.defaultHeight, ShapeType.RECT, "int x = 0;", 0);
@@ -188,9 +188,9 @@ class LabelerTest
 
 		Node node1 = new Node("int a = 1;", 0);
 		Node node2 = new Node("int b = 2;", 0);
-		node1.next = node2;
+		node1.setNext(node2);
 		Node node3 = new Node("int c = a + b;", 0);
-		node2.next = node3;
+		node2.setNext(node3);
 
 		Block initial = new Block(Designer.defaultHeight, ShapeType.RECT, "Initial", 0);
 
@@ -222,12 +222,12 @@ class LabelerTest
 
 		node1 = new Node("x == 1", 0);
 		node2 = new Node("x = 0;", 1);
-		node1.next = node2;
+		node1.setNext(node2);
 		node3 = new Node("x = 1;", 0);
-		node1.nextFalse = node3;
+		node1.setNextFalse(node3);
 		Node node4 = new Node("x++;", 0);
-		node2.next = node4;
-		node3.next = node4;
+		node2.setNext(node4);
+		node3.setNext(node4);
 
 		initial = new Block(Designer.defaultHeight, ShapeType.RECT, "Initial", 0);
 
@@ -267,14 +267,14 @@ class LabelerTest
 
 		node1 = new Node("int i = 0;", 0);
 		node2 = new Node("i < 5", 0);
-		node1.next = node2;
+		node1.setNext(node2);
 		node3 = new Node("x += i;", 1);
-		node2.next = node3;
+		node2.setNext(node3);
 		node4 = new Node("i++;", 1);
-		node3.next = node4;
-		node4.next = node2;
+		node3.setNext(node4);
+		node4.setNext(node2);
 		Node node5 = new Node("print(i);", 0);
-		node2.nextFalse = node5;
+		node2.setNextFalse(node5);
 
 		initial = new Block(Designer.defaultHeight, ShapeType.RECT, "Initial", 0);
 
@@ -320,19 +320,19 @@ class LabelerTest
 
 		node1 = new Node("int i = 0;", 0);
 		node2 = new Node("true", 0);
-		node1.next = node2;
+		node1.setNext(node2);
 		node3 = new Node("i % 2 == 0", 1);
-		node2.next = node3;
+		node2.setNext(node3);
 		node4 = new Node("x++;", 2);
-		node3.next = node4;
+		node3.setNext(node4);
 		node5 = new Node("x > 16", 1);
-		node4.next = node5;
+		node4.setNext(node5);
 		Node node6 = new Node("i++;", 1);
-		node3.nextFalse = node6;
-		node5.nextFalse = node6;
+		node3.setNextFalse(node6);
+		node5.setNextFalse(node6);
 		Node node7 = new Node("print(x);", 0);
-		node2.nextFalse = node7;
-		node5.next = node7;
+		node2.setNextFalse(node7);
+		node5.setNext(node7);
 
 		initial = new Block(Designer.defaultHeight, ShapeType.RECT, "Initial", 0);
 
@@ -382,7 +382,7 @@ class LabelerTest
 		System.out.println("Test 1 : Regular node");
 
 		Node node = new Node("test node text", 0);
-		node.next = new Node("");
+		node.setNext(new Node(""));
 
 		Block expected = new Block(Designer.defaultHeight, ShapeType.RECT, "test node text", 0);
 		expected.textOffsetX = 90;
@@ -395,8 +395,8 @@ class LabelerTest
 		System.out.println("Test 2 : Condition");
 
 		node = new Node("test node text 2", 1);
-		node.next = new Node("");
-		node.nextFalse = new Node("");
+		node.setNext(new Node(""));
+		node.setNextFalse(new Node(""));
 
 		expected = new Block(Designer.defaultHeight, ShapeType.DIAMOND, "test node text 2", 1);
 		expected.textOffsetX = 82;
