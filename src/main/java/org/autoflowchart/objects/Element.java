@@ -6,28 +6,12 @@ import com.github.javaparser.ast.stmt.*;
 
 import java.util.Optional;
 
-public class Element
+public abstract class Element
 {
-	private Node node;
 	protected Node next;
 	protected int waitsFor;
 
-	public Element () {}
-
-	public Element (Node node)
-	{
-		this.node = node;
-	}
-
-	public Node getNode ()
-	{
-		return this.node;
-	}
-
-	public void setNode (Node node)
-	{
-		this.node = node;
-	}
+	abstract Node getNode ();
 
 	public Node getNext ()
 	{
@@ -195,7 +179,7 @@ public class Element
 	Element connectForStmt (ForStmt forStmt, Elements waitList, int level)
 	{
 		waitList = new Elements();
-		Node prevNode = this.node;
+		Node prevNode = this.getNode();
 
 		NodeList<Expression> initExprs = forStmt.getInitialization();
 		if (initExprs.size() > 0) {
@@ -268,7 +252,7 @@ public class Element
 	Element connectWhileStmt (WhileStmt whileStmt, Elements waitList, int level)
 	{
 		waitList = new Elements();
-		Node prevNode = this.node;
+		Node prevNode = this.getNode();
 
 		Expression compareExpr = whileStmt.getCondition();
 		Node compareNode = new Node(compareExpr.toString(), level);

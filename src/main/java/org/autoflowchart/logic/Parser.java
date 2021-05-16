@@ -68,7 +68,7 @@ public class Parser
 	public static Node assembleFunction (BlockStmt blockStmt)
 	{
 		Node firstNode = new Node("main()");
-		Node penultNode = firstNode.connectStmt(blockStmt, null, 0);
+		Node penultNode = (Node) firstNode.connectStmt(blockStmt, null, 0);
 		Node lastNode = new Node("return;");
 		penultNode.setNext(lastNode);
 

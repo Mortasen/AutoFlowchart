@@ -11,11 +11,11 @@ import java.util.Optional;
 
 public class Node extends Element
 {
-	public String text;
-	public Element falseNode;
-	public int level;
+	private String text;
+	private FalseNode falseNode;
+	private int level;
 
-	public Block block;
+	private Block block;
 
 	public Node () {}
 
@@ -34,25 +34,66 @@ public class Node extends Element
 	{
 		this(text, level);
 		this.next = next;
-		this.nextFalse = nextFalse;
+		this.falseNode = new FalseNode(nextFalse);
 	}
 
-	public Node getNext ()
-	{
-		return this.next;
+	public Node getNode () {
+		return this;
 	}
 
-	public void setNext (Node next)
+	public String getText ()
 	{
-		if (this.next == null && this.nextFalse == null) {
-			if (this.waitsFor == 0)
-				this.next = next;
-			else
-				this.nextFalse = next;
-		} else if (this.next == null)
-			this.next = next;
+		return text;
+	}
+
+	public void setText (String text)
+	{
+		this.text = text;
+	}
+
+	public FalseNode getFalseNode ()
+	{
+		return falseNode;
+	}
+
+	public void setFalseNode (FalseNode falseNode)
+	{
+		this.falseNode = falseNode;
+	}
+
+	public int getLevel ()
+	{
+		return level;
+	}
+
+	public void setLevel (int level)
+	{
+		this.level = level;
+	}
+
+	public Block getBlock ()
+	{
+		return block;
+	}
+
+	public void setBlock (Block block)
+	{
+		this.block = block;
+	}
+
+	public Node getNextFalse () {
+		if (this.falseNode != null)
+			return this.falseNode.getNode();
 		else
-			this.nextFalse = next;
+			return null;
+	}
+
+	public void setNextFalse (Node next) {
+		if (this.falseNode != null)
+			this.falseNode.setNext(next);
+		else
+			this.falseNode = new FalseNode(next);
+
 	}
 
 	@Override
@@ -69,4 +110,5 @@ public class Node extends Element
 	{
 		return Objects.hash(text, level);
 	}
+
 }
