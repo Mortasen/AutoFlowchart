@@ -18,9 +18,7 @@ public class Main extends Application
         primaryStage.show();
         primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
 
-        //develop test 2
-        //develop branch test
-        //1
+
     }
 
     public static void main(String[] args) {
