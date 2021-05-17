@@ -8,7 +8,7 @@
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" stylesheets="@../../../../DarkTheme.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <MenuBar style="-fx-background-color: 	#545454;" VBox.vgrow="ALWAYS">
+      <MenuBar style="-fx-background-color:  #545454;" VBox.vgrow="ALWAYS">
         <menus>
           <Menu mnemonicParsing="false" style="-fx-text-fill: white;" text="File">
             <items>
@@ -34,7 +34,7 @@
                 <AnchorPane>
                      <children>
                         <ScrollBar layoutX="7.0" layoutY="26.0" orientation="VERTICAL" style="-fx-background-color: #404040;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <TextArea layoutX="123.0" layoutY="136.0" prefHeight="672.8" prefWidth="446.4" style="-fx-control-inner-background: #191970;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <TextArea layoutX="123.0" layoutY="136.0" prefHeight="672.8" prefWidth="446.4" style="-fx-control-inner-background: #191970;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                 <AnchorPane>
@@ -50,7 +50,7 @@
                <children>
                   <ButtonBar buttonMinWidth="20.0" prefHeight="43.0" prefWidth="188.0" style="-fx-background-color: #404040;">
                     <buttons>
-                        <Button minWidth="10.0" mnemonicParsing="false" prefHeight="38.0" style="-fx-background-color: #404040; -fx-border-color: white, white; " >
+                        <Button minWidth="10.0" mnemonicParsing="false" prefHeight="38.0" style="-fx-background-color: #404040; -fx-border-color: white, white; ">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -58,7 +58,7 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white; " >
+                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white; ">
                            <graphic>
                               <ImageView fitHeight="24.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -66,7 +66,7 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white; " >
+                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white; ">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -74,7 +74,7 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                        <Button mnemonicParsing="false" prefHeight="39.0" style="-fx-background-color: #404040; -fx-border-color: white, white" >
+                        <Button mnemonicParsing="false" prefHeight="39.0" style="-fx-background-color: #404040; -fx-border-color: white, white">
                            <graphic>
                               <ImageView fitHeight="25.0" fitWidth="78.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -82,7 +82,7 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white" >
+                        <Button mnemonicParsing="false" style="-fx-background-color: #404040; -fx-border-color: white, white">
                            <graphic>
                               <ImageView fitHeight="25.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
