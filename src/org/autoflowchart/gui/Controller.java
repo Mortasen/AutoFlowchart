@@ -2,16 +2,20 @@ package org.autoflowchart.gui;
 
 import javafx.fxml.FXML;
 import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
-
-import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Controller
 {
@@ -43,6 +47,7 @@ public class Controller
     public ColorPicker outputLineColorPicker;
     public TextField outputTextField;
     public TextField outputLineTextField;
+    public Stage primaryStage;
 
     @FXML
     private void handleExit() {
@@ -50,9 +55,10 @@ public class Controller
     }
 
     @FXML
-    public void aboutButtonClicked(Event e){
+    public void aboutButtonClicked(Event e) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("About");
+        stage.getIcons().add(new Image("file:resources/images/icon.png"));
         stage.setX(500);
         stage.setY(300);
         stage.setWidth(600);
@@ -61,8 +67,18 @@ public class Controller
     }
 
     @FXML
-    public void importButtonClicked(Event e){
-        //add import code method here
+    public void importButtonClicked(Event e) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File selectedFile = fileChooser.showOpenDialog(primaryStage);
+        FileReader fr = new FileReader(selectedFile);
+        int i;
+        String code = "";
+        while((i=fr.read())!=-1){
+            code += String.valueOf(((char)i));
+        }
+        fr.close();
+        codeTextArea.setText(code);
     }
 
     @FXML
