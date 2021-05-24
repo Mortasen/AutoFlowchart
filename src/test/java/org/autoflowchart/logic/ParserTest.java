@@ -1,11 +1,7 @@
 package org.autoflowchart.logic;
 
-import org.autoflowchart.objects.Block;
 import org.autoflowchart.objects.Node;
-import org.autoflowchart.objects.ShapeType;
 import org.junit.jupiter.api.Test;
-
-import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

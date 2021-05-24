@@ -151,10 +151,10 @@ public abstract class Element
 		String variable = foreachStmt.getVariable().toString();
 		String iterable = foreachStmt.getIterable().toString();
 
-		Node checkNode = new Node( iterable + ".hasNext()", level);
+		Node checkNode = new Node(iterable + ".hasNext()", level);
 		this.setNext(checkNode);
 
-		Node updateNode = new Node( variable + " = " + iterable + ".next()", level);
+		Node updateNode = new Node(variable + " = " + iterable + ".next()", level);
 		checkNode.setNext(updateNode);
 
 		Element lastElement = updateNode.connectStmt(foreachStmt.getBody(), waitList, level + 1);

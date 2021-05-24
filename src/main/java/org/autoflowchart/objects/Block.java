@@ -1,7 +1,6 @@
 package org.autoflowchart.objects;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.List;

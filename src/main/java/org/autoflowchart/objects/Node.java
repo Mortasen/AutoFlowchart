@@ -8,8 +8,6 @@ public class Node extends Element
 	private FalseNode falseNode;
 	private int level;
 
-	private Block block;
-
 	public Node () {}
 
 	public Node (String text)
@@ -75,16 +73,6 @@ public class Node extends Element
 	public void setLevel (int level)
 	{
 		this.level = level;
-	}
-
-	public Block getBlock ()
-	{
-		return block;
-	}
-
-	public void setBlock (Block block)
-	{
-		this.block = block;
 	}
 
 	public Node getNextFalse () {
