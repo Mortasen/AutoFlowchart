@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Block extends Node
+public class BlockDEPRECATED extends Node
 {
 	public int height;
 	public ShapeType type;
@@ -18,57 +18,57 @@ public class Block extends Node
 
 	public Shape shape;
 
-	public Block next = null;
-	public Block nextFalse = null;
+	public BlockDEPRECATED next = null;
+	public BlockDEPRECATED nextFalse = null;
 	public int level;
 
-	public Block () {}
+	public BlockDEPRECATED () {}
 
-	public Block (String text, int level)
+	public BlockDEPRECATED (String text, int level)
 	{
 		this.text = text;
 		this.level = level;
 	}
 
-	public Block (Node node)
+	public BlockDEPRECATED (Node node)
 	{
 		this(node.getText(), node.getLevel());
 	}
 
-	public Block (int height, ShapeType type, String text, int level)
+	public BlockDEPRECATED (int height, ShapeType type, String text, int level)
 	{
 		this(text, level);
 		this.height = height;
 		this.type = type;
 	}
 
-	public Block (int height, ShapeType type, Node node)
+	public BlockDEPRECATED (int height, ShapeType type, Node node)
 	{
 		this(node);
 		this.height = height;
 		this.type = type;
 	}
 
-	public Block (int height, ShapeType type, String text, int level, Block next, Block nextFalse)
+	public BlockDEPRECATED (int height, ShapeType type, String text, int level, BlockDEPRECATED next, BlockDEPRECATED nextFalse)
 	{
 		this(height, type, text, level);
 		this.next = next;
 		this.nextFalse = nextFalse;
 	}
 
-	public Block (int height, ShapeType type, Node node, Block next, Block nextFalse)
+	public BlockDEPRECATED (int height, ShapeType type, Node node, BlockDEPRECATED next, BlockDEPRECATED nextFalse)
 	{
 		this(height, type, node);
 		this.next = next;
 		this.nextFalse = nextFalse;
 	}
 
-	public Block getNext ()
+	public BlockDEPRECATED getNext ()
 	{
 		return this.next;
 	}
 
-	public void setNext (Block next)
+	public void setNext (BlockDEPRECATED next)
 	{
 		if (this.next == null)
 			this.next = next;
@@ -93,15 +93,15 @@ public class Block extends Node
 	{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Block block = (Block) o;
-		return height == block.height && level == block.level && type == block.type && Objects.equals(text, block.text) && Objects.equals(shape, block.shape);
+		BlockDEPRECATED blockDEPRECATED = (BlockDEPRECATED) o;
+		return height == blockDEPRECATED.height && level == blockDEPRECATED.level && type == blockDEPRECATED.type && Objects.equals(text, blockDEPRECATED.text) && Objects.equals(shape, blockDEPRECATED.shape);
 	}
 
 	public boolean completelyEquals (Object o)
 	{
 		if (this.equals(o)) {
-			Block block = (Block)o;
-			return textOffsetX == block.textOffsetX && textOffsetY == block.textOffsetY;
+			BlockDEPRECATED blockDEPRECATED = (BlockDEPRECATED)o;
+			return textOffsetX == blockDEPRECATED.textOffsetX && textOffsetY == blockDEPRECATED.textOffsetY;
 		}
 		return false;
 	}

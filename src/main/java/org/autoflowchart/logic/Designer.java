@@ -1,11 +1,6 @@
 package org.autoflowchart.logic;
 
-import org.autoflowchart.objects.Arrow;
-import org.autoflowchart.objects.Block;
-import org.autoflowchart.objects.Layout;
-import org.autoflowchart.objects.Shape;
-
-import java.util.List;
+import org.autoflowchart.objects.*;
 
 public class Designer
 {
@@ -20,52 +15,52 @@ public class Designer
 	int y = 0;
 	int level = 0;
 
-	public Layout generateLayout (Block firstBlock)
+	public Layout generateLayout (Node firstNode)
 	{
 		// Рисуем первый блок
-		Block block = firstBlock;
-		Shape shape = new Shape(this.x, this.y, block);
+		Node node = firstNode;
+		Shape shape = new Shape(this.x, this.y, node);
 		this.layout.addShape(shape);
-		block.shape = shape;
+		node.setShape(shape);
 
-		while (block.next != null)
+		while (node.getNext() != null)
 		{
 			// Передаём текущий блок в метод для отрисовки стрелочки к следующему блоку и самого следующего блока
 			// до тех пор, пока текущий блок имеет следующий
-			block = this.placeNextBlock(block);
+			node = this.placeNextNode(node);
 		}
 
 		return this.layout;
 	}
 
-	public Block placeNextBlock (Block block)
+	public Node placeNextNode (Node node)
 	{
 		// Рисует от переданного блока стрелочку до следующего и создаёт фигуру следующего блока
-		Block nextBlock;
+		Node nextNode;
 
 		// Проверяем, является ли текущий блок условием
-		if (block.nextFalse != null) {
+		if (node.getFalseNode() != null) {
 			// Если является, обходим правдивую ветку методом
-			this.traverseIfBranch(block);
-			this.x = (defaultWidth + defaultGapX) * block.level;
-			this.level = block.level;
-			nextBlock = block.nextFalse;
+			this.traverseIfBranch(node);
+			this.x = (defaultWidth + defaultGapX) * node.getLevel();
+			this.level = node.getLevel();
+			nextNode = node.getNextFalse();
 		} else {
-			nextBlock = block.next;
+			nextNode = node.getNext();
 		}
 
-		if (nextBlock.level != this.level) {
-			this.x = (defaultWidth + defaultGapX) * nextBlock.level;
-			this.level = block.next.level;
+		if (nextNode.getLevel() != this.level) {
+			this.x = (defaultWidth + defaultGapX) * nextNode.getLevel();
+			this.level = node.getNext().getLevel();
 		}
 
 		Arrow arrow;
 
-		this.y += block.height;
+		this.y += node.getHeight();
 
-		if (nextBlock.connectionQueue != null) {
+		if (nextNode.connectionQueue != null) {
 			this.y += defaultGapY;
-			for (Shape shape : nextBlock.connectionQueue) {
+			for (Shape shape : nextNode.connectionQueue) {
 				arrow = new Arrow(shape.getPointFromCenter(0, 1));
 				arrow.addPointFromPreviousChangingY(this.y);
 				arrow.addPointFromPreviousChangingX(this.x + (int) (defaultWidth * 0.75));
@@ -74,74 +69,72 @@ public class Designer
 			}
 		}
 
-		arrow = new Arrow(block.shape.getPointFromCenter(0, 1));
+		arrow = new Arrow(node.getShape().getPointFromCenter(0, 1));
 		this.y += defaultGapY;
 		arrow.addPointFromPreviousChangingY(this.y);
-		if (this.x != block.shape.x) {
+		if (this.x != node.getShape().x) {
 			arrow.addPointFromPreviousChangingX(this.x + defaultWidth / 2);
 			this.y += defaultGapY;
 			arrow.addPointFromPreviousChangingY(this.y);
 		}
 		this.layout.addArrow(arrow);
 
-		Shape nextShape = new Shape(this.x, this.y, nextBlock);
+		Shape nextShape = new Shape(this.x, this.y, nextNode);
 		this.layout.addShape(nextShape);
-		nextBlock.shape = nextShape;
+		nextNode.setShape(nextShape);
 
-
-
-		return nextBlock;
+		return nextNode;
 	}
 
-	public void traverseIfBranch (Block block)
+	public void traverseIfBranch (Node node)
 	{
 		// Обходит и отрисовывает всю правдивую ветку ифа
 
 		// Создаём стрелочку от условия, переданного как блок
-		Arrow arrow = new Arrow(block.shape.getPointFromCenter(1, 0));
+		Arrow arrow = new Arrow(node.getShape().getPointFromCenter(1, 0));
 		arrow.addPointFromPrevious(defaultGapX + defaultWidth / 2, 0);
 		arrow.addPointFromPrevious(0, defaultGapY + defaultHeight / 2);
 		this.layout.addArrow(arrow);
 		// Меняем уровень, на котором будут отрисовываться последующие блоки
-		block = block.next;
-		this.x = (defaultWidth + defaultGapX) * block.level;
+		node = node.getNext();
+		this.x = (defaultWidth + defaultGapX) * node.getLevel();
 		//arrow.addPointFromPreviousChangingX(newX);
 		//arrow.addPointFromPrevious(0, defaultGapY);
 		this.y += defaultHeight + defaultGapY;
-		this.level = block.level;
+		this.level = node.getLevel();
 
 		// Отрисовываем первый блок из тела ифа
-		Shape shape = new Shape(this.x, this.y, block);
+		Shape shape = new Shape(this.x, this.y, node);
 		this.layout.addShape(shape);
-		block.shape = shape;
+		node.setShape(shape);
 
 		// Присоединяем новый блок к текущему до тех пор, пока новый блок не располагается на меньшем уровне
 		// То есть до тех пор, пока не заканчивается тело ифа
 		// Или до тех пор, пока следующий блок не будет уже отрисован
 		// Это нужно на случай операторов по типу continue
-		while (block.next.level >= this.level && block.next.shape == null)
+		while (node.getNext().getLevel() >= this.level && node.getNext().getShape() == null)
 		{
 			// Запоминаем форму текущего блока, она пригодится при отрисовке стрелочки
-			block = this.placeNextBlock(block);
+			node = this.placeNextNode(node);
 		}
 
-		if (block.next.shape != null) {
+		if (node.getNext().getShape() != null) {
 			// Если следующий блок уже отрисован
 			// То это значит, что условие совершает прыжок назад
 			// И нужно прорисовать стрелочку
 			// От текущего блока к одному из предыдущих
-			arrow = new Arrow(block.shape.getPointFromCenter(0, 1));
+			arrow = new Arrow(node.getShape().getPointFromCenter(0, 1));
 			this.y += defaultGapY;
 			arrow.addPointFromPrevious(0, defaultGapY);
-			arrow.addPointFromPreviousChangingX(block.next.shape.getXFromCenter(0.5));
-			arrow.addPoint(block.next.shape.getPointFromCenter(0.5, 1));
+			arrow.addPointFromPreviousChangingX(node.getNext().getShape().getXFromCenter(0.5));
+			arrow.addPoint(node.getNext().getShape().getPointFromCenter(0.5, 1));
 			this.layout.addArrow(arrow);
 		} else {
 			// Если первое условие не сработало, значит цикл while был завершен из-за второго условия
 			// И следующий блок имеет другой уровень, то есть его надо будет отрисовать позже
 			// В таком случае, добавляем форму текущего блока в очередь будущего блока
 			// Чтобы при его отрисовке можно было нарисовать эту стрелочку
-			block.next.addToConnectionQueue(block.shape);
+			node.getNext().addToConnectionQueue(node.getShape());
 		}
 	}
 }

@@ -15,7 +15,7 @@ public class Shape
 	public int textOffsetX;
 	public int textOffsetY;
 
-	public Shape (int x, int y, int width, int height, ShapeType type, String text, int textOffsetX, int textOffsetY)
+	public Shape (int x, int y, int width, int height, ShapeType type, String text)
 	{
 		this.x = x;
 		this.y = y;
@@ -23,20 +23,25 @@ public class Shape
 		this.height = height;
 		this.type = type;
 		this.text = text;
+	}
+
+	public Shape (int x, int y, int width, int height, ShapeType type, String text, int textOffsetX, int textOffsetY)
+	{
+		this(x, y, width, height, type, text);
 		this.textOffsetX = textOffsetX;
 		this.textOffsetY = textOffsetY;
 	}
 
-	public Shape (int x, int y, Block block)
+	public Shape (int x, int y, Node node)
 	{
 		this.x = x;
 		this.y = y;
 		this.width = Designer.defaultWidth;
-		this.height = block.height;
-		this.type = block.type;
-		this.text = block.text;
-		this.textOffsetX = block.textOffsetX;
-		this.textOffsetY = block.textOffsetY;
+		this.height = node.getHeight();
+		this.type = node.getType();
+		this.text = node.getText();
+		this.textOffsetX = node.getTextOffsetX();
+		this.textOffsetY = node.getTextOffsetY();
 	}
 
 	public int getXFromCorner (double xk)

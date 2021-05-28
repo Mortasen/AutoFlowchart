@@ -2,6 +2,7 @@ package org.autoflowchart.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Layout
 {
@@ -17,4 +18,20 @@ public class Layout
 	{
 		this.arrows.add(arrow);
 	}
+
+
+	@Override
+	public boolean equals (Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Layout layout = (Layout) o;
+		return Objects.equals(shapes, layout.shapes) && Objects.equals(arrows, layout.arrows);
+	}
+
+	/*@Override
+	public int hashCode ()
+	{
+		return Objects.hash(shapes, arrows);
+	}*/
 }

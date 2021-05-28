@@ -3,6 +3,7 @@ package org.autoflowchart.objects;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Arrow
 {
@@ -52,5 +53,20 @@ public class Arrow
 	{
 		int x = this.xPoints.get(this.xPoints.size() - 1);
 		this.addPoint(x, newY);
+	}
+
+	@Override
+	public boolean equals (Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Arrow arrow = (Arrow) o;
+		return Objects.equals(xPoints, arrow.xPoints) && Objects.equals(yPoints, arrow.yPoints);
+	}
+
+	@Override
+	public int hashCode ()
+	{
+		return Objects.hash(xPoints, yPoints);
 	}
 }
