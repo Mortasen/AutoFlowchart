@@ -10,12 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DesignerTest
 {
+	private final Saver saver = new Saver();
 
 	@Test
-	void generateLayout () throws IOException
+	void generateLayout1 () throws IOException
 	{
-		Saver saver = new Saver();
-
 		System.out.println("Test 1 : 3 linear nodes");
 
 		Designer designer = new Designer();
@@ -55,55 +54,59 @@ class DesignerTest
 		arrow3.addPoint(shape4.getPointFromCenter(0, -1));
 		expected.addArrow(arrow3);
 
-		Layout actual = designer.generateLayout(node0);
-
 		saver.save(expected, "src/test/resources/expected_1.png");
+
+		Layout actual = designer.generateLayout(node0);
 		saver.save(actual, "src/test/resources/actual_1.png");
 
 		assertEquals(expected, actual);
+	}
 
+	@Test
+	void generateLayout2 () throws IOException
+	{
 		System.out.println("Test 2 : 4 nodes, 1st is condition");
 
-		designer = new Designer();
+		Designer designer = new Designer();
 
-		node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
-		node1 = new Node(100, ShapeType.DIAMOND, "x == 1", 0);
+		Node node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
+		Node node1 = new Node(100, ShapeType.DIAMOND, "x == 1", 0);
 		node0.setNext(node1);
-		node2 = new Node(100, ShapeType.RECT, "x = 0;", 1);
+		Node node2 = new Node(100, ShapeType.RECT, "x = 0;", 1);
 		node1.setNext(node2);
-		node3 = new Node(100, ShapeType.RECT, "x = 1;", 0);
+		Node node3 = new Node(100, ShapeType.RECT, "x = 1;", 0);
 		node1.setNextFalse(node3);
-		node4 = new Node(100, ShapeType.RECT, "x++;", 0);
+		Node node4 = new Node(100, ShapeType.RECT, "x++;", 0);
 		node2.setNext(node4);
 		node3.setNext(node4);
 		Node node5 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
 		node4.setNext(node5);
 
-		expected = new Layout();
-		shape0 = new Shape(0, 0, 300, 100, ShapeType.ROUNDRECT, "main()");
+		Layout expected = new Layout();
+		Shape shape0 = new Shape(0, 0, 300, 100, ShapeType.ROUNDRECT, "main()");
 		expected.addShape(shape0);
-		shape1 = new Shape(0, 200, 300, 100, ShapeType.DIAMOND, "x == 1");
+		Shape shape1 = new Shape(0, 200, 300, 100, ShapeType.DIAMOND, "x == 1");
 		expected.addShape(shape1);
-		shape2 = new Shape(400, 400, 300, 100, ShapeType.RECT, "x = 0;");
+		Shape shape2 = new Shape(400, 400, 300, 100, ShapeType.RECT, "x = 0;");
 		expected.addShape(shape2);
-		shape3 = new Shape(0, 600, 300, 100, ShapeType.RECT, "x = 1;");
+		Shape shape3 = new Shape(0, 600, 300, 100, ShapeType.RECT, "x = 1;");
 		expected.addShape(shape3);
-		shape4 = new Shape(0, 900, 300, 100, ShapeType.RECT, "x++;");
+		Shape shape4 = new Shape(0, 900, 300, 100, ShapeType.RECT, "x++;");
 		expected.addShape(shape4);
 		Shape shape5 = new Shape(0, 1100, 300, 100, ShapeType.ROUNDRECT, "return;");
 		expected.addShape(shape5);
 
-		arrow0 = new Arrow(shape0.getPointFromCenter(0, 1));
+		Arrow arrow0 = new Arrow(shape0.getPointFromCenter(0, 1));
 		arrow0.addPoint(shape1.getPointFromCenter(0, -1));
 		expected.addArrow(arrow0);
-		arrow1 = new Arrow(shape1.getPointFromCenter(1, 0));
+		Arrow arrow1 = new Arrow(shape1.getPointFromCenter(1, 0));
 		arrow1.addPointFromPreviousChangingX(shape2.getXFromCenter(0));
 		arrow1.addPoint(shape2.getPointFromCenter(0, -1));
 		expected.addArrow(arrow1);
-		arrow2 = new Arrow(shape1.getPointFromCenter(0, 1));
+		Arrow arrow2 = new Arrow(shape1.getPointFromCenter(0, 1));
 		arrow2.addPoint(shape3.getPointFromCenter(0, -1));
 		expected.addArrow(arrow2);
-		arrow3 = new Arrow(shape2.getPointFromCenter(0, 1));
+		Arrow arrow3 = new Arrow(shape2.getPointFromCenter(0, 1));
 		arrow3.addPointFromPreviousChangingY(shape4.getYFromCenter(-1) - 100);
 		arrow3.addPointFromPreviousChangingX(shape4.getXFromCenter(0.5));
 		arrow3.addPoint(shape4.getPointFromCenter(0.5, -1));
@@ -115,15 +118,188 @@ class DesignerTest
 		arrow5.addPoint(shape5.getPointFromCenter(0, -1));
 		expected.addArrow(arrow5);
 
-		actual = designer.generateLayout(node0);
-
 		saver.save(expected, "src/test/resources/expected_2.png");
+
+		Layout actual = designer.generateLayout(node0);
 		saver.save(actual, "src/test/resources/actual_2.png");
 
 		assertEquals(expected, actual);
-
-
 	}
+
+	@Test
+	void generateLayout3 () throws IOException
+	{
+		System.out.println("Test 3 : 5 nodes, with cycle");
+
+		Designer designer = new Designer();
+
+		Node node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
+		Node node1 = new Node(100, ShapeType.RECT, "int i = 0;", 0);
+		node0.setNext(node1);
+		Node node2 = new Node(100, ShapeType.DIAMOND, "i < 5", 0);
+		node1.setNext(node2);
+		Node node3 = new Node(100, ShapeType.RECT, "x += i;", 1);
+		node2.setNext(node3);
+		Node node4 = new Node(100, ShapeType.RECT, "i++;", 1);
+		node3.setNext(node4);
+		node4.setNext(node2);
+		Node node5 = new Node(100, ShapeType.RECT, "print(i);", 0);
+		node2.setNextFalse(node5);
+		Node node6 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
+		node5.setNext(node6);
+
+		Layout expected = new Layout();
+		Shape shape0 = new Shape(0, 0, 300, 100, ShapeType.ROUNDRECT, "main()");
+		expected.addShape(shape0);
+		Shape shape1 = new Shape(0, 200, 300, 100, ShapeType.RECT, "int i = 0;");
+		expected.addShape(shape1);
+		Shape shape2 = new Shape(0, 400, 300, 100, ShapeType.DIAMOND, "i < 5");
+		expected.addShape(shape2);
+		Shape shape3 = new Shape(400, 600, 300, 100, ShapeType.RECT, "x += i;");
+		expected.addShape(shape3);
+		Shape shape4 = new Shape(400, 800, 300, 100, ShapeType.RECT, "i++;");
+		expected.addShape(shape4);
+		Shape shape5 = new Shape(0, 1100, 300, 100, ShapeType.RECT, "print(i);");
+		expected.addShape(shape5);
+		Shape shape6 = new Shape(0, 1300, 300, 100, ShapeType.ROUNDRECT, "return;");
+		expected.addShape(shape6);
+
+		Arrow arrow0 = new Arrow(shape0.getPointFromCenter(0, 1));
+		arrow0.addPoint(shape1.getPointFromCenter(0, -1));
+		expected.addArrow(arrow0);
+		Arrow arrow1 = new Arrow(shape1.getPointFromCenter(0, 1));
+		arrow1.addPoint(shape2.getPointFromCenter(0, -1));
+		expected.addArrow(arrow1);
+		Arrow arrow2 = new Arrow(shape2.getPointFromCenter(1, 0));
+		arrow2.addPointFromPreviousChangingX(shape3.getXFromCenter(0));
+		arrow2.addPoint(shape3.getPointFromCenter(0, -1));
+		expected.addArrow(arrow2);
+		Arrow arrow3 = new Arrow(shape3.getPointFromCenter(0, 1));
+		arrow3.addPoint(shape4.getPointFromCenter(0, -1));
+		expected.addArrow(arrow3);
+		Arrow arrow4 = new Arrow(shape4.getPointFromCenter(0, 1));
+		arrow4.addPointFromPrevious(0, 100);
+		arrow4.addPointFromPreviousChangingX(shape2.getXFromCenter(0.5));
+		arrow4.addPoint(shape2.getPointFromCenter(0.5, 1));
+		expected.addArrow(arrow4);
+		Arrow arrow5 = new Arrow(shape2.getPointFromCenter(0, 1));
+		arrow5.addPoint(shape5.getPointFromCenter(0, -1));
+		expected.addArrow(arrow5);
+		Arrow arrow6 = new Arrow(shape5.getPointFromCenter(0, 1));
+		arrow6.addPoint(shape6.getPointFromCenter(0, -1));
+		expected.addArrow(arrow6);
+
+		saver.save(expected, "src/test/resources/expected_3.png");
+
+		Layout actual = designer.generateLayout(node0);
+		saver.save(actual, "src/test/resources/actual_3.png");
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void generateLayout4 () throws IOException
+	{
+		System.out.println("Test 4 : 7 nodes, cycle with continue and break");
+
+		Designer designer = new Designer();
+
+		Node node0 = new Node("main()", 0);
+		Node node1 = new Node("int i = 0;", 0);
+		node0.setNext(node1);
+		Node node2 = new Node("true", 0);
+		node1.setNext(node2);
+		Node node3 = new Node("i % 2 == 0", 1);
+		node2.setNext(node3);
+		Node node4 = new Node("x++;", 2);
+		node3.setNext(node4);
+		Node node5 = new Node("x > 16", 1);
+		node4.setNext(node5);
+		Node node6 = new Node("i++;", 1);
+		node3.setNextFalse(node6);
+		node5.setNextFalse(node6);
+		Node node7 = new Node("print(x);", 0);
+		node2.setNextFalse(node7);
+		node5.setNext(node7);
+		Node node8 = new Node("return;", 0);
+		node7.setNext(node8);
+
+		Layout expected = new Layout();
+		Shape shape0 = new Shape(0, 0, 300, 100, ShapeType.ROUNDRECT, "main()");
+		expected.addShape(shape0);
+		Shape shape1 = new Shape(0, 200, 300, 100, ShapeType.RECT, "int i = 0;");
+		expected.addShape(shape1);
+		Shape shape2 = new Shape(0, 400, 300, 100, ShapeType.DIAMOND, "true");
+		expected.addShape(shape2);
+		Shape shape3 = new Shape(400, 600, 300, 100, ShapeType.DIAMOND, "i % 2 == 0");
+		expected.addShape(shape3);
+		Shape shape4 = new Shape(800, 900, 300, 100, ShapeType.RECT, "x++;");
+		expected.addShape(shape4);
+		Shape shape5 = new Shape(400, 1200, 300, 100, ShapeType.DIAMOND, "x > 16");
+		expected.addShape(shape5);
+		Shape shape6 = new Shape(400, 1500, 300, 100, ShapeType.RECT, "i++;");
+		expected.addShape(shape6);
+		Shape shape7 = new Shape(0, 1900, 300, 100, ShapeType.RECT, "print(x);");
+		expected.addShape(shape7);
+		Shape shape8 = new Shape(0, 2100, 300, 100, ShapeType.ROUNDRECT, "return;");
+		expected.addShape(shape8);
+
+		Arrow arrow1 = new Arrow(shape0.getPointFromCenter(0, 1));
+		arrow1.addPoint(shape1.getPointFromCenter(0, -1));
+		expected.addArrow(arrow1);
+		Arrow arrow2 = new Arrow(shape1.getPointFromCenter(0, 1));
+		arrow2.addPoint(shape2.getPointFromCenter(0, -1));
+		expected.addArrow(arrow2);
+		Arrow arrow3 = new Arrow(shape2.getPointFromCenter(1, 0));
+		arrow3.addPointFromPreviousChangingX(shape3.getXFromCenter(0));
+		arrow3.addPoint(shape3.getPointFromCenter(0, -1));
+		expected.addArrow(arrow3);
+		Arrow arrow4 = new Arrow(shape3.getPointFromCenter(1, 0));
+		arrow4.addPointFromPreviousChangingX(shape4.getXFromCenter(0));
+		arrow4.addPoint(shape4.getPointFromCenter(0, -1));
+		expected.addArrow(arrow4);
+		Arrow arrow5 = new Arrow(shape4.getPointFromCenter(0, 1));
+		arrow5.addPointFromPrevious(0, 100);
+		arrow5.addPointFromPreviousChangingX(shape5.getXFromCenter(0.5));
+		arrow5.addPoint(shape5.getPointFromCenter(0.5, -1));
+		expected.addArrow(arrow5);
+		Arrow arrow6 = new Arrow(shape5.getPointFromCenter(0, 1));
+		arrow6.addPoint(shape6.getPointFromCenter(0, -1));
+		expected.addArrow(arrow6);
+		Arrow arrow7 = new Arrow(shape3.getPointFromCenter(0, 1));
+		arrow7.addPointFromPrevious(0, 100);
+		arrow7.addPointFromPrevious(650, 0);
+		arrow7.addPointFromPreviousChangingY(shape6.getYFromCenter(-1) - 100);
+		arrow7.addPointFromPreviousChangingX(shape6.getXFromCenter(0.5));
+		arrow7.addPoint(shape6.getPointFromCenter(0.5, -1));
+		expected.addArrow(arrow7);
+		Arrow arrow8 = new Arrow(shape6.getPointFromCenter(0, 1));
+		arrow8.addPointFromPrevious(0, 100);
+		arrow8.addPointFromPreviousChangingX(shape2.getXFromCenter(0.5));
+		arrow8.addPoint(shape2.getPointFromCenter(0.5, 1));
+		expected.addArrow(arrow8);
+		Arrow arrow9 = new Arrow(shape5.getPointFromCenter(1, 0));
+		arrow9.addPointFromPrevious(100, 0);
+		arrow9.addPointFromPreviousChangingY(shape7.getYFromCenter(-1) - 100);
+		arrow9.addPointFromPreviousChangingX(shape7.getXFromCenter(0.5));
+		arrow9.addPoint(shape7.getPointFromCenter(0.5, -1));
+		expected.addArrow(arrow9);
+		Arrow arrow10 = new Arrow(shape2.getPointFromCenter(0, 1));
+		arrow10.addPoint(shape7.getPointFromCenter(0, -1));
+		expected.addArrow(arrow10);
+		Arrow arrow11 = new Arrow(shape7.getPointFromCenter(0, 1));
+		arrow11.addPoint(shape8.getPointFromCenter(0, -1));
+		expected.addArrow(arrow11);
+
+		saver.save(expected, "src/test/resources/expected_4.png");
+
+		Layout actual = designer.generateLayout(node0);
+		saver.save(actual, "src/test/resources/actual_4.png");
+
+		assertEquals(expected, actual);
+	}
+
+
 
 	@Test
 	void placeNextBlock ()

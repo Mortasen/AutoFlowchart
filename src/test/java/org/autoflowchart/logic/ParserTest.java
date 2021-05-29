@@ -35,7 +35,7 @@ class ParserTest
 
 		Node expected0 = new Node("main()", 0);
 		Node expected1 = new Node("int a = 1;", 0);
-		expected0.setNext(expected0);
+		expected0.setNext(expected1);
 		Node expected2 = new Node("int b = 2;", 0);
 		expected1.setNext(expected2);
 		Node expected3 = new Node("int c = a + b;", 0);
@@ -75,6 +75,7 @@ class ParserTest
 
 		expected0 = new Node("main()", 0);
 		expected1 = new Node("x == 1", 0);
+		expected0.setNext(expected1);
 		expected2 = new Node("x = 0;", 1);
 		expected1.setNext(expected2);
 		expected3 = new Node("x = 1;", 0);
@@ -125,6 +126,7 @@ class ParserTest
 
 		expected0 = new Node("main()", 0);
 		expected1 = new Node("int i = 0;", 0);
+		expected0.setNext(expected1);
 		expected2 = new Node("i < 5", 0);
 		expected1.setNext(expected2);
 		expected3 = new Node("x += i;", 1);
@@ -184,6 +186,7 @@ class ParserTest
 
 		expected0 = new Node("main()", 0);
 		expected1 = new Node("int i = 0;", 0);
+		expected0.setNext(expected1);
 		expected2 = new Node("true", 0);
 		expected1.setNext(expected2);
 		expected3 = new Node("i % 2 == 0", 1);
