@@ -1,5 +1,7 @@
 package org.autoflowchart.objects;
 
+import org.autoflowchart.utils.NotImplementedException;
+
 import java.util.ArrayList;
 
 class Elements extends Element

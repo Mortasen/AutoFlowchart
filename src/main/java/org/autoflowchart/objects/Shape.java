@@ -1,6 +1,7 @@
 package org.autoflowchart.objects;
 
 import org.autoflowchart.logic.Designer;
+import org.autoflowchart.utils.Point;
 
 import java.util.Objects;
 

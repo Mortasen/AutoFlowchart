@@ -204,24 +204,25 @@ class DesignerTest
 
 		Designer designer = new Designer();
 
-		Node node0 = new Node("main()", 0);
-		Node node1 = new Node("int i = 0;", 0);
+		Node node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
+		Node node1 = new Node(100, ShapeType.RECT, "int i = 0;", 0);
 		node0.setNext(node1);
-		Node node2 = new Node("true", 0);
+		Node node2 = new Node(100, ShapeType.DIAMOND, "true", 0);
 		node1.setNext(node2);
-		Node node3 = new Node("i % 2 == 0", 1);
+		Node node3 = new Node(100, ShapeType.DIAMOND, "i % 2 == 0", 1);
 		node2.setNext(node3);
-		Node node4 = new Node("x++;", 2);
+		Node node4 = new Node(100, ShapeType.RECT, "x++;", 2);
 		node3.setNext(node4);
-		Node node5 = new Node("x > 16", 1);
+		Node node5 = new Node(100, ShapeType.DIAMOND, "x > 16", 1);
 		node4.setNext(node5);
-		Node node6 = new Node("i++;", 1);
+		Node node6 = new Node(100, ShapeType.RECT, "i++;", 1);
 		node3.setNextFalse(node6);
 		node5.setNextFalse(node6);
-		Node node7 = new Node("print(x);", 0);
+		node6.setNext(node2);
+		Node node7 = new Node(100, ShapeType.RECT, "print(x);", 0);
 		node2.setNextFalse(node7);
 		node5.setNext(node7);
-		Node node8 = new Node("return;", 0);
+		Node node8 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
 		node7.setNext(node8);
 
 		Layout expected = new Layout();

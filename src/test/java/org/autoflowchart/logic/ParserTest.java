@@ -198,6 +198,7 @@ class ParserTest
 		expected6 = new Node("i++;", 1);
 		expected3.setNextFalse(expected6);
 		expected5.setNextFalse(expected6);
+		expected6.setNext(expected2);
 		Node expected7 = new Node("print(x);", 0);
 		expected2.setNextFalse(expected7);
 		expected5.setNext(expected7);
@@ -225,5 +226,6 @@ class ParserTest
 		assertEquals(expected8, actual8);
 		assertSame(actual3.getNextFalse(), actual6);
 		assertSame(actual5.getNext(), actual7);
+		assertSame(actual6.getNext(), actual2);
 	}
 }

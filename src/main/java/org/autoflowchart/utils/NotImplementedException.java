@@ -1,4 +1,4 @@
-package org.autoflowchart.objects;
+package org.autoflowchart.utils;
 
 public class NotImplementedException extends RuntimeException {
 
