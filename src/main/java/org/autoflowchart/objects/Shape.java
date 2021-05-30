@@ -16,12 +16,17 @@ public class Shape
 	public int textOffsetX;
 	public int textOffsetY;
 
-	public Shape (int x, int y, int width, int height, ShapeType type, String text)
+	public Shape (int x, int y, int width, int height)
 	{
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+	}
+
+	public Shape (int x, int y, int width, int height, ShapeType type, String text)
+	{
+		this(x, y, width, height);
 		this.type = type;
 		this.text = text;
 	}
