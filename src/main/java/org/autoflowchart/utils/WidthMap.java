@@ -100,6 +100,7 @@ public class WidthMap
 
 		Integer oldWidth = null, newWidth;
 		Integer prevPoint = this.findPreviousPoint(startPoint);
+		boolean nativeLine = true;
 
 		for (Integer point : points)
 		{
@@ -107,19 +108,25 @@ public class WidthMap
 			newWidth = arrowMap.getWidth(point);
 
 			if (newWidth > oldWidth) {
+				nativeLine = false;
 				if (newWidth != this.getWidth(prevPoint))
 					this.addPoint(point, newWidth);
 				else
 					this.removePoint(point);
-			}
+			} else if ((nativeLine && this.hasPoint(point)) || (!nativeLine && arrowMap.hasPoint(point))) {
+				this.addPoint(point, oldWidth);
+			} else if (oldWidth == this.getWidth(prevPoint) && !prevPoint.equals(point))
+				this.removePoint(point);
+			else
+				nativeLine = true;
 
 			prevPoint = point;
-			point = this.findNextPoint(prevPoint);
 		}
 
 		if (!this.hasPoint(endPoint))
 			if (oldWidth != null)
-				this.addPoint(endPoint, oldWidth);
+				if (oldWidth != this.getWidth(prevPoint))
+					this.addPoint(endPoint, oldWidth);
 	}
 
 	private void addPoint (int y, int width)
