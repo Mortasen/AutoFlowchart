@@ -992,7 +992,8 @@ class WidthMapTest
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 100,
 				100, 300,
-				500, 100
+				500, 100,
+				600, 0
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -1122,7 +1123,7 @@ class WidthMapTest
 		map.addArrow(arrow);
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
-				0, 1000,
+				0, 100,
 				100, 300,
 				500, 100
 		));

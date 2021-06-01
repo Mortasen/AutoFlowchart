@@ -17,11 +17,14 @@ public class WidthMap
 	public WidthMap (Arrow arrow)
 	{
 		if (arrow.xPoints.size() > 0) {
-			for (int i = 0; i < arrow.xPoints.size(); i++) {
+			int i;
+			for (i = 0; i < arrow.xPoints.size() - 1; i++) {
 				int x = arrow.xPoints.get(i);
 				int y = arrow.yPoints.get(i);
 				this.addPoint(y, x);
 			}
+			int y = arrow.yPoints.get(i);
+			this.addPoint(y, 0);
 		} else
 			this.map.put(0, 0);
 	}
@@ -98,35 +101,63 @@ public class WidthMap
 		points.addAll(arrowPoints);
 		List<Integer> pointsList = new ArrayList<>(points);
 
-		Integer oldWidth = null, newWidth;
+		Integer oldWidth = null;
 		Integer prevPoint = this.findPreviousPoint(startPoint);
-		boolean nativeLine = true;
 
-		for (Integer point : points)
+		/*for (Integer point : points)
 		{
 			oldWidth = this.getWidth(point);
 			newWidth = arrowMap.getWidth(point);
 
 			if (newWidth > oldWidth) {
-				nativeLine = false;
+				newLine = false;
 				if (newWidth != this.getWidth(prevPoint))
 					this.addPoint(point, newWidth);
 				else
 					this.removePoint(point);
-			} else if ((nativeLine && this.hasPoint(point)) || (!nativeLine && arrowMap.hasPoint(point))) {
+			} else if ((newLine && this.hasPoint(point)) || (!newLine && arrowMap.hasPoint(point))) {
 				this.addPoint(point, oldWidth);
 			} else if (oldWidth == this.getWidth(prevPoint) && !prevPoint.equals(point))
 				this.removePoint(point);
 			else
-				nativeLine = true;
+				newLine = true;
 
 			prevPoint = point;
-		}
+		}*/
 
-		if (!this.hasPoint(endPoint))
-			if (oldWidth != null)
-				if (oldWidth != this.getWidth(prevPoint))
-					this.addPoint(endPoint, oldWidth);
+		int lastNativeWidth = 0;
+		boolean onNewLine = false;
+
+		for (Integer point : points) {
+			if (this.hasPoint(point))
+				lastNativeWidth = this.getWidth(point);
+
+			int curWidth, newWidth;
+			if (onNewLine) {
+				curWidth = arrowMap.getWidth(point);
+				newWidth = lastNativeWidth;
+			} else {
+				curWidth = this.getWidth(point);
+				newWidth = arrowMap.getWidth(point);
+			}
+
+			if (newWidth > curWidth) {
+				if (onNewLine) {
+					if (this.getWidth(point) != lastNativeWidth)
+						this.addPoint(point, lastNativeWidth);
+				} else
+					curWidth = newWidth;
+				onNewLine = !onNewLine;
+			}
+
+			if (onNewLine) {
+				if (arrowMap.hasPoint(point) && this.getWidth(point) != curWidth) {
+					this.addPoint(point, curWidth);
+				} else
+					this.removePoint(point);
+			}
+
+		}
 	}
 
 	private void addPoint (int y, int width)
@@ -218,7 +249,7 @@ public class WidthMap
 		return chosenKeySet;
 	}
 
-	private int getWidth (int y)
+	private Integer getWidth (int y)
 	{
 		Integer key = this.findPoint(y);
 		return this.map.get(key);
