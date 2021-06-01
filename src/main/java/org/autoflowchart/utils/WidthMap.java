@@ -145,18 +145,20 @@ public class WidthMap
 				if (onNewLine) {
 					if (this.getWidth(point) != lastNativeWidth)
 						this.addPoint(point, lastNativeWidth);
-				} else
+					else if (newWidth == this.getWidth(this.findPreviousPoint(point)))
+						this.removePoint(point);
+				} else {
 					curWidth = newWidth;
+				}
 				onNewLine = !onNewLine;
 			}
 
 			if (onNewLine) {
-				if (arrowMap.hasPoint(point) && this.getWidth(point) != curWidth) {
+				if (arrowMap.hasPoint(point) && this.getWidth(this.findPreviousPoint(point)) != curWidth) {
 					this.addPoint(point, curWidth);
 				} else
 					this.removePoint(point);
 			}
-
 		}
 	}
 
@@ -196,7 +198,7 @@ public class WidthMap
 		Set<Integer> keySet = this.map.keySet();
 		Integer prev = 0;
 		for (Integer key : keySet) {
-			if (key > y)
+			if (key >= y)
 				return prev;
 			prev = key;
 		}
@@ -249,7 +251,7 @@ public class WidthMap
 		return chosenKeySet;
 	}
 
-	private Integer getWidth (int y)
+	private int getWidth (int y)
 	{
 		Integer key = this.findPoint(y);
 		return this.map.get(key);
@@ -258,5 +260,29 @@ public class WidthMap
 	public Map<Integer, Integer> getMap ()
 	{
 		return this.map;
+	}
+
+	public int findMaxWidth (int from, int to)
+	{
+		Set<Integer> points = this.getPoints(from, to);
+		int maxWidth = 0;
+		for (Integer point : points) {
+			int width = this.getWidth(point);
+			if (width > maxWidth)
+				maxWidth = width;
+		}
+		return maxWidth;
+	}
+
+	public int findMinWidth (int from, int to)
+	{
+		Set<Integer> points = this.getPoints(from, to);
+		int minWidth = Integer.MAX_VALUE;
+		for (Integer point : points) {
+			int width = this.getWidth(point);
+			if (width < minWidth)
+				minWidth = width;
+		}
+		return minWidth;
 	}
 }

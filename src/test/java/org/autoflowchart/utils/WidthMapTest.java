@@ -1309,8 +1309,8 @@ class WidthMapTest
 
 		Arrow arrow = new Arrow(0, 0);
 		arrow.addPoint(0, 100);
-		arrow.addPoint(200, 100);
-		arrow.addPoint(200, 500);
+		arrow.addPoint(300, 100);
+		arrow.addPoint(300, 500);
 		arrow.addPoint(0, 500);
 		arrow.addPoint(0, 600);
 
@@ -1426,7 +1426,8 @@ class WidthMapTest
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 300,
-				400, 100
+				400, 100,
+				500, 0
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -1552,7 +1553,7 @@ class WidthMapTest
 		map.addArrow(arrow);
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
-				0, 1000,
+				0, 100,
 				100, 300,
 				500, 100
 		));
@@ -1636,8 +1637,7 @@ class WidthMapTest
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 100,
-				100, 300,
-				300, 400
+				100, 400
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -1719,8 +1719,7 @@ class WidthMapTest
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 0,
-				100, 200,
-				300, 300
+				100, 300
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -1738,8 +1737,8 @@ class WidthMapTest
 
 		Arrow arrow = new Arrow(0, 0);
 		arrow.addPoint(0, 100);
-		arrow.addPoint(200, 100);
-		arrow.addPoint(200, 500);
+		arrow.addPoint(300, 100);
+		arrow.addPoint(300, 500);
 		arrow.addPoint(0, 500);
 		arrow.addPoint(0, 600);
 
@@ -1802,8 +1801,7 @@ class WidthMapTest
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 100,
-				100, 200,
-				300, 300
+				100, 300
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -1830,7 +1828,7 @@ class WidthMapTest
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 200,
-				300, 300
+				100, 300
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -1856,7 +1854,7 @@ class WidthMapTest
 		map.addArrow(arrow);
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
-				0, 1000,
+				0, 100,
 				100, 300,
 				500, 100
 		));
@@ -1941,7 +1939,7 @@ class WidthMapTest
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 100,
 				100, 300,
-				300, 400
+				500, 400
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -2024,7 +2022,7 @@ class WidthMapTest
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 0,
 				100, 200,
-				300, 300
+				500, 300
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -2042,8 +2040,8 @@ class WidthMapTest
 
 		Arrow arrow = new Arrow(0, 0);
 		arrow.addPoint(0, 100);
-		arrow.addPoint(200, 100);
-		arrow.addPoint(200, 500);
+		arrow.addPoint(300, 100);
+		arrow.addPoint(300, 500);
 		arrow.addPoint(0, 500);
 		arrow.addPoint(0, 600);
 
@@ -2107,7 +2105,7 @@ class WidthMapTest
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 100,
 				100, 200,
-				300, 300
+				500, 300
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
@@ -2134,11 +2132,107 @@ class WidthMapTest
 
 		Map<Integer, Integer> expected = new TreeMap<>(Map.of(
 				0, 200,
-				300, 300
+				500, 300
 		));
 
 		Map<Integer, Integer> actual = map.getMap();
 
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void findMaxWidth1 ()
+	{
+		map = new WidthMap(Map.of(
+				0, 100,
+				100, 0,
+				200, 100,
+				300, 200,
+				400, 100
+		));
+
+		int expected = 200;
+		int actual = map.findMaxWidth(200, 500);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void findMaxWidth2 ()
+	{
+		map = new WidthMap(Map.of(
+				0, 100,
+				100, 0,
+				200, 100,
+				300, 200,
+				400, 100
+		));
+
+		int expected = 200;
+		int actual = map.findMaxWidth(200, 300);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void findMaxWidth3 ()
+	{
+		map = new WidthMap(Map.of(
+				0, 100,
+				100, 0,
+				200, 100,
+				300, 200,
+				400, 100
+		));
+
+		int expected = 200;
+		int actual = map.findMaxWidth(300, 500);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void findMinWidth1 ()
+	{
+		map = new WidthMap(Map.of(
+				0, 100,
+				100, 0,
+				200, 100,
+				300, 200,
+				400, 100
+		));
+
+		int expected = 0;
+		int actual = map.findMinWidth(0, 200);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void findMinWidth2 ()
+	{
+		map = new WidthMap(Map.of(
+				0, 100,
+				100, 0,
+				200, 100,
+				300, 200,
+				400, 100
+		));
+
+		int expected = 0;
+		int actual = map.findMinWidth(0, 100);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void findMinWidth3 ()
+	{
+		map = new WidthMap(Map.of(
+				0, 100,
+				100, 0,
+				200, 100,
+				300, 200,
+				400, 100
+		));
+
+		int expected = 0;
+		int actual = map.findMinWidth(100, 200);
 		assertEquals(expected, actual);
 	}
 }
