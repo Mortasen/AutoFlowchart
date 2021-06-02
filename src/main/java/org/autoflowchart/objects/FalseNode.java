@@ -1,5 +1,7 @@
 package org.autoflowchart.objects;
 
+import org.autoflowchart.utils.Point;
+
 public class FalseNode extends Element
 {
 	private Node node;
@@ -18,5 +20,15 @@ public class FalseNode extends Element
 	public Node getNode ()
 	{
 		return this.node;
+	}
+
+	public Shape getShape ()
+	{
+		return this.node.getShape();
+	}
+
+	public Point getConnectionPoint ()
+	{
+		return this.node.getShape().getPointFromCenter(1, 0);
 	}
 }

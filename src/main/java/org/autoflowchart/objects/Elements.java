@@ -1,6 +1,7 @@
 package org.autoflowchart.objects;
 
 import org.autoflowchart.utils.NotImplementedException;
+import org.autoflowchart.utils.Point;
 
 import java.util.ArrayList;
 
@@ -27,5 +28,13 @@ class Elements extends Element
 	{
 		for (Element element : this.elements)
 			element.setNext(next);
+	}
+
+	public Shape getShape () {
+		throw new NotImplementedException();
+	}
+
+	public Point getConnectionPoint () {
+		throw new NotImplementedException();
 	}
 }

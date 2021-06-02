@@ -1,11 +1,13 @@
 package org.autoflowchart.objects;
 
 import org.autoflowchart.logic.Designer;
+import org.autoflowchart.utils.Point;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +21,7 @@ public class Node extends Element
 	private int textOffsetX;
 	private int textOffsetY;
 	private Shape shape;
-	public List<Shape> connectionQueue;
+	public List<Element> connectionQueue;
 
 
 
@@ -34,6 +36,11 @@ public class Node extends Element
 	{
 		this(text);
 		this.setLevel(level);
+	}
+
+	public Node (String text, int level, boolean nextJump) {
+		this(text, level);
+		this.nextJump = nextJump;
 	}
 
 	public Node (String text, int level, Node next, Node nextFalse)
@@ -90,6 +97,24 @@ public class Node extends Element
 			this.setNextFalse(next);
 	}
 
+	public boolean isNextJump ()
+	{
+		return nextJump;
+	}
+
+	public void setNextJump (boolean nextJump)
+	{
+		if (this.next == null && this.getNextFalse() == null) {
+			this.nextJump = nextJump;
+		} else
+			this.createAndGetFalseNode().setNextJump(nextJump);
+	}
+
+	public void setSetNextJump (boolean nextJump)
+	{
+		this.nextJump = nextJump;
+	}
+
 	public String getText ()
 	{
 		return text;
@@ -108,6 +133,12 @@ public class Node extends Element
 	public void setFalseNode (FalseNode falseNode)
 	{
 		this.falseNode = falseNode;
+	}
+
+	public FalseNode createAndGetFalseNode () {
+		if (this.falseNode == null)
+			this.falseNode = new FalseNode(this);
+		return this.falseNode;
 	}
 
 	public int getLevel ()
@@ -134,11 +165,11 @@ public class Node extends Element
 			this.falseNode = new FalseNode(this, next);
 	}
 
-	public void addToConnectionQueue (Shape shape)
+	public void addToConnectionQueue (Element element)
 	{
 		if (this.connectionQueue == null)
-			this.connectionQueue = new ArrayList<Shape>();
-		this.connectionQueue.add(shape);
+			this.connectionQueue = new LinkedList<Element>();
+		this.connectionQueue.add(element);
 	}
 
 	@Override
@@ -147,7 +178,7 @@ public class Node extends Element
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Node node = (Node) o;
-		return height == node.height && level == node.level && type == node.type && Objects.equals(text, node.text) && Objects.equals(shape, node.shape);
+		return nextJump == node.nextJump && height == node.height && level == node.level && type == node.type && Objects.equals(text, node.text) && Objects.equals(shape, node.shape);
 	}
 
 	public boolean completelyEquals (Object o)
@@ -177,9 +208,9 @@ public class Node extends Element
 		double height = textRect.getHeight();
 		String text;
 
-		if (width >= Designer.defaultWidth) {
+		if (width >= Designer.DEFAULT_WIDTH) {
 			double widthPerSymbol = (width / line1.length());
-			double breakPositionK = Designer.defaultWidth / width;
+			double breakPositionK = Designer.DEFAULT_WIDTH / width;
 			int maxSymbols = (int)(line1.length() * breakPositionK - 1);
 			String line2 = line1.substring(maxSymbols);
 			if (line2.length() > maxSymbols)
@@ -194,8 +225,8 @@ public class Node extends Element
 		} else
 			text = line1;
 
-		int textOffsetX = (int)(Designer.defaultWidth / 2 - width / 2);
-		int textOffsetY = (int)(Designer.defaultHeight / 2 - height / 2);
+		int textOffsetX = (int)(Designer.DEFAULT_WIDTH / 2 - width / 2);
+		int textOffsetY = (int)(Designer.DEFAULT_HEIGHT / 2 - height / 2);
 
 		ShapeType type;
 		if (this.getNextFalse() != null)
@@ -207,7 +238,7 @@ public class Node extends Element
 		blockDEPRECATED.textOffsetX = textOffsetX;
 		blockDEPRECATED.textOffsetY = textOffsetY;*/
 
-		this.height = Designer.defaultHeight;
+		this.height = Designer.DEFAULT_HEIGHT;
 		this.type = type;
 		this.text = text;
 		this.level = level;
@@ -263,5 +294,10 @@ public class Node extends Element
 	public void setShape (Shape shape)
 	{
 		this.shape = shape;
+	}
+
+	public Point getConnectionPoint ()
+	{
+		return this.shape.getPointFromCenter(0, 1);
 	}
 }

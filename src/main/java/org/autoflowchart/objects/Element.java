@@ -4,6 +4,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.*;
 import org.autoflowchart.utils.NotImplementedException;
+import org.autoflowchart.utils.Point;
 
 import java.util.Optional;
 
@@ -11,8 +12,19 @@ public abstract class Element
 {
 	protected Node next;
 	protected int waitsFor;
+	protected boolean nextJump = false;
 
-	abstract Node getNode ();
+	public boolean isNextJump ()
+	{
+		return nextJump;
+	}
+
+	public void setNextJump (boolean nextJump)
+	{
+		this.nextJump = nextJump;
+	}
+
+	public abstract Node getNode ();
 
 	public Node getNext ()
 	{
@@ -112,6 +124,7 @@ public abstract class Element
 	Element connectBreakStmt (BreakStmt breakStmt, Elements waitList, int level)
 	{
 		this.setWaitsFor(1);
+		this.setNextJump(true);
 		waitList.add(this);
 		return null;
 	}
@@ -119,6 +132,7 @@ public abstract class Element
 	Element connectContinueStmt (ContinueStmt continueStmt, Elements waitList, int level)
 	{
 		this.setWaitsFor(2);
+		this.setNextJump(true);
 		waitList.add(this);
 		return null;
 	}
@@ -233,7 +247,7 @@ public abstract class Element
 
 	Element connectIfStmt (IfStmt ifStmt, Elements waitList, int level)
 	{
-		Node conditionNode = new Node(ifStmt.getCondition().toString(), level);
+ 		Node conditionNode = new Node(ifStmt.getCondition().toString(), level);
 		this.setNext(conditionNode);
 		Element lastElement1 = conditionNode.connectStmt(ifStmt.getThenStmt(), waitList, level + 1);
 
@@ -280,4 +294,8 @@ public abstract class Element
 
 		return elements;
 	}
+
+	public abstract Point getConnectionPoint ();
+
+	public abstract Shape getShape ();
 }

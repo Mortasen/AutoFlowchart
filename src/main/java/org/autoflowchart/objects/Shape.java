@@ -42,7 +42,7 @@ public class Shape
 	{
 		this.x = x;
 		this.y = y;
-		this.width = Designer.defaultWidth;
+		this.width = Designer.DEFAULT_WIDTH;
 		this.height = node.getHeight();
 		this.type = node.getType();
 		this.text = node.getText();

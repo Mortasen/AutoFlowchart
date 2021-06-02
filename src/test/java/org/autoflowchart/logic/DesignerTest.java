@@ -73,9 +73,9 @@ class DesignerTest
 		Node node1 = new Node(100, ShapeType.DIAMOND, "x == 1", 0);
 		node0.setNext(node1);
 		Node node2 = new Node(100, ShapeType.RECT, "x = 0;", 1);
-		node1.setNext(node2);
+		node1.setNextFalse(node2);
 		Node node3 = new Node(100, ShapeType.RECT, "x = 1;", 0);
-		node1.setNextFalse(node3);
+		node1.setNext(node3);
 		Node node4 = new Node(100, ShapeType.RECT, "x++;", 0);
 		node2.setNext(node4);
 		node3.setNext(node4);
@@ -139,12 +139,12 @@ class DesignerTest
 		Node node2 = new Node(100, ShapeType.DIAMOND, "i < 5", 0);
 		node1.setNext(node2);
 		Node node3 = new Node(100, ShapeType.RECT, "x += i;", 1);
-		node2.setNext(node3);
+		node2.setNextFalse(node3);
 		Node node4 = new Node(100, ShapeType.RECT, "i++;", 1);
 		node3.setNext(node4);
 		node4.setNext(node2);
 		Node node5 = new Node(100, ShapeType.RECT, "print(i);", 0);
-		node2.setNextFalse(node5);
+		node2.setNext(node5);
 		Node node6 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
 		node5.setNext(node6);
 
@@ -204,24 +204,38 @@ class DesignerTest
 
 		Designer designer = new Designer();
 
+		/* for(int i = 0;true;i++)
+		{
+			if (i % 2 == 0)
+				x++;
+			else
+				continue;
+			if (x > 16)
+				break;
+		}
+		print(x);
+		*/
+
 		Node node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
 		Node node1 = new Node(100, ShapeType.RECT, "int i = 0;", 0);
 		node0.setNext(node1);
 		Node node2 = new Node(100, ShapeType.DIAMOND, "true", 0);
 		node1.setNext(node2);
 		Node node3 = new Node(100, ShapeType.DIAMOND, "i % 2 == 0", 1);
-		node2.setNext(node3);
+		node2.setNextFalse(node3);
 		Node node4 = new Node(100, ShapeType.RECT, "x++;", 2);
-		node3.setNext(node4);
+		node3.setNextFalse(node4);
+		node3.setSetNextJump(true);
 		Node node5 = new Node(100, ShapeType.DIAMOND, "x > 16", 1);
 		node4.setNext(node5);
 		Node node6 = new Node(100, ShapeType.RECT, "i++;", 1);
-		node3.setNextFalse(node6);
-		node5.setNextFalse(node6);
+		node3.setNext(node6);
+		node5.setNext(node6);
 		node6.setNext(node2);
 		Node node7 = new Node(100, ShapeType.RECT, "print(x);", 0);
-		node2.setNextFalse(node7);
-		node5.setNext(node7);
+		node2.setNext(node7);
+		node5.setNextFalse(node7);
+		node5.getFalseNode().setNextJump(true);
 		Node node8 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
 		node7.setNext(node8);
 
