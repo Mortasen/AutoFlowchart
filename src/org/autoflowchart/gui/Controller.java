@@ -2,14 +2,13 @@ package org.autoflowchart.gui;
 
 import javafx.fxml.FXML;
 import javafx.event.Event;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
@@ -96,6 +95,10 @@ public class Controller
 
     @FXML
     public void exportButtonClicked(Event e){
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(new File("src"));
+        File selectedDirectory = directoryChooser.showDialog(primaryStage);
+        String path = selectedDirectory.getAbsolutePath();
         // add export flowchart method here
     }
 
