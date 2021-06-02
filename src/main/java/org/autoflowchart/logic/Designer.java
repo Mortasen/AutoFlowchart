@@ -131,11 +131,14 @@ public class Designer
 					arrow.addPointFromPreviousChangingX(node.getShape().getXFromCenter(0.5));
 					arrow.addPoint(node.getShape().getPointFromCenter(0.5, -1));
 					this.layout.addArrow(arrow);
+					this.widthMap.addArrow(arrow);
 				} else {
 					if (queueNode.getNode() == queueNode) {
 						arrow.addPointFromPrevious(0, DEFAULT_GAP_Y / 2);
 					}
 					arrow.addPointFromPreviousChangingX(x);
+					this.layout.addArrow(arrow);
+					this.widthMap.addArrow(arrow);
 				}
 			}
 		}
