@@ -237,8 +237,10 @@ public abstract class Element
 		{
 			if (element.getWaitsFor() == 1) {
 				elements.add(element);
+				element.setWaitsFor(2);
 			} else if (element.getWaitsFor() == 2) {
 				element.setNext(newCycleNode);
+				element.setWaitsFor(1);
 			}
 		}
 

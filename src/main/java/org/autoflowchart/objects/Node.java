@@ -139,11 +139,14 @@ public class Node extends Element
 	public void setFalseNode (FalseNode falseNode)
 	{
 		this.falseNode = falseNode;
+		this.type = ShapeType.DIAMOND;
 	}
 
 	public FalseNode createAndGetFalseNode () {
-		if (this.falseNode == null)
+		if (this.falseNode == null) {
 			this.falseNode = new FalseNode(this);
+			this.type = ShapeType.DIAMOND;
+		}
 		return this.falseNode;
 	}
 
@@ -167,8 +170,10 @@ public class Node extends Element
 	public void setNextFalse (Node next) {
 		if (this.falseNode != null)
 			this.falseNode.setNext(next);
-		else
+		else {
 			this.falseNode = new FalseNode(this, next);
+			this.type = ShapeType.DIAMOND;
+		}
 	}
 
 	public void addToConnectionQueue (Element element)
@@ -235,7 +240,7 @@ public class Node extends Element
 		int textOffsetY = (int)(Designer.DEFAULT_HEIGHT / 2 - height / 2);
 
 		ShapeType type;
-		if (this.getNextFalse() != null)
+		if (this.getFalseNode() != null)
 			type = ShapeType.DIAMOND;
 		else
 			type = ShapeType.RECT;

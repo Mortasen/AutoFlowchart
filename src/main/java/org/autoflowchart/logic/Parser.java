@@ -7,6 +7,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import org.autoflowchart.objects.Node;
+import org.autoflowchart.objects.ShapeType;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,8 +29,6 @@ public class Parser
 	public static Node parse (String code)
 	{
 		CompilationUnit compilationUnit = JavaParser.parse(code);
-
-		BlockStmt blockStmt = findMain(compilationUnit);
 
 		return assembleFunction(findMain(compilationUnit));
 	}
@@ -68,8 +67,10 @@ public class Parser
 	public static Node assembleFunction (BlockStmt blockStmt)
 	{
 		Node firstNode = new Node("main()");
+		firstNode.setType(ShapeType.ROUNDRECT);
 		Node penultNode = (Node) firstNode.connectStmt(blockStmt, null, 0);
 		Node lastNode = new Node("return;");
+		lastNode.setType(ShapeType.ROUNDRECT);
 		penultNode.setNext(lastNode);
 
 		return firstNode;
