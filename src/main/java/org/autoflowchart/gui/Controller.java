@@ -2,6 +2,8 @@ package org.autoflowchart.gui;
 
 import javafx.fxml.FXML;
 import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -17,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import org.autoflowchart.logic.Drawer;
 import org.autoflowchart.logic.Processor;
+import org.autoflowchart.logic.Saver;
 import org.autoflowchart.objects.Layout;
 
 import java.io.File;
@@ -59,6 +62,7 @@ public class Controller
 
     public Processor processor = new Processor();
     public Drawer drawer = new Drawer();
+    public Saver saver = new Saver();
 
     @FXML
     private void handleExit() {
@@ -67,6 +71,8 @@ public class Controller
 
     @FXML
     public void aboutButtonClicked(Event e) throws IOException {
+        Parent root = (Parent) FXMLLoader.load(this.getClass().getResource("window_about.fxml"));
+
         Stage stage = new Stage();
         stage.setTitle("About");
         stage.getIcons().add(new Image("file:resources/images/icon.png"));
@@ -124,12 +130,15 @@ public class Controller
     }
 
     @FXML
-    public void exportButtonClicked(Event e){
+    public void exportButtonClicked(Event e) throws IOException
+    {
+        Layout layout = this.processor.process(codeTextArea.getText());
+
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setInitialDirectory(new File("src"));
         File selectedDirectory = directoryChooser.showDialog(primaryStage);
         String path = selectedDirectory.getAbsolutePath();
-        // add export flowchart method here
+        saver.save(layout, path);
     }
 
     @FXML

@@ -81,6 +81,11 @@ public class Shape
 	{
 		int x = this.getXFromCenter(xk);
 		int y = this.getYFromCenter(yk);
+		if (this.type == ShapeType.DIAMOND) {
+			yk = yk / 2;
+			double k = Math.abs(Math.abs(xk) - 1);
+			y = (int)(this.y + this.height / 2 + this.height * k * yk);
+		}
 		return new Point(x, y);
 	}
 

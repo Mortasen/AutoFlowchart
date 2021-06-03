@@ -27,11 +27,7 @@ public class Drawer
 		int j = 0;
 		for (Shape shape : layout.shapes) {
 			Arrow arrow = layout.arrows.get(j);
-			int x = shape.x;
-			int y = shape.y;
-			int width = shape.width;
 
-			int height = shape.height;
 			if (shape.type == ShapeType.ROUNDRECT) {
 				DrawObject(shape, custom.terminalShape, custom.terminalColor, custom.terminalOutlineColor, custom.terminalSize);
 
@@ -67,19 +63,19 @@ public class Drawer
 				DrawObject(shape, custom.functionShape, custom.functionColor, custom.functionOutlineColor, custom.functionSize);
 			}
 			g.setFill(Color.BLACK);
-			int textX = shape.x + shape.textOffsetX;
-			int textY = shape.y + shape.textOffsetY;
+			int textX = shape.x + shape.textOffsetX + OFFSET_X;
+			int textY = shape.y + shape.textOffsetY + OFFSET_Y + 8;
 			g.fillText(shape.text, textX, textY);
 		}
 		g.setStroke(Color.rgb(0, 0, 0));
 		for (Arrow arrow : layout.arrows) {
 			double[] xPoints = new double[arrow.xPoints.size()];
 			for (int i = 0; i < arrow.xPoints.size(); i++) {
-				xPoints[i] = arrow.xPoints.get(i);
+				xPoints[i] = arrow.xPoints.get(i) + OFFSET_X;
 			}
 			double[] yPoints = new double[arrow.yPoints.size()];
 			for (int i = 0; i < arrow.yPoints.size(); i++) {
-				yPoints[i] = arrow.yPoints.get(i);
+				yPoints[i] = arrow.yPoints.get(i) + OFFSET_Y;
 			}
 
 			g.strokePolyline(xPoints, yPoints, xPoints.length);
@@ -110,8 +106,8 @@ public class Drawer
 		int b1 = awtLineColor.getBlue();
 		Color LineColor = Color.rgb(r1, g1, b1);
 
-		int x = shape.x;
-		int y = shape.y;
+		int x = shape.x + OFFSET_X;
+		int y = shape.y + OFFSET_Y;
 		int width = shape.width;
 
 		int height = shape.height;
