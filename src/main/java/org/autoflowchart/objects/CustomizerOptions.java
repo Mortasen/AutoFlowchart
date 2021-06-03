@@ -36,30 +36,30 @@ public class CustomizerOptions
 	public ShapeType outputShape;
 	public double outputSize;
 
-	public CustomizerOptions(){
-		terminalColor = new Color(0, 0, 255);
-		terminalOutlineColor = new Color(0, 122, 78);
-	    terminalShape = ShapeType.OVAL;
-		 terminalSize = 2;
+	public CustomizerOptions() {
+		terminalColor = new Color(255, 192, 255);
+		terminalOutlineColor = new Color(0, 0, 0);
+	    terminalShape = ShapeType.ROUNDRECT;
+		 terminalSize = 1;
 
-		 processColor = new Color(103, 224, 43);; //прямоугольник
-		 processOutlineColor = new Color(184, 63, 144);;
-		 processShape = ShapeType.DIAMOND;
-		 processSize = 1.5;
+		 processColor = new Color(192, 255, 192); //прямоугольник
+		 processOutlineColor = new Color(0, 0, 0);
+		 processShape = ShapeType.RECT;
+		 processSize = 1;
 
-		 decisionColor = new Color(10, 10, 42);; //иф
-		 decisionOutlineColor = new Color(88, 88, 179);;
-		 decisionShape = ShapeType.PARALLELOGRAM;
-		 decisionSize = 2;
+		 decisionColor = new Color(255, 255, 192); //иф
+		 decisionOutlineColor = new Color(0, 0, 0);
+		 decisionShape = ShapeType.DIAMOND;
+		 decisionSize = 1;
 
-		 functionColor = new Color(27, 154, 86);; //функция
-		 functionOutlineColor = new Color(52, 52, 8);;
-		 functionShape = ShapeType.HEXAGON;
-		 functionSize = 1.5;
+		 functionColor = new Color(192, 192, 255); //функция
+		 functionOutlineColor = new Color(0, 0, 0);
+		 functionShape = ShapeType.FUNCTION;
+		 functionSize = 1;
 
-		 outputColor = new Color(203, 30, 92);; //паралеллограм
-		 outputOutlineColor = new Color(50, 6, 25);;
-		 outputShape = ShapeType.FUNCTION;
+		 outputColor = new Color(192, 255, 255); //паралеллограм
+		 outputOutlineColor = new Color(0, 0, 0);
+		 outputShape = ShapeType.PARALLELOGRAM;
 		 outputSize = 1;
 
 		OutlineSize = 1.5F;

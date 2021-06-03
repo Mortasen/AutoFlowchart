@@ -11,8 +11,10 @@ public class Saver
 {
 	BufferedImage img = new BufferedImage(1200, 2000, BufferedImage.TYPE_INT_RGB);
 	Graphics2D g = img.createGraphics();
-	public void save (Layout layout, String filepath, CustomizerOptions custom) throws IOException
+
+	public void save (Layout layout, String filepath) throws IOException
 	{
+		CustomizerOptions custom = new CustomizerOptions();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, img.getWidth(), img.getHeight());
 		g.setColor(Color.BLACK);
@@ -27,7 +29,6 @@ public class Saver
 		int j=0;
 		for ( Shape shape : layout.shapes)
 		{
-
 			Arrow arrow = layout.arrows.get(j);
 			int x = shape.x / 2;
 			int y = shape.y / 2;
@@ -90,9 +91,19 @@ public class Saver
 			for (int i = 0; i < arrow.yPoints.size(); i++) { yPoints[i] = arrow.yPoints.get(i) / 2; }
 
 			g.drawPolyline(xPoints, yPoints, xPoints.length);
-			int x = xPoints[xPoints.length - 1];
-			int y = yPoints[yPoints.length - 1];
-			g.drawOval(x - 2, y - 2, 4, 4);
+			int x1 = xPoints[xPoints.length - 2];
+			int y1 = yPoints[yPoints.length - 2];
+			int x2 = xPoints[xPoints.length - 1];
+			int y2 = yPoints[yPoints.length - 1];
+			int dx = x2 - x1;
+			int dy = y2 - y1;
+			double angle = Math.atan2(dy, dx);
+			int lx = (int)(x2 - 20 * Math.cos(angle - Math.PI / 4));
+			int ly = (int)(y2 - 20 * Math.sin(angle - Math.PI / 4));
+			int rx = (int)(x2 - 20 * Math.cos(angle + Math.PI / 4));
+			int ry = (int)(y2 - 20 * Math.sin(angle + Math.PI / 4));
+			g.drawLine(lx, ly, x2, y2);
+			g.drawLine(rx, ry, x2, y2);
 		}
 
 		File outputFile = new File(filepath);
