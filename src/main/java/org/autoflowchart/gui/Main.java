@@ -19,7 +19,7 @@ public class Main extends Application
         primaryStage.setTitle("AutoFlowchart");
         primaryStage.setScene(new Scene(root, 900, 700));
         primaryStage.show();
-        primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
+        primaryStage.getIcons().add(new Image("images/logo.png"));
     }
 
     public static void main(String[] args) {
