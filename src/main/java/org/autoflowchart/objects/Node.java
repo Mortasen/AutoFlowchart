@@ -97,6 +97,11 @@ public class Node extends Element
 			this.setNextFalse(next);
 	}
 
+	public void setSetNext (Node next)
+	{
+		this.next = next;
+	}
+
 	public boolean isNextJump ()
 	{
 		return nextJump;
@@ -123,6 +128,7 @@ public class Node extends Element
 	public void setText (String text)
 	{
 		this.text = text;
+		this.label();
 	}
 
 	public FalseNode getFalseNode ()
@@ -299,5 +305,22 @@ public class Node extends Element
 	public Point getConnectionPoint ()
 	{
 		return this.shape.getPointFromCenter(0, 1);
+	}
+
+	public boolean isSwapped = false;
+
+	public void swapNodes ()
+	{
+		if (this.falseNode != null) {
+			if (this.isSwapped)
+				return;
+			Node temp = this.next;
+			boolean temp2 = this.nextJump;
+			this.next = this.falseNode.next;
+			this.nextJump = this.falseNode.nextJump;
+			this.falseNode.next = temp;
+			this.falseNode.nextJump = temp2;
+			this.isSwapped = true;
+		}
 	}
 }

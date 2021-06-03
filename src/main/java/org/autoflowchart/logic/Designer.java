@@ -29,7 +29,9 @@ public class Designer
 
 	public void placeNode (Node node)
 	{
+		node.swapNodes();
 		Node nextNode = this.createShapeAndConnect(node);
+		nextNode.swapNodes();
 		if (node.getFalseNode() != null)
 			this.placeIfNodes(node);
 
@@ -43,13 +45,11 @@ public class Designer
 			if (node.getFalseNode() != null)
 				this.placeIfNodes(node);
 			nextNode = node.getNext();
+			if (nextNode != null)
+				nextNode.swapNodes();
 		}
 
-
-
 		if (nextNode != null) {
-
-
 			if (nextNode.getShape() != null) {
 				Arrow arrow = new Arrow(node.getConnectionPoint());
 				arrow.addPointFromPrevious(0, DEFAULT_GAP_Y);
@@ -77,6 +77,7 @@ public class Designer
 				if (queueNode.getLevel() == this.level && queueNode.getShape() == null) {
 					this.queue.remove(queueNode);
 					i--;
+					queueNode.swapNodes();
 					this.placeNode(queueNode);
 				}
 			}
