@@ -2,16 +2,23 @@ package org.autoflowchart.gui;
 
 import javafx.fxml.FXML;
 import javafx.event.Event;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
+import org.autoflowchart.logic.Drawer;
+import org.autoflowchart.logic.Processor;
+import org.autoflowchart.objects.Layout;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -46,7 +53,11 @@ public class Controller
     public ColorPicker outputLineColorPicker;
     public TextField outputTextField;
     public TextField outputLineTextField;
+    public Canvas canvas;
     public Stage primaryStage;
+
+    public Processor processor = new Processor();
+    public Drawer drawer = new Drawer();
 
     @FXML
     private void handleExit() {
@@ -81,8 +92,22 @@ public class Controller
     }
 
     @FXML
-    public void flowchartButtonClicked(Event e){
-       // add generate flowchart method here
+    public void flowchartButtonClicked(Event e) throws IOException
+    {
+//        ResizableCanvas canvas = new ResizableCanvas();
+//        StackPane canvasStackPane = new StackPane();
+//        canvasStackPane.getChildren().add(canvas);
+//        canvas.widthProperty().bind(
+//                canvasStackPane.widthProperty());
+//        canvas.heightProperty().bind(
+//                canvasStackPane.heightProperty());
+        Layout layout = this.processor.process(codeTextArea.getText());
+        try {
+            this.drawer.draw(layout, canvas.getGraphicsContext2D());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -188,5 +213,33 @@ public class Controller
 
     public String getOutputLineText(){
         return outputLineTextField.getText();
+    }
+
+    class ResizableCanvas extends Canvas {
+
+        public ResizableCanvas() {
+            widthProperty().addListener(evt -> draw());
+            heightProperty().addListener(evt -> draw());
+        }
+
+        private void draw() {
+            double width = getWidth();
+            double height = getHeight();
+        }
+
+        @Override
+        public boolean isResizable() {
+            return true;
+        }
+
+        @Override
+        public double prefWidth(double height) {
+            return getWidth();
+        }
+
+        @Override
+        public double prefHeight(double width) {
+            return getHeight();
+        }
     }
 }

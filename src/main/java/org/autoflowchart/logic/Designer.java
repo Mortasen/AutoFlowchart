@@ -8,10 +8,10 @@ import java.util.List;
 
 public class Designer
 {
-	public final static int DEFAULT_WIDTH = 300;
-	public final static int DEFAULT_HEIGHT = 100;
-	public final static int DEFAULT_GAP_X = 100;
-	public final static int DEFAULT_GAP_Y = 100;
+	public final static int DEFAULT_WIDTH = 100;
+	public final static int DEFAULT_HEIGHT = 40;
+	public final static int DEFAULT_GAP_X = 30;
+	public final static int DEFAULT_GAP_Y = 30;
 
 	int x = 0;
 	int y = 0;

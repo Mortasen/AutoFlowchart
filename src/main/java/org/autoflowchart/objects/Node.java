@@ -212,7 +212,7 @@ public class Node extends Element
 		String line1 = this.getText();
 		int level = this.getLevel();
 		FontMetrics fontMetrics;
-		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 14);
+		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 8);
 		FontRenderContext fontRenderContext = new FontRenderContext(font.getTransform(), true, true);
 		Rectangle2D textRect = font.getStringBounds(line1, fontRenderContext);
 		double width = textRect.getWidth();

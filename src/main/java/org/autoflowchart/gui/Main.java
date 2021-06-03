@@ -17,7 +17,7 @@ public class Main extends Application
     {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("AutoFlowchart");
-        primaryStage.setScene(new Scene(root, 900, 700));
+        primaryStage.setScene(new Scene(root, 960, 720));
         primaryStage.show();
         primaryStage.getIcons().add(new Image("images/logo.png"));
     }

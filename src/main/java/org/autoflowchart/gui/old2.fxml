@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -234,13 +235,11 @@
                          </VBox>
                      </children>
                   </AnchorPane>
-                <AnchorPane fx:id="canvasAnchorPane">
+                <AnchorPane>
                      <children>
-                        <StackPane fx:id="canvasStackPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <Canvas fx:id="canvas" height="701.0" width="446.0" />
-                           </children>
-                        </StackPane>
+                        <ScrollBar layoutX="411.0" layoutY="116.0" orientation="VERTICAL" style="-fx-background-color: #ffffff; -fx-border-style: none;" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <ScrollBar layoutX="140.0" layoutY="632.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Canvas fx:id="mainCanvas" height="660.0" layoutX="123.0" layoutY="176.0" width="440.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
               </items>
@@ -253,7 +252,7 @@
                           <buttons>
                               <Button fx:id="aboutButton" mnemonicParsing="false" onAction="#aboutButtonClicked" style="-fx-background-color: #707070; -fx-border-radius: 10;">
                                  <graphic>
-                                    <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" smooth="true">
                                        <image>
                                           <Image url="/buttons/icon-info.png" />
                                        </image>
