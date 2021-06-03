@@ -1,11 +1,11 @@
 package org.autoflowchart.logic;
 
 import org.autoflowchart.objects.*;
+import org.autoflowchart.objects.BlockDEPRECATED;
+import org.autoflowchart.objects.Layout;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SaverTest
 {

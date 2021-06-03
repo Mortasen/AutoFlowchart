@@ -1,35 +1,48 @@
 package org.autoflowchart.logic;
 
 import org.autoflowchart.objects.*;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DesignerTest
+
+
+class ProcessorTest
 {
-	private final Saver saver = new Saver();
+	public static final String precode =
+			"package com.company;\n\n" +
+			"public class Main {\n" +
+			"public static void main (String[] args) {\n";
+	public static final String postcode =
+			"\n}\n}";
+
+	Designer designer;
+	Saver saver;
+	Layout expected;
+	Layout actual;
+
+	@BeforeEach
+	void init ()
+	{
+		this.designer = new Designer();
+		this.saver = new Saver();
+		this.expected = new Layout();
+	}
 
 	@Test
-	void generateLayout1 () throws IOException
+	void process1 () throws IOException
 	{
-		System.out.println("Test 1 : 3 linear nodes");
+		String mainCode =
+				"int a = 1;" +
+				"int b = 2;" +
+				"int c = a + b;";
 
-		Designer designer = new Designer();
+		String code = precode + mainCode + postcode;
 
-		Node node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
-		Node node1 = new Node(100, ShapeType.RECT, "int a = 1;", 0);
-		node0.setNext(node1);
-		Node node2 = new Node(100, ShapeType.RECT, "int b = 2;", 0);
-		node1.setNext(node2);
-		Node node3 = new Node(100, ShapeType.RECT, "int c = a + b;", 0);
-		node2.setNext(node3);
-		Node node4 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
-		node3.setNext(node4);
-
-		Layout expected = new Layout();
+		Node firstNode = Parser.parse(code);
 		Shape shape0 = new Shape(0, 0, 300, 100, ShapeType.ROUNDRECT, "main()");
 		expected.addShape(shape0);
 		Shape shape1 = new Shape(0, 200, 300, 100, ShapeType.RECT, "int a = 1;");
@@ -56,33 +69,35 @@ class DesignerTest
 
 		saver.save(expected, "src/test/resources/expected_1.png");
 
-		Layout actual = designer.generateLayout(node0);
-		saver.save(actual, "src/test/resources/actual_1.png");
+		Layout actual = designer.generateLayout(firstNode);
+		saver.save(actual, "src/test/resources/p_actual_1.png");
+
+		for (int i = 0; i < expected.shapes.size(); i++) {
+			if (!expected.shapes.get(i).equals(actual.shapes.get(i)))
+				System.out.println("Shape" + i);
+		}
+
+		for (int i = 0; i < expected.arrows.size(); i++) {
+			if (!expected.arrows.get(i).equals(actual.arrows.get(i)))
+				System.out.println("Arrow" + i);
+		}
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
-	void generateLayout2 () throws IOException
+	void process2 () throws IOException
 	{
-		System.out.println("Test 2 : 4 nodes, 1st is condition");
+		String mainCode =
+				"if (x == 1)" +
+				"	x = 0;" +
+				"else" +
+				"	x = 1;" +
+				"x++;";
 
-		Designer designer = new Designer();
+		String code = precode + mainCode + postcode;
 
-		Node node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
-		Node node1 = new Node(100, ShapeType.DIAMOND, "x == 1", 0);
-		node0.setNext(node1);
-		Node node2 = new Node(100, ShapeType.RECT, "x = 0;", 1);
-		node1.setNext(node2);
-		Node node3 = new Node(100, ShapeType.RECT, "x = 1;", 0);
-		node1.setNextFalse(node3);
-		Node node4 = new Node(100, ShapeType.RECT, "x++;", 0);
-		node2.setNext(node4);
-		node3.setNext(node4);
-		Node node5 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
-		node4.setNext(node5);
-
-		Layout expected = new Layout();
+		Node firstNode = Parser.parse(code);
 		Shape shape0 = new Shape(0, 0, 300, 100, ShapeType.ROUNDRECT, "main()");
 		expected.addShape(shape0);
 		Shape shape1 = new Shape(0, 200, 300, 100, ShapeType.DIAMOND, "x == 1");
@@ -121,35 +136,38 @@ class DesignerTest
 
 		saver.save(expected, "src/test/resources/expected_2.png");
 
-		Layout actual = designer.generateLayout(node0);
-		saver.save(actual, "src/test/resources/actual_2.png");
+		Layout actual = designer.generateLayout(firstNode);
+		saver.save(actual, "src/test/resources/p_actual_2.png");
+
+		for (int i = 0; i < expected.shapes.size(); i++) {
+			if (!expected.shapes.get(i).equals(actual.shapes.get(i)))
+				System.out.println("Shape" + i);
+		}
+
+		for (int i = 0; i < expected.arrows.size(); i++) {
+			if (!expected.arrows.get(i).equals(actual.arrows.get(i)))
+				System.out.println("Arrow" + i);
+		}
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
-	void generateLayout3 () throws IOException
+	void process3 () throws IOException
 	{
-		System.out.println("Test 3 : 5 nodes, with cycle");
+		String mainCode =
+				"int i = 0;" +
+				"while (i < 5)" +
+				"{" +
+				"	x += i;" +
+				"	i++;" +
+				"}" +
+				"print(i);";
 
-		Designer designer = new Designer();
+		String code = precode + mainCode + postcode;
 
-		Node node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
-		Node node1 = new Node(100, ShapeType.RECT, "int i = 0;", 0);
-		node0.setNext(node1);
-		Node node2 = new Node(100, ShapeType.DIAMOND, "i < 5", 0);
-		node1.setNext(node2);
-		Node node3 = new Node(100, ShapeType.RECT, "x += i;", 1);
-		node2.setNext(node3);
-		Node node4 = new Node(100, ShapeType.RECT, "i++;", 1);
-		node3.setNext(node4);
-		node4.setNext(node2);
-		Node node5 = new Node(100, ShapeType.RECT, "print(i);", 0);
-		node2.setNextFalse(node5);
-		Node node6 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
-		node5.setNext(node6);
+		Node firstNode = Parser.parse(code);
 
-		Layout expected = new Layout();
 		Shape shape0 = new Shape(0, 0, 300, 100, ShapeType.ROUNDRECT, "main()");
 		expected.addShape(shape0);
 		Shape shape1 = new Shape(0, 200, 300, 100, ShapeType.RECT, "int i = 0;");
@@ -192,55 +210,40 @@ class DesignerTest
 
 		saver.save(expected, "src/test/resources/expected_3.png");
 
-		Layout actual = designer.generateLayout(node0);
-		saver.save(actual, "src/test/resources/actual_3.png");
+		Layout actual = designer.generateLayout(firstNode);
+		saver.save(actual, "src/test/resources/p_actual_3.png");
+
+		for (int i = 0; i < expected.shapes.size(); i++) {
+			if (!expected.shapes.get(i).equals(actual.shapes.get(i)))
+				System.out.println("Shape" + i);
+		}
+
+		for (int i = 0; i < expected.arrows.size(); i++) {
+			if (!expected.arrows.get(i).equals(actual.arrows.get(i)))
+				System.out.println("Arrow" + i);
+		}
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
-	void generateLayout4 () throws IOException
+	void process4 () throws IOException
 	{
-		System.out.println("Test 4 : 7 nodes, cycle with continue and break");
+		String mainCode =
+				"for (int i = 0;true;i++)" +
+				"{" +
+				"	if (i % 2 == 0)" +
+				"		x++;" +
+				"	else" +
+				"		continue;" +
+				"	if (x > 16)" +
+				"		break;" +
+				"}" +
+				"print(x);";
 
-		Designer designer = new Designer();
+		String code = precode + mainCode + postcode;
 
-		/* for(int i = 0;true;i++)
-		{
-			if (i % 2 == 0)
-				x++;
-			else
-				continue;
-			if (x > 16)
-				break;
-		}
-		print(x);
-		*/
-
-		Node node0 = new Node(100, ShapeType.ROUNDRECT, "main()", 0);
-		Node node1 = new Node(100, ShapeType.RECT, "int i = 0;", 0);
-		node0.setNext(node1);
-		Node node2 = new Node(100, ShapeType.DIAMOND, "true", 0);
-		node1.setNext(node2);
-		Node node3 = new Node(100, ShapeType.DIAMOND, "i % 2 == 0", 1);
-		node2.setNext(node3);
-		Node node4 = new Node(100, ShapeType.RECT, "x++;", 2);
-		node3.setNext(node4);
-		Node node5 = new Node(100, ShapeType.DIAMOND, "x > 16", 1);
-		node4.setNext(node5);
-		Node node6 = new Node(100, ShapeType.RECT, "i++;", 1);
-		node3.setNextFalse(node6);
-		node3.getFalseNode().setNextJump(true);
-		node5.setNextFalse(node6);
-		node6.setNext(node2);
-		Node node7 = new Node(100, ShapeType.RECT, "print(x);", 0);
-		node2.setNextFalse(node7);
-		node5.setNext(node7);
-		node5.setSetNextJump(true);
-		Node node8 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
-		node7.setNext(node8);
-
-		Layout expected = new Layout();
+		Node firstNode = Parser.parse(code);
 		Shape shape0 = new Shape(0, 0, 300, 100, ShapeType.ROUNDRECT, "main()");
 		expected.addShape(shape0);
 		Shape shape1 = new Shape(0, 200, 300, 100, ShapeType.RECT, "int i = 0;");
@@ -310,16 +313,16 @@ class DesignerTest
 
 		saver.save(expected, "src/test/resources/expected_4.png");
 
-		Layout actual = designer.generateLayout(node0);
-		saver.save(actual, "src/test/resources/actual_4.png");
-
-		for (int i = 0; i < expected.arrows.size(); i++) {
-			if (!expected.arrows.get(i).equals(actual.arrows.get(i)))
-				System.out.println("Arrow" + i);
-		}
+		Layout actual = designer.generateLayout(firstNode);
+		saver.save(actual, "src/test/resources/p_actual_4.png");
 
 		for (int i = 0; i < expected.shapes.size(); i++) {
 			if (!expected.shapes.get(i).equals(actual.shapes.get(i)))
+				System.out.println("Shape" + i);
+		}
+
+		for (int i = 0; i < expected.arrows.size(); i++) {
+			if (!expected.arrows.get(i).equals(actual.arrows.get(i)))
 				System.out.println("Arrow" + i);
 		}
 
@@ -327,94 +330,73 @@ class DesignerTest
 	}
 
 	@Test
-	void generateLayout5 () throws IOException
+	void process5 () throws IOException
 	{
-		System.out.println("Test 5 : complete program with all elements");
+		String mainCode =
+				"int x = 0;\n" +
+				"for (int i = 0; i < 1000;i++)\n" +
+				"{\n" +
+				"	if (i % 2 == 0)\n" +
+				"		continue;\n" +
+				"   \n" +
+				"   if (i < 10)\n" +
+				"       m = 3;\n" +
+				"   else if (i < 100)\n" +
+				"       m = 2;\n" +
+				"   else\n" +
+				"       m = 1;\n" +
+				"   \n" +
+				"	x += i * m;\n" +
+				"   if (x > 100) {\n" +
+				"       if (i < 100)\n" +
+				"		    continue;\n" +
+				"       else\n" +
+				"           break;\n" +
+				"   \n}" +
+				"   x -= 10;\n" +
+				"}\n" +
+				"print(x);\n";
 
-		Designer designer = new Designer();
+		//int x = 0;
+		//		for(int i = 0; i < 1000; i++)
+		//		{
+		//			if (i % 2 == 0)
+		//				continue;
+		//
+		//			if (i < 10)
+		//				m = 3;
+		//			else if (i < 100)
+		//				m = 2;
+		//			else
+		//				m = 1;
+		//
+		//			x += i * m;
+		//			if (x > 100) {
+		//				if (i < 100)
+		//					continue;
+		//				else
+		//					break;
+		//			}
+		//			x -= 10;
+		//		}
+		//		print(x);
 
-		/*
-		int x = 0;
-		for(int i = 0; i < 1000; i++)
-		{
-			if (i % 2 == 0)
-				continue;
+		String code = precode + mainCode + postcode;
+		System.out.println(code);
 
-			if (i < 10)
-				int m = 3;
-			else if (i < 100)
-				int m = 2;
-			else
-				int m = 1;
+		Node firstNode = Parser.parse(code);
 
-			x += i * m;
-			if (x > 100) {
-				if (i < 100)
-					continue;
-				else
-					break;
-			}
-			x -= 10;
+		Layout actual = designer.generateLayout(firstNode);
+		saver.save(actual, "src/test/resources/p_actual_5.png");
+
+		for (int i = 0; i < expected.shapes.size(); i++) {
+			if (!expected.shapes.get(i).equals(actual.shapes.get(i)))
+				System.out.println("Shape" + i);
 		}
-		print(x);
-		 */
 
-		Node node1 = new Node(100, ShapeType.ROUNDRECT, "main();", 0);
-		Node node2 = new Node(100, ShapeType.RECT, "int x = 0;", 0);
-		node1.setNext(node2);
-		Node node3 = new Node(100, ShapeType.RECT, "int i = 0;", 0);
-		node2.setNext(node3);
-		Node node4 = new Node(100, ShapeType.DIAMOND, "i < 1000", 0);
-		node3.setNext(node4);
-		Node node5 = new Node(100, ShapeType.DIAMOND, "i % 2 == 0", 1);
-		node4.setNext(node5);
-		node5.setSetNextJump(true);
-		Node node6 = new Node(100, ShapeType.DIAMOND, "i < 10", 1);
-		node5.setNextFalse(node6);
-		Node node7 = new Node(100, ShapeType.RECT, "int m = 3;", 2);
-		node6.setNext(node7);
-		Node node8 = new Node(100, ShapeType.DIAMOND, "i < 100", 1);
-		node6.setNextFalse(node8);
-		Node node9 = new Node(100, ShapeType.RECT, "int m = 2;", 2);
-		node8.setNext(node9);
-		Node node10 = new Node(100, ShapeType.RECT, "int m = 1;", 1);
-		node8.setNextFalse(node10);
-		Node node11 = new Node(100, ShapeType.RECT, "x += i * m;", 1);
-		node7.setNext(node11);
-		node9.setNext(node11);
-		node10.setNext(node11);
-		Node node12 = new Node(100, ShapeType.DIAMOND, "x > 100", 1);
-		node11.setNext(node12);
-		Node node13 = new Node(100, ShapeType.DIAMOND, "i < 100", 2);
-		node12.setNext(node13);
-		Node node14 = new Node(100, ShapeType.RECT, "x -= 10", 1);
-		node12.setNextFalse(node14);
-		Node node15 = new Node(100, ShapeType.RECT, "i++;", 1);
-		node5.setNext(node15);
-		node13.setNext(node15);
-		node13.setSetNextJump(true);
-		node14.setNext(node15);
-		node15.setNext(node4);
-		Node node16 = new Node(100, ShapeType.RECT, "print(x);", 0);
-		node4.setNextFalse(node16);
-		node13.setNextFalse(node16);
-		node13.getFalseNode().setNextJump(true);
-		Node node17 = new Node(100, ShapeType.ROUNDRECT, "return;", 0);
-		node16.setNext(node17);
-
-		Layout actual = designer.generateLayout(node1);
-		saver.save(actual, "src/test/resources/actual_5.png");
-	}
-
-
-
-	@Test
-	void placeNextBlock ()
-	{
-	}
-
-	@Test
-	void traverseIfBranch ()
-	{
+		for (int i = 0; i < expected.arrows.size(); i++) {
+			if (!expected.arrows.get(i).equals(actual.arrows.get(i)))
+				System.out.println("Arrow" + i);
+		}
 	}
 }

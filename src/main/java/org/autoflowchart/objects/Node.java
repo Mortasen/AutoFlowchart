@@ -1,285 +1,186 @@
 package org.autoflowchart.objects;
 
-import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.stmt.*;
+import org.autoflowchart.logic.Designer;
+import org.autoflowchart.utils.Point;
 
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-public class Node
+public class Node extends Element
 {
-	public String text;
-	public Node next;
-	public Node nextFalse;
-	public int waitsFor;
-	public int level;
+	private String text;
+	private FalseNode falseNode;
+	private int level;
+	private int height;
+	private ShapeType type;
+	private int textOffsetX;
+	private int textOffsetY;
+	private Shape shape;
+	public List<Element> connectionQueue;
 
-	public Block block;
+
 
 	public Node () {}
 
 	public Node (String text)
 	{
-		this.text = text;
+		this.setText(text);
 	}
 
 	public Node (String text, int level)
 	{
 		this(text);
-		this.level = level;
+		this.setLevel(level);
+	}
+
+	public Node (String text, int level, boolean nextJump) {
+		this(text, level);
+		this.nextJump = nextJump;
 	}
 
 	public Node (String text, int level, Node next, Node nextFalse)
 	{
 		this(text, level);
-		this.next = next;
-		this.nextFalse = nextFalse;
+		this.setNext(next);
+		this.setFalseNode(new FalseNode(nextFalse));
 	}
 
-	public Node getNext ()
+	public Node (int height, ShapeType type, String text, int level)
 	{
-		return this.next;
+		this(text, level);
+		this.height = height;
+		this.type = type;
+	}
+
+	public Node (int height, ShapeType type)
+	{
+		this.height = height;
+		this.type = type;
+	}
+
+	public Node (int height, ShapeType type, String text, int level, Node next, Node nextFalse)
+	{
+		this(height, type, text, level);
+		this.next = next;
+		if (nextFalse != null)
+			this.setNextFalse(nextFalse);
+	}
+
+	public Node (int height, ShapeType type, Node node, Node next, Node nextFalse)
+	{
+		this(height, type);
+		this.next = next;
+		this.setNextFalse(nextFalse);
+	}
+
+
+
+	public Node getNode () {
+		return this;
 	}
 
 	public void setNext (Node next)
 	{
-		if (this.next == null && this.nextFalse == null) {
+		if (this.next == null && this.getNextFalse() == null) {
 			if (this.waitsFor == 0)
 				this.next = next;
 			else
-				this.nextFalse = next;
+				this.setNextFalse(next);
 		} else if (this.next == null)
 			this.next = next;
 		else
-			this.nextFalse = next;
+			this.setNextFalse(next);
 	}
 
-	/*
-	Connects statement to this node.
-	 */
-	public Node connectStmt (Statement stmt, Nodes waitList, int level)
+	public void setSetNext (Node next)
 	{
-		Node lastNode = this;
-		if (stmt.isAssertStmt()) {
-
-		} else if (stmt.isBlockStmt()) {
-			lastNode = this.connectBlockStmt(stmt.asBlockStmt(), waitList, level);
-		} else if (stmt.isBreakStmt()) {
-			lastNode = this.connectBreakStmt(stmt.asBreakStmt(), waitList, level);
-		} else if (stmt.isContinueStmt()) {
-			lastNode = this.connectContinueStmt(stmt.asContinueStmt(), waitList, level);
-		} else if (stmt.isDoStmt()) {
-			lastNode = this.connectDoStmt(stmt.asDoStmt(), waitList, level);
-		} else if (stmt.isEmptyStmt()) {
-			lastNode = this.connectEmptyStmt(stmt.asEmptyStmt(), waitList, level);
-		} else if (stmt.isExplicitConstructorInvocationStmt()) {
-
-		} else if (stmt.isExpressionStmt()) {
-			lastNode = this.connectExpressionStmt(stmt.asExpressionStmt(), waitList, level);
-		} else if (stmt.isForeachStmt()) {
-			lastNode = this.connectForeachStmt(stmt.asForeachStmt(), waitList, level);
-		} else if (stmt.isForStmt()) {
-			lastNode = this.connectForStmt(stmt.asForStmt(), waitList, level);
-		} else if (stmt.isIfStmt()) {
-			lastNode = this.connectIfStmt(stmt.asIfStmt(), waitList, level);
-		} else if (stmt.isLabeledStmt()) {
-
-		} else if (stmt.isLocalClassDeclarationStmt()) {
-
-		} else if (stmt.isReturnStmt()) {
-
-		} else if (stmt.isSwitchStmt()) {
-
-		} else if (stmt.isSynchronizedStmt()) {
-
-		} else if (stmt.isThrowStmt()) {
-
-		} else if (stmt.isTryStmt()) {
-
-		} else if (stmt.isUnparsableStmt()) {
-
-		} else if (stmt.isWhileStmt()) {
-
-		} else {
-
-		}
-		return lastNode;
+		this.next = next;
 	}
 
-	Node connectStmts (NodeList<Statement> stmts, Nodes waitList, int level)
+	public boolean isNextJump ()
 	{
-		Node currentNode = this;
-		for (Statement stmt : stmts)
-		{
-			Node newNode = currentNode.connectStmt(stmt, waitList, level);
-			if (newNode == null)
-				break;
-			currentNode = newNode;
-		}
-		return currentNode;
+		return nextJump;
 	}
 
-	Node connectBlockStmt (BlockStmt blockStmt, Nodes waitList, int level)
+	public void setNextJump (boolean nextJump)
 	{
-		return this.connectStmts(blockStmt.getStatements(), waitList, level);
-	}
-
-	Node connectBreakStmt (BreakStmt breakStmt, Nodes waitList, int level)
-	{
-		this.waitsFor = 1;
-		waitList.add(this);
-		return null;
-	}
-
-	Node connectContinueStmt (ContinueStmt continueStmt, Nodes waitList, int level)
-	{
-		this.waitsFor = 2;
-		waitList.add(this);
-		return null;
-	}
-
-	Node connectDoStmt (DoStmt doStmt, Nodes waitList, int level)
-	{
-		Node currentNode = this.connectStmt(doStmt.getBody(), waitList, level + 1);
-		Node firstNode = this.getNext();
-		Node conditionNode = new Node();
-		conditionNode.setNext(firstNode);
-		currentNode.setNext(conditionNode);
-		return conditionNode;
-	}
-
-	Node connectEmptyStmt (EmptyStmt emptyStmt, Nodes waitList, int level)
-	{
-		return this;
-	}
-
-	Node connectExplicitConstructorInvocationStmt (ExplicitConstructorInvocationStmt explicitConstructorInvocationStmt, Nodes waitList)
-	{
-		System.out.println("ExplicitConstructorInvocationStmt:");
-		System.out.println(explicitConstructorInvocationStmt);
-		return this;
-	}
-
-	Node connectExpressionStmt (ExpressionStmt expressionStmt, Nodes waitList, int level)
-	{
-		Node newNode = new Node(expressionStmt.toString());
-		this.setNext(newNode);
-		return newNode;
-	}
-
-	Node connectForeachStmt (ForeachStmt foreachStmt, Nodes waitList, int level)
-	{
-		waitList = new Nodes();
-		String variable = foreachStmt.getVariable().toString();
-		String iterable = foreachStmt.getIterable().toString();
-
-		Node checkNode = new Node( iterable + ".hasNext()");
-		this.setNext(checkNode);
-
-		Node updateNode = new Node( variable + " = " + iterable + ".next()");
-		checkNode.setNext(updateNode);
-
-		Node lastNode = updateNode.connectStmt(foreachStmt.getBody(), waitList, level + 1);
-		lastNode.setNext(checkNode);
-
-		Nodes nodesToConnect = new Nodes();
-		nodesToConnect.add(checkNode);
-
-		for (Node node : waitList.nodes)
-		{
-			// break with hanging, continue connect to update
-			if (node.waitsFor == 1) {
-				nodesToConnect.add(node);
-			} else if (node.waitsFor == 2) {
-				node.setNext(checkNode);
-			}
-		}
-
-		return nodesToConnect;
-	}
-
-	Node connectForStmt (ForStmt forStmt, Nodes waitList, int level)
-	{
-		waitList = new Nodes();
-		Node prevNode = this;
-
-		NodeList<Expression> initExprs = forStmt.getInitialization();
-		if (initExprs.size() > 0) {
-			String init = initExprs.toString();
-			init = init.substring(1, init.length() - 1);
-			prevNode = new Node(init);
-			this.setNext(prevNode);
-		}
-
-		Node currentNode;
-
-		Optional<Expression> compareExpr = forStmt.getCompare();
-		if (compareExpr.isPresent()) {
-			Node compareNode = new Node(compareExpr.get().toString());
-			prevNode.setNext(compareNode);
-			currentNode = compareNode;
+		if (this.next == null && this.getNextFalse() == null) {
+			this.nextJump = nextJump;
 		} else
-			currentNode = prevNode;
-		currentNode  = currentNode.connectStmt(forStmt.getBody(), waitList, level + 1);
-		Node firstNode = prevNode.getNext();
-
-		Node newCycleNode = firstNode;
-
-		NodeList<Expression> updateExprs = forStmt.getUpdate();
-		if (updateExprs.size() > 0) {
-			Node updateNode = new Node(forStmt.getUpdate().toString());
-			currentNode.setNext(updateNode);
-			currentNode = updateNode;
-			newCycleNode = updateNode;
-		}
-		currentNode.setNext(firstNode);
-
-		Nodes nodes = new Nodes();
-		if (compareExpr.isPresent())
-			nodes.add(firstNode);
-
-		for (Node node : waitList.nodes)
-		{
-			if (node.waitsFor == 1) {
-				nodes.add(node);
-			} else if (node.waitsFor == 2) {
-				node.setNext(newCycleNode);
-			}
-		}
-
-		return nodes;
+			this.createAndGetFalseNode().setNextJump(nextJump);
 	}
 
-	Node connectIfStmt (IfStmt ifStmt, Nodes waitList, int level)
+	public void setSetNextJump (boolean nextJump)
 	{
-		Node conditionNode = new Node(ifStmt.getCondition().toString());
-		this.setNext(conditionNode);
-		Node lastNode1 = conditionNode.connectStmt(ifStmt.getThenStmt(), waitList, level + 1);
-
-		Optional<Statement> elseStmt = ifStmt.getElseStmt();
-		Node lastNode2;
-		if (elseStmt.isPresent()) {
-			lastNode2 = conditionNode.connectStmt(elseStmt.get(), waitList, level);
-		} else {
-			lastNode2 = conditionNode;
-		}
-		Nodes nodes = new Nodes();
-		if (lastNode1 != null) nodes.add(lastNode1);
-		if (lastNode2 != null) nodes.add(lastNode2);
-		return nodes;
-
+		this.nextJump = nextJump;
 	}
 
-	public List<Block> connectionQueue;
+	public String getText ()
+	{
+		return text;
+	}
 
-	public void addToConnectionQueue (Block block)
+	public void setText (String text)
+	{
+		this.text = text;
+		this.label();
+	}
+
+	public FalseNode getFalseNode ()
+	{
+		return falseNode;
+	}
+
+	public void setFalseNode (FalseNode falseNode)
+	{
+		this.falseNode = falseNode;
+		this.type = ShapeType.DIAMOND;
+	}
+
+	public FalseNode createAndGetFalseNode () {
+		if (this.falseNode == null) {
+			this.falseNode = new FalseNode(this);
+			this.type = ShapeType.DIAMOND;
+		}
+		return this.falseNode;
+	}
+
+	public int getLevel ()
+	{
+		return level;
+	}
+
+	public void setLevel (int level)
+	{
+		this.level = level;
+	}
+
+	public Node getNextFalse () {
+		if (this.falseNode != null)
+			return this.falseNode.getNext();
+		else
+			return null;
+	}
+
+	public void setNextFalse (Node next) {
+		if (this.falseNode != null)
+			this.falseNode.setNext(next);
+		else {
+			this.falseNode = new FalseNode(this, next);
+			this.type = ShapeType.DIAMOND;
+		}
+	}
+
+	public void addToConnectionQueue (Element element)
 	{
 		if (this.connectionQueue == null)
-			this.connectionQueue = new ArrayList<Block>();
-		this.connectionQueue.add(block);
+			this.connectionQueue = new LinkedList<Element>();
+		this.connectionQueue.add(element);
 	}
 
 	@Override
@@ -288,12 +189,143 @@ public class Node
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Node node = (Node) o;
-		return waitsFor == node.waitsFor && level == node.level && Objects.equals(text, node.text) && Objects.equals(next, node.next) && Objects.equals(nextFalse, node.nextFalse) && Objects.equals(block, node.block) && Objects.equals(connectionQueue, node.connectionQueue);
+		return nextJump == node.nextJump && height == node.height && level == node.level && type == node.type && Objects.equals(text, node.text) && Objects.equals(shape, node.shape);
+	}
+
+	public boolean completelyEquals (Object o)
+	{
+		if (this.equals(o)) {
+			Node node = (Node) o;
+			return textOffsetX == node.textOffsetX && textOffsetY == node.textOffsetY;
+		}
+		return false;
 	}
 
 	@Override
 	public int hashCode ()
 	{
-		return Objects.hash(text, next, nextFalse, waitsFor, level, block, connectionQueue);
+		return Objects.hash(height, type, text, shape, level);
+	}
+
+	public void label ()
+	{
+		String line1 = this.getText();
+		int level = this.getLevel();
+		FontMetrics fontMetrics;
+		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 14);
+		FontRenderContext fontRenderContext = new FontRenderContext(font.getTransform(), true, true);
+		Rectangle2D textRect = font.getStringBounds(line1, fontRenderContext);
+		double width = textRect.getWidth();
+		double height = textRect.getHeight();
+		String text;
+
+		if (width >= Designer.DEFAULT_WIDTH) {
+			double widthPerSymbol = (width / line1.length());
+			double breakPositionK = Designer.DEFAULT_WIDTH / width;
+			int maxSymbols = (int)(line1.length() * breakPositionK - 1);
+			String line2 = line1.substring(maxSymbols);
+			if (line2.length() > maxSymbols)
+			{
+				line2 = line2.substring(0, maxSymbols - 3) + "...";
+			}
+			line1 = line1.substring(0, maxSymbols);
+			textRect = font.getStringBounds(line1, fontRenderContext);
+			width = textRect.getWidth();
+			height = textRect.getHeight() * 2;
+			text = line1 + "\n" + line2;
+		} else
+			text = line1;
+
+		int textOffsetX = (int)(Designer.DEFAULT_WIDTH / 2 - width / 2);
+		int textOffsetY = (int)(Designer.DEFAULT_HEIGHT / 2 - height / 2);
+
+		ShapeType type;
+		if (this.getFalseNode() != null)
+			type = ShapeType.DIAMOND;
+		else
+			type = ShapeType.RECT;
+
+		/*BlockDEPRECATED blockDEPRECATED = new BlockDEPRECATED(Designer.defaultHeight, type, text, level);
+		blockDEPRECATED.textOffsetX = textOffsetX;
+		blockDEPRECATED.textOffsetY = textOffsetY;*/
+
+		this.height = Designer.DEFAULT_HEIGHT;
+		this.type = type;
+		this.text = text;
+		this.level = level;
+		this.textOffsetX = textOffsetX;
+		this.textOffsetY = textOffsetY;
+	}
+
+	public int getHeight ()
+	{
+		return height;
+	}
+
+	public void setHeight (int height)
+	{
+		this.height = height;
+	}
+
+	public ShapeType getType ()
+	{
+		return type;
+	}
+
+	public void setType (ShapeType type)
+	{
+		this.type = type;
+	}
+
+	public int getTextOffsetX ()
+	{
+		return textOffsetX;
+	}
+
+	public void setTextOffsetX (int textOffsetX)
+	{
+		this.textOffsetX = textOffsetX;
+	}
+
+	public int getTextOffsetY ()
+	{
+		return textOffsetY;
+	}
+
+	public void setTextOffsetY (int textOffsetY)
+	{
+		this.textOffsetY = textOffsetY;
+	}
+
+	public Shape getShape ()
+	{
+		return shape;
+	}
+
+	public void setShape (Shape shape)
+	{
+		this.shape = shape;
+	}
+
+	public Point getConnectionPoint ()
+	{
+		return this.shape.getPointFromCenter(0, 1);
+	}
+
+	public boolean isSwapped = false;
+
+	public void swapNodes ()
+	{
+		if (this.falseNode != null) {
+			if (this.isSwapped)
+				return;
+			Node temp = this.next;
+			boolean temp2 = this.nextJump;
+			this.next = this.falseNode.next;
+			this.nextJump = this.falseNode.nextJump;
+			this.falseNode.next = temp;
+			this.falseNode.nextJump = temp2;
+			this.isSwapped = true;
+		}
 	}
 }
