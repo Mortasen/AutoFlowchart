@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -71,7 +72,7 @@ public class Controller
 
     @FXML
     public void aboutButtonClicked(Event e) throws IOException {
-        Parent root = (Parent) FXMLLoader.load(this.getClass().getResource("window_about.fxml"));
+        Parent root = FXMLLoader.load(this.getClass().getResource("window_about.fxml"));
 
         Stage stage = new Stage();
         stage.setTitle("About");
@@ -80,6 +81,8 @@ public class Controller
         stage.setY(300);
         stage.setWidth(600);
         stage.setHeight(300);
+        Scene scene = new Scene(root, 300.0D, 150.0D);
+        stage.setScene(scene);
         stage.showAndWait();
     }
 
@@ -118,7 +121,6 @@ public class Controller
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
     @FXML
@@ -134,10 +136,10 @@ public class Controller
     {
         Layout layout = this.processor.process(codeTextArea.getText());
 
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(new File("src"));
-        File selectedDirectory = directoryChooser.showDialog(primaryStage);
-        String path = selectedDirectory.getAbsolutePath();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File selectedFile = fileChooser.showSaveDialog(primaryStage);
+        String path = selectedFile.getAbsolutePath();
         saver.save(layout, path);
     }
 

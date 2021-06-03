@@ -9,32 +9,30 @@ import java.io.IOException;
 
 public class Saver
 {
-	BufferedImage img = new BufferedImage(1200, 2000, BufferedImage.TYPE_INT_RGB);
-	Graphics2D g = img.createGraphics();
+	BufferedImage img;
+	Graphics2D g;
 
 	public void save (Layout layout, String filepath) throws IOException
 	{
+		img = new BufferedImage(layout.width, layout.height, BufferedImage.TYPE_INT_RGB);
+		g = img.createGraphics();
 		CustomizerOptions custom = new CustomizerOptions();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, img.getWidth(), img.getHeight());
 		g.setColor(Color.BLACK);
-		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 14);
+		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 8);
 		g.setFont(font);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-		float outline = custom.OutlineSize;
-		BasicStroke Stroke = new BasicStroke(2.0f*outline);
-		g.setStroke(Stroke);
 		int j=0;
 		for ( Shape shape : layout.shapes)
 		{
 			Arrow arrow = layout.arrows.get(j);
-			int x = shape.x / 2;
-			int y = shape.y / 2;
-			int width = shape.width / 2;
+			int x = shape.x;
+			int y = shape.y;
+			int width = shape.width;
 
-			int height = shape.height / 2;
+			int height = shape.height;
 			if (shape.type == ShapeType.ROUNDRECT)
 			{
 				DrawObject(shape, custom.terminalShape, custom.terminalColor, custom.terminalOutlineColor, custom.terminalSize);
@@ -75,20 +73,17 @@ public class Saver
 				DrawObject(shape, custom.functionShape, custom.functionColor, custom.functionOutlineColor, custom.functionSize);
 			}
 			FontMetrics fm = img.getGraphics().getFontMetrics(font);
-			int widthStr = fm.stringWidth(shape.text);
-			int w = width;
-			int h = (height)/2;
-			y+=h;
-			x+=Math.abs(w-widthStr)/2;
-			g.drawString(shape.text, x, y);
+			int textX = shape.x + shape.textOffsetX;
+			int textY = shape.y + shape.textOffsetY + 8;
+			g.drawString(shape.text, textX, textY);
 		}
 		g.setColor(new Color(57, 11, 11));
 		for (Arrow arrow : layout.arrows)
 		{
 			int[] xPoints = new int[arrow.xPoints.size()];
-			for (int i = 0; i < arrow.xPoints.size(); i++) { xPoints[i] = arrow.xPoints.get(i) / 2; }
+			for (int i = 0; i < arrow.xPoints.size(); i++) { xPoints[i] = arrow.xPoints.get(i); }
 			int[] yPoints = new int[arrow.yPoints.size()];
-			for (int i = 0; i < arrow.yPoints.size(); i++) { yPoints[i] = arrow.yPoints.get(i) / 2; }
+			for (int i = 0; i < arrow.yPoints.size(); i++) { yPoints[i] = arrow.yPoints.get(i); }
 
 			g.drawPolyline(xPoints, yPoints, xPoints.length);
 			int x1 = xPoints[xPoints.length - 2];
@@ -98,10 +93,10 @@ public class Saver
 			int dx = x2 - x1;
 			int dy = y2 - y1;
 			double angle = Math.atan2(dy, dx);
-			int lx = (int)(x2 - 20 * Math.cos(angle - Math.PI / 4));
-			int ly = (int)(y2 - 20 * Math.sin(angle - Math.PI / 4));
-			int rx = (int)(x2 - 20 * Math.cos(angle + Math.PI / 4));
-			int ry = (int)(y2 - 20 * Math.sin(angle + Math.PI / 4));
+			int lx = (int)(x2 - 8 * Math.cos(angle - Math.PI / 8));
+			int ly = (int)(y2 - 8 * Math.sin(angle - Math.PI / 8));
+			int rx = (int)(x2 - 8 * Math.cos(angle + Math.PI / 8));
+			int ry = (int)(y2 - 8 * Math.sin(angle + Math.PI / 8));
 			g.drawLine(lx, ly, x2, y2);
 			g.drawLine(rx, ry, x2, y2);
 		}
@@ -110,11 +105,11 @@ public class Saver
 		ImageIO.write(img, "png", outputFile);
 	}
 	public void DrawObject(Shape shape, ShapeType type, Color BlockColor, Color LineColor, double Size) {
-		int x = shape.x / 2;
-		int y = shape.y / 2;
-		int width = shape.width / 2;
+		int x = shape.x;
+		int y = shape.y;
+		int width = shape.width;
 
-		int height = shape.height / 2;
+		int height = shape.height;
 		//height*=Size;
 		//width*=Size;
 		if (type == ShapeType.ROUNDRECT) {
