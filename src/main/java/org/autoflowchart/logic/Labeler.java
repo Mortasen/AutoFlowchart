@@ -1,6 +1,7 @@
+/*
 package org.autoflowchart.logic;
 
-import org.autoflowchart.objects.Block;
+import org.autoflowchart.objects.BlockDEPRECATED;
 import org.autoflowchart.objects.Node;
 import org.autoflowchart.objects.ShapeType;
 
@@ -10,73 +11,75 @@ import java.awt.geom.Rectangle2D;
 
 public class Labeler
 {
-	public Block labelNodes (Node firstNode)
+	public BlockDEPRECATED labelNodes (Node firstNode)
 	{
 		// Берём первый узел и превращаем в блок
-		Block firstBlock = this.labelNode(firstNode);
+		BlockDEPRECATED firstBlockDEPRECATED = this.labelNode(firstNode);
 		// Меняем тип этого узла на скруглённый
-		firstBlock.type = ShapeType.ROUNDRECT;
+		firstBlockDEPRECATED.type = ShapeType.ROUNDRECT;
 		// Обходим всю ветку начиная с последующего узла
-		Block lastBlock = this.traverseBranch(firstNode.next, firstBlock);
+		BlockDEPRECATED lastBlockDEPRECATED = this.traverseBranch(firstNode.getNext(), firstBlockDEPRECATED);
 		// Меняем тип последнего узла на скруглённый
-		lastBlock.type = ShapeType.ROUNDRECT;
+		lastBlockDEPRECATED.type = ShapeType.ROUNDRECT;
 		// Возвращаем первый узел
-		return firstBlock;
+		return firstBlockDEPRECATED;
 	}
 
-	public Block traverseBranch (Node node, Block block)
+	public BlockDEPRECATED traverseBranch (Node node, BlockDEPRECATED blockDEPRECATED)
 	{
-		// Превращает node в блок, привязывает к block
+		// Превращает node в блок, привязывает к blockDEPRECATED
 		// Повторяет пока не наткнётся на узел у которого нет следующего
 		// Или на узел, который уже превращён в блок
 		Node nextNode;
-		Block toReturn = null;
+		BlockDEPRECATED toReturn = null;
 		while (node != null)
 		{
-			if (node.block != null) {
-				block.setNext(node.block);
-				block = null;
+			if (node.getBlock() != null) {
+				blockDEPRECATED.setNext(node.getBlock());
+				blockDEPRECATED = null;
 				break;
 			}
-			Block newBlock = this.labelNode(node);
-			block.setNext(newBlock);
-			node.block = newBlock;
-			block = newBlock;
-			if (node.nextFalse != null)
+			BlockDEPRECATED newBlockDEPRECATED = this.labelNode(node);
+			blockDEPRECATED.setNext(newBlockDEPRECATED);
+			node.setBlock(newBlockDEPRECATED);
+			blockDEPRECATED = newBlockDEPRECATED;
+			if (node.getNextFalse() != null)
 			{
-				Block lastBlock = traverseBranch(node.next, block);
+				BlockDEPRECATED lastBlockDEPRECATED = traverseBranch(node.getNext(), blockDEPRECATED);
 				if (toReturn == null)
-					toReturn = lastBlock;
-				node = node.nextFalse;
+					toReturn = lastBlockDEPRECATED;
+				node = node.getNextFalse();
 			} else {
-				node = node.next;
+				node = node.getNext();
 			}
 		}
 		if (toReturn != null)
 			return toReturn;
-		return block;
+		return blockDEPRECATED;
 	}
 
-	/*public Block labelNextNode (Node node)
+	*/
+/*public Block labelNextNode (Node node)
 	{
 		Node nextNode;
 		if (node.nextFalse != null)
 		{
-			Block block = this.labelNode(node);
+			Block blockDEPRECATED = this.labelNode(node);
 			this.traverseIfBranch(node.next);
 			nextNode = node.nextFalse;
 		} else {
 			nextNode = node.next;
 		}
-		Block block = this.labelNode(nextNode);
+		Block blockDEPRECATED = this.labelNode(nextNode);
 		node = nextNode;
 
-	}*/
+	}*//*
 
-	public Block labelNode (Node node)
+
+	public BlockDEPRECATED labelNode (Node node)
 	{
-		String line1 = node.text;
-		int level = node.level;
+		String line1 = node.getText();
+		int level = node.getLevel();
 		FontMetrics fontMetrics;
 		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 14);
 		FontRenderContext fontRenderContext = new FontRenderContext(font.getTransform(), true, true);
@@ -106,15 +109,16 @@ public class Labeler
 		int textOffsetY = (int)(Designer.defaultHeight / 2 - height / 2);
 
 		ShapeType type;
-		if (node.nextFalse != null)
+		if (node.getNextFalse() != null)
 			type = ShapeType.DIAMOND;
 		else
 			type = ShapeType.RECT;
 
-		Block block = new Block(Designer.defaultHeight, type, text, level);
-		block.textOffsetX = textOffsetX;
-		block.textOffsetY = textOffsetY;
+		BlockDEPRECATED blockDEPRECATED = new BlockDEPRECATED(Designer.defaultHeight, type, text, level);
+		blockDEPRECATED.textOffsetX = textOffsetX;
+		blockDEPRECATED.textOffsetY = textOffsetY;
 
-		return block;
+		return blockDEPRECATED;
 	}
 }
+*/
