@@ -4,23 +4,22 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 
 public class Main extends Application
 {
+    public Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception
     {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("AutoFlowchart");
         primaryStage.setScene(new Scene(root, 900, 700));
         primaryStage.show();
-        System.out.println();
-        //develop test 2
-
-        System.out.println();
-        System.out.println("аолылоалыоаы");
-        //develop branch test
+        primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
     }
 
     public static void main(String[] args) {
