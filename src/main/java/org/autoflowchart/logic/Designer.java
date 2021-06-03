@@ -24,6 +24,9 @@ public class Designer
 	public Layout generateLayout (Node firstNode)
 	{
 		this.placeNode(firstNode);
+		Shape lastShape = this.layout.shapes.get(this.layout.shapes.size() - 1);
+		this.layout.height = lastShape.y + lastShape.height;
+		this.layout.width = this.widthMap.findMaxWidth(0, this.layout.height);
 		return this.layout;
 	}
 

@@ -9,6 +9,9 @@ public class Layout
 	public List<Shape> shapes = new ArrayList<Shape>();
 	public List<Arrow> arrows = new ArrayList<Arrow>();
 
+	public int width;
+	public int height;
+
 	public void addShape (Shape shape)
 	{
 		this.shapes.add(shape);

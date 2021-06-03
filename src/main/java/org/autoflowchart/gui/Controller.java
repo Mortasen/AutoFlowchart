@@ -53,8 +53,9 @@ public class Controller
     public ColorPicker outputLineColorPicker;
     public TextField outputTextField;
     public TextField outputLineTextField;
-    public Canvas canvas;
     public Stage primaryStage;
+    public Canvas canvas;
+    public StackPane canvasStackPane;
 
     public Processor processor = new Processor();
     public Drawer drawer = new Drawer();
@@ -94,14 +95,18 @@ public class Controller
     @FXML
     public void flowchartButtonClicked(Event e) throws IOException
     {
-//        ResizableCanvas canvas = new ResizableCanvas();
-//        StackPane canvasStackPane = new StackPane();
-//        canvasStackPane.getChildren().add(canvas);
-//        canvas.widthProperty().bind(
-//                canvasStackPane.widthProperty());
-//        canvas.heightProperty().bind(
-//                canvasStackPane.heightProperty());
         Layout layout = this.processor.process(codeTextArea.getText());
+
+        canvas.setWidth(layout.width + Drawer.OFFSET_X * 2);
+        canvas.setHeight(layout.height + Drawer.OFFSET_Y * 2);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.fitToWidthProperty().set(true);
+        scrollPane.fitToHeightProperty().set(true);
+        scrollPane.pannableProperty().set(true);
+        scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setContent(canvas);
+        canvasStackPane.getChildren().add(scrollPane);
         try {
             this.drawer.draw(layout, canvas.getGraphicsContext2D());
         } catch (IOException ex) {

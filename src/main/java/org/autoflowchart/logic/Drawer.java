@@ -13,6 +13,9 @@ import java.io.IOException;
 
 public class Drawer
 {
+	public static final int OFFSET_X = 100;
+	public static final int OFFSET_Y = 100;
+
 	public void draw (Layout layout, GraphicsContext g) throws IOException
 	{
 		//BufferedImage img = new BufferedImage(1000, 2000, BufferedImage.TYPE_INT_RGB);
@@ -27,8 +30,8 @@ public class Drawer
 		//g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		for (Shape shape : layout.shapes)
 		{
-			int x = shape.x;
-			int y = shape.y;
+			int x = shape.x + OFFSET_X;
+			int y = shape.y + OFFSET_Y;
 			int width = shape.width;
 			int height = shape.height;
 			if (shape.type == ShapeType.ROUNDRECT)
@@ -41,17 +44,17 @@ public class Drawer
 				double[] yPoints = { y + height / 2.0, y, y + height / 2.0, y + height };
 				g.strokePolygon(xPoints, yPoints, 4);
 			}
-			int textX = shape.x + shape.textOffsetX;
-			int textY = shape.y + shape.textOffsetY;
+			int textX = shape.x + shape.textOffsetX + OFFSET_X;
+			int textY = shape.y + shape.textOffsetY + OFFSET_Y;
 			g.fillText(shape.text, textX, textY);
 		}
 
 		for (Arrow arrow : layout.arrows)
 		{
 			double[] xPoints = new double[arrow.xPoints.size()];
-			for (int i = 0; i < arrow.xPoints.size(); i++) { xPoints[i] = arrow.xPoints.get(i); }
+			for (int i = 0; i < arrow.xPoints.size(); i++) { xPoints[i] = arrow.xPoints.get(i) + OFFSET_X; }
 			double[] yPoints = new double[arrow.yPoints.size()];
-			for (int i = 0; i < arrow.yPoints.size(); i++) { yPoints[i] = arrow.yPoints.get(i); }
+			for (int i = 0; i < arrow.yPoints.size(); i++) { yPoints[i] = arrow.yPoints.get(i) + OFFSET_Y; }
 
 			g.strokePolyline(xPoints, yPoints, xPoints.length);
 			double x = xPoints[xPoints.length - 1];
