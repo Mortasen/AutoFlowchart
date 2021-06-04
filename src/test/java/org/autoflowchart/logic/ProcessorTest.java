@@ -357,29 +357,28 @@ class ProcessorTest
 				"}\n" +
 				"print(x);\n";
 
-		//int x = 0;
-		//		for(int i = 0; i < 1000; i++)
-		//		{
-		//			if (i % 2 == 0)
-		//				continue;
-		//
-		//			if (i < 10)
-		//				m = 3;
-		//			else if (i < 100)
-		//				m = 2;
-		//			else
-		//				m = 1;
-		//
-		//			x += i * m;
-		//			if (x > 100) {
-		//				if (i < 100)
-		//					continue;
-		//				else
-		//					break;
-		//			}
-		//			x -= 10;
-		//		}
-		//		print(x);
+//		int x = 0;
+//		for (int i = 0; i < 1000; i++) {
+//			if (i % 2 == 0)
+//				continue;
+//
+//			if (i < 10)
+//				m = 3;
+//			else if (i < 100)
+//				m = 2;
+//			else
+//				m = 1;
+//
+//			x += i * m;
+//			if (x > 100) {
+//				if (i < 100)
+//					continue;
+//				else
+//					break;
+//			}
+//			x -= 10;
+//		}
+//		print(x);
 
 		String code = precode + mainCode + postcode;
 		System.out.println(code);

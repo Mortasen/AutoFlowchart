@@ -15,20 +15,19 @@ public class Drawer
 
 	GraphicsContext g;
 
-	public void save (Layout layout, String filepath) throws IOException
-	{
-		CustomizerOptions custom = new CustomizerOptions();
-		this.save(layout, filepath);
-	}
-
 	public void draw (Layout layout, GraphicsContext g) throws IOException
 	{
-		this.g = g;
 		CustomizerOptions custom = new CustomizerOptions();
+		this.draw(layout, g, custom);
+	}
+
+	public void draw (Layout layout, GraphicsContext g, CustomizerOptions custom) throws IOException
+	{
+		this.g = g;
 		g.setFill(Color.WHITE);
 		g.fillRect(0, 0, layout.width + OFFSET_X * 2, layout.height + OFFSET_Y * 2);
 		g.setFill(Color.BLACK);
-		Font font = new Font("DejaVu Sans Mono", 8);
+		Font font = new Font(Node.FONT_NAME, Node.FONT_SIZE);
 		g.setFont(font);
 
 		float outline = custom.OutlineSize;

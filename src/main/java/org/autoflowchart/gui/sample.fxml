@@ -46,7 +46,7 @@
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                              <value>
-                                                 <Color red="0.9052631855010986" green="0.5900974869728088" blue="0.710910975933075" />
+                                                 <Color red="1.0" green="0.75" blue="1.0" />
                                              </value>
                                          </ColorPicker>
                                          <ColorPicker fx:id="terminalLineColorPicker" editable="true" maxWidth="50.0" promptText="Line color" style="-fx-background-color: #b8b8b8;">
@@ -84,7 +84,7 @@
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                              <value>
-                                                 <Color red="0.6647514700889587" green="0.8999999761581421" blue="0.593999981880188" />
+                                                 <Color red="0.75" green="1.0" blue="0.75" />
                                              </value>
                                          </ColorPicker>
                                          <ColorPicker fx:id="processLineColorPicker" editable="true" maxWidth="50.0" promptText="Line color" style="-fx-background-color: #b8b8b8;">
@@ -122,7 +122,7 @@
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                              <value>
-                                                 <Color red="0.9040740728378296" green="1.0" blue="0.17777778208255768" />
+                                                 <Color red="1.0" green="1.0" blue="0.75" />
                                              </value>
                                          </ColorPicker>
                                          <ColorPicker fx:id="decisionLineColorPicker" editable="true" maxWidth="50.0" promptText="Line color" style="-fx-background-color: #b8b8b8;">
@@ -130,7 +130,7 @@
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                              <value>
-                                                 <Color red="0.8736842274665833" green="0.14561402797698975" blue="0.6431286334991455" />
+                                                 <Color />
                                              </value>
                                          </ColorPicker>
                                          <TextField fx:id="decisionTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
@@ -160,7 +160,7 @@
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                              <value>
-                                                 <Color red="0.8842105269432068" green="0.5929668545722961" blue="0.5043274760246277" />
+                                                 <Color red="0.75" green="0.75" blue="1.0" />
                                              </value>
                                          </ColorPicker>
                                          <ColorPicker fx:id="functionLineColorPicker" editable="true" maxWidth="50.0" promptText="Line color" style="-fx-background-color: #b8b8b8;">
@@ -198,7 +198,7 @@
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                              <value>
-                                                 <Color red="0.560545802116394" green="0.7790877223014832" blue="0.9578947424888611" />
+                                                 <Color red="0.75" green="1.0" blue="1.0" />
                                              </value>
                                          </ColorPicker>
                                          <ColorPicker fx:id="outputLineColorPicker" editable="true" maxWidth="50.0" promptText="Line color" style="-fx-background-color: #b8b8b8;">
@@ -206,7 +206,7 @@
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                              <value>
-                                                 <Color red="0.2030409425497055" green="0.03274853900074959" blue="0.8842105269432068" />
+                                                 <Color />
                                              </value>
                                          </ColorPicker>
                                          <TextField fx:id="outputTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">

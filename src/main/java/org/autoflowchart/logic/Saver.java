@@ -20,13 +20,16 @@ public class Saver
 
 	public void save (Layout layout, String filepath, CustomizerOptions custom) throws IOException
 	{
-		img = new BufferedImage(layout.width, layout.height, BufferedImage.TYPE_INT_RGB);
+		img = new BufferedImage(layout.width + Designer.DEFAULT_GAP_X, layout.height, BufferedImage.TYPE_INT_RGB);
 		g = img.createGraphics();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, img.getWidth(), img.getHeight());
 		g.setColor(Color.BLACK);
-		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 8);
+		Font font = new Font(Node.FONT_NAME, Font.PLAIN, Node.FONT_SIZE);
 		g.setFont(font);
+		float outline = custom.OutlineSize;
+		BasicStroke Stroke = new BasicStroke(1.5f*outline);
+		g.setStroke(Stroke);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		int j=0;

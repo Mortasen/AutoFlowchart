@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
@@ -22,6 +23,7 @@ import javafx.scene.paint.Color;
 import org.autoflowchart.logic.Drawer;
 import org.autoflowchart.logic.Processor;
 import org.autoflowchart.logic.Saver;
+import org.autoflowchart.objects.CustomizerOptions;
 import org.autoflowchart.objects.Layout;
 
 import java.io.File;
@@ -68,16 +70,19 @@ public class Controller
     public Drawer drawer = new Drawer();
     public Saver saver = new Saver();
 
+    public CustomizerOptions customizerOptions = new CustomizerOptions();
+
     public void initialize ()
     {
         System.out.println("INITIALIZE");
-        Set<Node> set = splitPane.lookupAll("*");
+        /*
+        Set<Node> set = splitPane.lookupAll(".split-pane-divider");
         System.out.println(set);
         for (Node node : set) {
             node.setVisible(false);
             node.setDisable(true);
             System.out.println("found");
-        }
+        }*/
     }
 
     @FXML
@@ -119,7 +124,18 @@ public class Controller
     @FXML
     public void flowchartButtonClicked(Event e) throws IOException
     {
-        Layout layout = this.processor.process(codeTextArea.getText());
+        Layout layout;
+        try {
+            layout = this.processor.process(codeTextArea.getText());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Incorrect code");
+            errorAlert.setContentText("There are some errors in your code. Please make sure it compiles and works properly. If you are sure and yet still see this error, please create issue on our repository: https://github.com/Namerif/AutoFlowchart.");
+            errorAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            errorAlert.showAndWait();
+            return;
+        }
 
         canvas.setWidth(layout.width + Drawer.OFFSET_X * 2);
         canvas.setHeight(layout.height + Drawer.OFFSET_Y * 2);
@@ -131,8 +147,9 @@ public class Controller
         scrollPane.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setContent(canvas);
         canvasStackPane.getChildren().add(scrollPane);
+        this.generateOptions();
         try {
-            this.drawer.draw(layout, canvas.getGraphicsContext2D());
+            this.drawer.draw(layout, canvas.getGraphicsContext2D(), customizerOptions);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -155,7 +172,8 @@ public class Controller
         fileChooser.setTitle("Open Resource File");
         File selectedFile = fileChooser.showSaveDialog(primaryStage);
         String path = selectedFile.getAbsolutePath();
-        saver.save(layout, path);
+        this.generateOptions();
+        saver.save(layout, path, customizerOptions);
     }
 
     @FXML
@@ -164,6 +182,32 @@ public class Controller
         settingsVBox.setDisable(true);
         codeTextArea.setDisable(false);
         codeTextArea.setVisible(true);
+
+    }
+
+    public void generateOptions () {
+        CustomizerOptions options = customizerOptions;
+        options.terminalColor = convert(getTerminalBackgroundColor());
+        options.terminalOutlineColor = convert(getTerminalLineColor());
+        options.terminalSize = Double.parseDouble(getTerminalText());
+        options.processColor = convert(getProcessBackgroundColor());
+        options.processOutlineColor = convert(getProcessLineColor());
+        options.processSize = Double.parseDouble(getProcessText());
+        options.decisionColor = convert(getDecisionBackgroundColor());
+        options.decisionOutlineColor = convert(getDecisionLineColor());
+        options.decisionSize = Double.parseDouble(getDecisionText());
+        options.outputColor = convert(getOutputBackgroundColor());
+        options.outputOutlineColor = convert(getOutputLineColor());
+        options.outputSize = Double.parseDouble(getOutputText());
+    }
+
+    public java.awt.Color convert (Color color)
+    {
+        int r = (int)(color.getRed() * 255);
+        int g = (int)(color.getGreen() * 255);
+        int b = (int)(color.getBlue() * 255);
+        java.awt.Color newColor = new java.awt.Color(r, g, b);
+        return newColor;
     }
 
     public Color getTerminalBackgroundColor(){

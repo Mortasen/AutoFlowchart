@@ -13,6 +13,10 @@ import java.util.Objects;
 
 public class Node extends Element
 {
+
+	public final static String FONT_NAME = "DejaVu Sans Mono";
+	public final static int FONT_SIZE = 10;
+
 	private String text;
 	private FalseNode falseNode;
 	private int level;
@@ -213,17 +217,17 @@ public class Node extends Element
 		ShapeType type;
 		if (this.getFalseNode() != null) {
 			type = ShapeType.DIAMOND;
-			k = 0.95;
+			k = 0.8;
 		} else if (text.contains("System.")) {
 			type = ShapeType.PARALLELOGRAM;
-			k = 0.9;
+			k = 0.85;
 		} else
 			type = ShapeType.RECT;
 
 		String line1 = this.getText();
 		int level = this.getLevel();
 		FontMetrics fontMetrics;
-		Font font = new Font("DejaVu Sans Mono", Font.PLAIN, 8);
+		Font font = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE);
 		FontRenderContext fontRenderContext = new FontRenderContext(font.getTransform(), true, true);
 		Rectangle2D textRect = font.getStringBounds(line1, fontRenderContext);
 		double width = textRect.getWidth();
