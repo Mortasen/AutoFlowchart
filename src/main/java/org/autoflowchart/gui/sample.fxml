@@ -24,19 +24,19 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
          <children>
-            <SplitPane fx:id="splitPane" dividerPositions="0.5" prefHeight="660.8" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <SplitPane fx:id="splitPane" dividerPositions="0.503" prefHeight="660.8" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: #101010;">
               <items>
                 <AnchorPane>
                      <children>
-                         <TextArea fx:id="codeTextArea" layoutX="123.0" layoutY="136.0" prefHeight="672.8" prefWidth="446.4" style="-fx-control-inner-background: #000055; -fx-font-family: 'DejaVu Sans Mono';" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                         <TextArea fx:id="codeTextArea" layoutX="123.0" layoutY="136.0" prefHeight="672.8" prefWidth="446.4" style="-fx-control-inner-background: #000055; -fx-font-family: 'DejaVu Sans Mono'; -fx-border-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                          <VBox fx:id="settingsVBox" disable="true" prefHeight="664.0" prefWidth="447.2" style="-fx-background-color: #363434;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                              <children>
                                  <Label text="Terminal" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="System Bold" size="14.0" />
+                                         <Font name="DejaVu Sans Mono" size="14.0" />
                                      </font>
                                      <VBox.margin>
-                                         <Insets left="30.0" top="15.0" />
+                                         <Insets left="20.0" top="15.0" />
                                      </VBox.margin>
                                  </Label>
                                  <FlowPane prefHeight="50.0" prefWidth="200.0">
@@ -57,12 +57,12 @@
                                                  <Color />
                                              </value>
                                          </ColorPicker>
-                                         <TextField fx:id="terminalTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.50">
+                                         <TextField fx:id="terminalTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                          </TextField>
-                                         <TextField fx:id="terminalLineTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
+                                         <TextField fx:id="terminalLineTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
@@ -71,10 +71,10 @@
                                  </FlowPane>
                                  <Label text="Process" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="System Bold" size="14.0" />
+                                         <Font name="DejaVu Sans Mono" size="14.0" />
                                      </font>
                                      <VBox.margin>
-                                         <Insets left="30.0" />
+                                         <Insets left="20.0" />
                                      </VBox.margin>
                                  </Label>
                                  <FlowPane prefHeight="50.0" prefWidth="200.0">
@@ -95,12 +95,12 @@
                                                  <Color />
                                              </value>
                                          </ColorPicker>
-                                         <TextField fx:id="processTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
+                                         <TextField fx:id="processTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                          </TextField>
-                                         <TextField fx:id="processLineTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="2.00">
+                                         <TextField fx:id="processLineTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
@@ -109,10 +109,10 @@
                                  </FlowPane>
                                  <Label text="Decision" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="System Bold" size="14.0" />
+                                         <Font name="DejaVu Sans Mono" size="14.0" />
                                      </font>
                                      <VBox.margin>
-                                         <Insets left="30.0" />
+                                         <Insets left="20.0" />
                                      </VBox.margin>
                                  </Label>
                                  <FlowPane prefHeight="50.0" prefWidth="200.0">
@@ -133,12 +133,12 @@
                                                  <Color />
                                              </value>
                                          </ColorPicker>
-                                         <TextField fx:id="decisionTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
+                                         <TextField fx:id="decisionTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                          </TextField>
-                                         <TextField fx:id="decisionLineTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
+                                         <TextField fx:id="decisionLineTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
@@ -147,10 +147,10 @@
                                  </FlowPane>
                                  <Label text="Function" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="System Bold" size="14.0" />
+                                         <Font name="DejaVu Sans Mono" size="14.0" />
                                      </font>
                                      <VBox.margin>
-                                         <Insets left="30.0" />
+                                         <Insets left="20.0" />
                                      </VBox.margin>
                                  </Label>
                                  <FlowPane prefHeight="50.0" prefWidth="200.0">
@@ -171,12 +171,12 @@
                                                  <Color />
                                              </value>
                                          </ColorPicker>
-                                         <TextField fx:id="functionTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
+                                         <TextField fx:id="functionTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                          </TextField>
-                                         <TextField fx:id="functionLineTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
+                                         <TextField fx:id="functionLineTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
@@ -185,10 +185,10 @@
                                  </FlowPane>
                                  <Label text="Output" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="System Bold" size="14.0" />
+                                         <Font name="DejaVu Sans Mono" size="14.0" />
                                      </font>
                                      <VBox.margin>
-                                         <Insets left="30.0" />
+                                         <Insets left="20.0" />
                                      </VBox.margin>
                                  </Label>
                                  <FlowPane prefHeight="50.0" prefWidth="200.0">
@@ -209,12 +209,12 @@
                                                  <Color />
                                              </value>
                                          </ColorPicker>
-                                         <TextField fx:id="outputTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
+                                         <TextField fx:id="outputTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
                                          </TextField>
-                                         <TextField fx:id="outputLineTextField" maxWidth="40.0" style="-fx-background-color: #b8b8b8;" text="1.00">
+                                         <TextField fx:id="outputLineTextField" maxWidth="48.0" style="-fx-background-color: #b8b8b8;" text="1.00">
                                              <FlowPane.margin>
                                                  <Insets left="15.0" top="5.0" />
                                              </FlowPane.margin>
@@ -223,9 +223,9 @@
                                  </FlowPane>
                               <FlowPane alignment="BOTTOM_RIGHT" prefHeight="298.0" prefWidth="447.0">
                                  <children>
-                                    <Button fx:id="viewButton" mnemonicParsing="false" onAction="#viewButtonClicked" style="-fx-background-color: #000000;" text="View code" textFill="WHITE">
+                                    <Button fx:id="viewButton" mnemonicParsing="false" onAction="#viewButtonClicked" style="-fx-background-color: #000000; -fx-background-radius: 10;" text="View code" textFill="WHITE">
                                        <font>
-                                          <Font name="System Bold" size="14.0" />
+                                          <Font name="DejaVu Sans Mono" size="14.0" />
                                        </font>
                                     </Button>
                                  </children>
@@ -234,7 +234,7 @@
                          </VBox>
                      </children>
                   </AnchorPane>
-                <AnchorPane fx:id="canvasAnchorPane">
+                <AnchorPane fx:id="canvasAnchorPane"  style="-fx-background-color: #ffffff;">
                      <children>
                         <StackPane fx:id="canvasStackPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
@@ -290,6 +290,18 @@
                                     <Tooltip text="Generate flowchart" />
                                  </tooltip>
                               </Button>
+                              <Button fx:id="exportButton" mnemonicParsing="false" onAction="#exportButtonClicked" style="-fx-background-color: #707070; -fx-border-radius: 10;">
+                                  <graphic>
+                                      <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                          <image>
+                                              <Image url="/buttons/icon-export-aa.png" />
+                                          </image>
+                                      </ImageView>
+                                  </graphic>
+                                  <tooltip>
+                                      <Tooltip text="Export flowchart to a file" />
+                                  </tooltip>
+                              </Button>
                               <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#settingsButtonClicked" style="-fx-background-color: #707070; -fx-border-radius: 10;">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -300,18 +312,6 @@
                                  </graphic>
                                  <tooltip>
                                     <Tooltip text="Flowchart settings" />
-                                 </tooltip>
-                              </Button>
-                              <Button fx:id="exportButton" mnemonicParsing="false" onAction="#exportButtonClicked" style="-fx-background-color: #707070; -fx-border-radius: 10;">
-                                 <graphic>
-                                    <ImageView fitHeight="20.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="/buttons/icon-export-aa.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <tooltip>
-                                    <Tooltip text="Export flowchart to a file" />
                                  </tooltip>
                               </Button>
                           </buttons>

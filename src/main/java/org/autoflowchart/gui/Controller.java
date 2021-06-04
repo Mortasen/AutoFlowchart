@@ -166,8 +166,18 @@ public class Controller
     @FXML
     public void exportButtonClicked(Event e) throws IOException
     {
-        Layout layout = this.processor.process(codeTextArea.getText());
-
+        Layout layout;
+        try {
+            layout = this.processor.process(codeTextArea.getText());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Incorrect code");
+            errorAlert.setContentText("There are some errors in your code. Please make sure it compiles and works properly. If you are sure and yet still see this error, please create issue on our repository: https://github.com/Namerif/AutoFlowchart.");
+            errorAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            errorAlert.showAndWait();
+            return;
+        }
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         File selectedFile = fileChooser.showSaveDialog(primaryStage);
