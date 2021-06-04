@@ -3,6 +3,7 @@ package org.autoflowchart.gui;
 import javafx.fxml.FXML;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -26,6 +27,7 @@ import org.autoflowchart.objects.Layout;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Set;
 
 public class Controller
 {
@@ -35,6 +37,7 @@ public class Controller
     public Button settingsButton = null;
     public Button exportButton = null;
     public Button viewButton = null;
+    public SplitPane splitPane;
     public VBox settingsVBox;
     public TextArea codeTextArea;
     public ColorPicker terminalBackColorPicker;
@@ -64,6 +67,18 @@ public class Controller
     public Processor processor = new Processor();
     public Drawer drawer = new Drawer();
     public Saver saver = new Saver();
+
+    public void initialize ()
+    {
+        System.out.println("INITIALIZE");
+        Set<Node> set = splitPane.lookupAll("*");
+        System.out.println(set);
+        for (Node node : set) {
+            node.setVisible(false);
+            node.setDisable(true);
+            System.out.println("found");
+        }
+    }
 
     @FXML
     private void handleExit() {

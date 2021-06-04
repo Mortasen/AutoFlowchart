@@ -14,9 +14,14 @@ public class Saver
 
 	public void save (Layout layout, String filepath) throws IOException
 	{
+		CustomizerOptions custom = new CustomizerOptions();
+		this.save(layout, filepath, custom);
+	}
+
+	public void save (Layout layout, String filepath, CustomizerOptions custom) throws IOException
+	{
 		img = new BufferedImage(layout.width, layout.height, BufferedImage.TYPE_INT_RGB);
 		g = img.createGraphics();
-		CustomizerOptions custom = new CustomizerOptions();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, img.getWidth(), img.getHeight());
 		g.setColor(Color.BLACK);
@@ -75,7 +80,7 @@ public class Saver
 			FontMetrics fm = img.getGraphics().getFontMetrics(font);
 			int textX = shape.x + shape.textOffsetX;
 			int textY = shape.y + shape.textOffsetY + 8;
-			g.drawString(shape.text, textX, textY);
+			this.myDrawString(shape.text, textX, textY);
 		}
 		g.setColor(new Color(57, 11, 11));
 		for (Arrow arrow : layout.arrows)
@@ -160,6 +165,17 @@ public class Saver
 			g.drawRect(x, y, width, height);
 			g.drawLine(x + 14, y, x + 14, y + height);
 			g.drawLine(x + width - 14, y, x + width - 14, y + height);
+		}
+	}
+
+	public void myDrawString (String text, int x, int y)
+	{
+		if (text.contains("\n")) {
+			int npos = text.indexOf('\n');
+			g.drawString(text.substring(0, npos), x, y);
+			g.drawString(text.substring(npos + 1), x, y + 10);
+		} else {
+			g.drawString(text, x, y);
 		}
 	}
 }

@@ -209,6 +209,17 @@ public class Node extends Element
 
 	public void label ()
 	{
+		double k = 1;
+		ShapeType type;
+		if (this.getFalseNode() != null) {
+			type = ShapeType.DIAMOND;
+			k = 0.95;
+		} else if (text.contains("System.")) {
+			type = ShapeType.PARALLELOGRAM;
+			k = 0.9;
+		} else
+			type = ShapeType.RECT;
+
 		String line1 = this.getText();
 		int level = this.getLevel();
 		FontMetrics fontMetrics;
@@ -219,9 +230,9 @@ public class Node extends Element
 		double height = textRect.getHeight();
 		String text;
 
-		if (width >= Designer.DEFAULT_WIDTH) {
+		if (width >= Designer.DEFAULT_WIDTH * k) {
 			double widthPerSymbol = (width / line1.length());
-			double breakPositionK = Designer.DEFAULT_WIDTH / width;
+			double breakPositionK = Designer.DEFAULT_WIDTH * k / width;
 			int maxSymbols = (int)(line1.length() * breakPositionK - 1);
 			String line2 = line1.substring(maxSymbols);
 			if (line2.length() > maxSymbols)
@@ -238,12 +249,6 @@ public class Node extends Element
 
 		int textOffsetX = (int)(Designer.DEFAULT_WIDTH / 2 - width / 2);
 		int textOffsetY = (int)(Designer.DEFAULT_HEIGHT / 2 - height / 2);
-
-		ShapeType type;
-		if (this.getFalseNode() != null)
-			type = ShapeType.DIAMOND;
-		else
-			type = ShapeType.RECT;
 
 		/*BlockDEPRECATED blockDEPRECATED = new BlockDEPRECATED(Designer.defaultHeight, type, text, level);
 		blockDEPRECATED.textOffsetX = textOffsetX;
