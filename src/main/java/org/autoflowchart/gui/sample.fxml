@@ -28,12 +28,12 @@
               <items>
                 <AnchorPane>
                      <children>
-                         <TextArea fx:id="codeTextArea" layoutX="123.0" layoutY="136.0" prefHeight="672.8" prefWidth="446.4" style="-fx-control-inner-background: #000055; -fx-font-family: 'DejaVu Sans Mono'; -fx-border-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                         <TextArea fx:id="codeTextArea" layoutX="123.0" layoutY="136.0" prefHeight="672.8" prefWidth="446.4" style="-fx-control-inner-background: #000055; -fx-font-family: 'Consolas'; -fx-border-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                          <VBox fx:id="settingsVBox" disable="true" prefHeight="664.0" prefWidth="447.2" style="-fx-background-color: #363434;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                              <children>
                                  <Label text="Terminal" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="DejaVu Sans Mono" size="14.0" />
+                                         <Font name="Consolas" size="14.0" />
                                      </font>
                                      <VBox.margin>
                                          <Insets left="20.0" top="15.0" />
@@ -71,7 +71,7 @@
                                  </FlowPane>
                                  <Label text="Process" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="DejaVu Sans Mono" size="14.0" />
+                                         <Font name="Consolas" size="14.0" />
                                      </font>
                                      <VBox.margin>
                                          <Insets left="20.0" />
@@ -109,7 +109,7 @@
                                  </FlowPane>
                                  <Label text="Decision" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="DejaVu Sans Mono" size="14.0" />
+                                         <Font name="Consolas" size="14.0" />
                                      </font>
                                      <VBox.margin>
                                          <Insets left="20.0" />
@@ -147,7 +147,7 @@
                                  </FlowPane>
                                  <Label text="Function" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="DejaVu Sans Mono" size="14.0" />
+                                         <Font name="Consolas" size="14.0" />
                                      </font>
                                      <VBox.margin>
                                          <Insets left="20.0" />
@@ -185,7 +185,7 @@
                                  </FlowPane>
                                  <Label text="Output" textAlignment="CENTER" textFill="WHITE">
                                      <font>
-                                         <Font name="DejaVu Sans Mono" size="14.0" />
+                                         <Font name="Consolas" size="14.0" />
                                      </font>
                                      <VBox.margin>
                                          <Insets left="20.0" />
@@ -225,7 +225,7 @@
                                  <children>
                                     <Button fx:id="viewButton" mnemonicParsing="false" onAction="#viewButtonClicked" style="-fx-background-color: #000000; -fx-background-radius: 10;" text="View code" textFill="WHITE">
                                        <font>
-                                          <Font name="DejaVu Sans Mono" size="14.0" />
+                                          <Font name="Consolas" size="14.0" />
                                        </font>
                                     </Button>
                                  </children>

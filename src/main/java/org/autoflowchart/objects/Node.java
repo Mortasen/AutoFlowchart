@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Node extends Element
 {
 
-	public final static String FONT_NAME = "DejaVu Sans Mono";
+	public final static String FONT_NAME = "Consolas";
 	public final static int FONT_SIZE = 10;
 
 	private String text;
