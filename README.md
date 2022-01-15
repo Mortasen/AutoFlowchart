@@ -2,7 +2,7 @@
 
 AutoFlowchart is a simple JavaFX program that allows you to automatically generate a flowchart out of your Java code.
 
-## **Warning!*/
+## **Warning!**
 
 This program is no longer maintained. It was developed as a university project, and since we (project team) weren't so experienced with Java, we chose not the best tools for implementing this idea, and made some wrong decisions that make further developing of the program without rewriting from scratch way too hard. However, the latest version of app should work (not without the bugs, unfortunately, but they are quite small), so you can try to build it. Hope the program can still help someone who wants to make something similar, and sorry if it dissapointed you! 
 
